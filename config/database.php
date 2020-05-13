@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => 'pgsql','client_encoding': 'utf8',
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -71,6 +71,7 @@ return [
             'database' => ltrim($DATABASE_URL['path'],'/'),
             'username' => $DATABASE_URL['user'],
             'password' => $DATABASE_URL['past'],
+            'client_encoding': 'utf8mb4'
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
