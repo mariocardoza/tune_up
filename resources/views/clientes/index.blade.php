@@ -103,6 +103,7 @@
 		        						<option value="1">Natural</option>
 		        						<option value="2">Jurídica</option>
 		        					</select>
+                      <input type="hidden" name="estado" value="1">
 		        				</div>
 		        				<div class="form-group">
 		        					<label for="">Nombre</label>
