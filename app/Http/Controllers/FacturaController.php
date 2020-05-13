@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cliente;
 use App\Cotizacione;
+use PDF;
 
 class FacturaController extends Controller
 {
+
+    public function reporte($id)
+    {
+        $factura=Cotizacione::find($id);
+        $pdf = \PDF::loadView('facturas.reporte',compact('factura'));
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('factura.pdf');
+    }
     /**
      * Display a listing of the resource.
      *

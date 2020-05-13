@@ -443,7 +443,6 @@ class ComposerStaticInit38bd0fc7bb4f731084d5d14e76486aff
     public static $classMap = array (
         'App\\Cliente' => __DIR__ . '/../..' . '/app/Cliente.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
-        'App\\CotizacionPrevia' => __DIR__ . '/../..' . '/app/CotizacionPrevia.php',
         'App\\Cotizacione' => __DIR__ . '/../..' . '/app/Cotizacione.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AdministracionController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdministracionController.php',
@@ -487,6 +486,7 @@ class ComposerStaticInit38bd0fc7bb4f731084d5d14e76486aff
         'App\\Repuesto' => __DIR__ . '/../..' . '/app/Repuesto.php',
         'App\\RepuestoDetalle' => __DIR__ . '/../..' . '/app/RepuestoDetalle.php',
         'App\\RepuestoPrevia' => __DIR__ . '/../..' . '/app/RepuestoPrevia.php',
+        'App\\Taller' => __DIR__ . '/../..' . '/app/Taller.php',
         'App\\Trabajo' => __DIR__ . '/../..' . '/app/Trabajo.php',
         'App\\TrabajoDetalle' => __DIR__ . '/../..' . '/app/TrabajoDetalle.php',
         'App\\TrabajoPrevia' => __DIR__ . '/../..' . '/app/TrabajoPrevia.php',
@@ -4590,6 +4590,7 @@ class ComposerStaticInit38bd0fc7bb4f731084d5d14e76486aff
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
         'Symfony\\Polyfill\\Php72\\Php72' => __DIR__ . '/..' . '/symfony/polyfill-php72/Php72.php',
         'Symfony\\Polyfill\\Php73\\Php73' => __DIR__ . '/..' . '/symfony/polyfill-php73/Php73.php',
+        'TallerSeeder' => __DIR__ . '/../..' . '/database/seeds/TallerSeeder.php',
         'Tests\\CreatesApplication' => __DIR__ . '/../..' . '/tests/CreatesApplication.php',
         'Tests\\Feature\\ExampleTest' => __DIR__ . '/../..' . '/tests/Feature/ExampleTest.php',
         'Tests\\TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',

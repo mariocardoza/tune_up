@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cotizacione extends Model
 {
     protected $guarded = [];
-    protected $dates = ['fecha'];
+    protected $dates = ['fecha','created_at'];
 
     public function cliente()
     {
@@ -27,6 +27,12 @@ class Cotizacione extends Model
     public function trabajodetalle()
     {
     	return $this->hasMany('App\TrabajoDetalle','cotizacion_id');
+    }
+
+    public static function correlativo($tipo_documento)
+    {
+        $numero=Cotizacione::where('tipo_documento',$tipo_documento)->count();
+        return $numero+1;
     }
 
 
@@ -123,9 +129,9 @@ class Cotizacione extends Model
         foreach ($repuestos as $i=> $r) {
             $html.='<tr style="font-size: 13px;">
                 <td>'.$r->repuesto->nombre.'</td>
-                <td>'.$r->precio.'</td>
+                <td>'.number_format($r->precio,2).'</td>
                 <td>'.$r->cantidad.'</td>
-                <td>'.$r->precio*$r->cantidad.'</td>
+                <td>'.number_format($r->precio*$r->cantidad,2).'</td>
                 <td>
                     <button title="Editar repuesto" type="button" id="editar_repuesto" data-id="'.$r->id.'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                     <button title="Eliminar repuesto" type="button" id="eliminar_repuesto" data-id="'.$r->id.'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>

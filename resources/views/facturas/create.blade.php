@@ -124,7 +124,7 @@
 									<div class="card-body">
 										<div class="row">
 											<div class="col-md-12">
-												<table class="table table-bordered" id="tabita">
+												<table width="100%" class="table-bordered" id="tabita">
 													<thead>
 														<tr>
 															<th>Detalle</th>
@@ -425,7 +425,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/creditos.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/facturas.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
 	var v_id="";

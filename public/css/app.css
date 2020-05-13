@@ -37472,7 +37472,7 @@ button.bg-secondary:focus {
 }
 
 .bg-success {
-  background-color: #38c172 !important;
+  /*background-color: #38c172 !important;*/
 }
 
 a.bg-success:hover,
@@ -37483,7 +37483,7 @@ button.bg-success:focus {
 }
 
 .bg-info {
-  background-color: #6cb2eb !important;
+  /*background-color: #6cb2eb !important;*/
 }
 
 a.bg-info:hover,
@@ -37494,7 +37494,7 @@ button.bg-info:focus {
 }
 
 .bg-warning {
-  background-color: #ffed4a !important;
+  /*background-color: #ffed4a !important;*/
 }
 
 a.bg-warning:hover,
@@ -37505,7 +37505,7 @@ button.bg-warning:focus {
 }
 
 .bg-danger {
-  background-color: #e3342f !important;
+  /*background-color: #e3342f !important;*/
 }
 
 a.bg-danger:hover,

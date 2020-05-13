@@ -8,6 +8,7 @@ use App\RepuestoPrevia;
 use App\RepuestoDetalle;
 use Validator;
 use App\Cotizacione;
+use App\Vehiculo;
 use DB;
 
 class RepuestoController extends Controller
@@ -19,7 +20,8 @@ class RepuestoController extends Controller
      */
     public function index()
     {
-        //
+        $repuestos=Repuesto::get();
+        return view('repuestos.index',compact('repuestos'));
     }
 
     /**
@@ -42,10 +44,10 @@ class RepuestoController extends Controller
     {
         $this->validar($request->all())->validate();
         try{
-          if($request->vehiculo_id!=''):
+          if($request->vehiculo_id!='' && $request->coniva==''):
             DB::beginTransaction();
             $repuesto=Repuesto::create([
-                'nombre'=>$request->nombre,
+                'nombre'=>mb_strtoupper($request->nombre),
                 'codigo'=>$request->codigo,
                 'precio'=>$request->precio
             ]);
@@ -60,7 +62,15 @@ class RepuestoController extends Controller
                     'subtotal'=>0,
                     'total'=>0,
                     'coniva'=>$request->coniva,
+                    'correlativo'=>Cotizacione::correlativo($request->tipo_documento),
+                    'kilometraje'=>$request->kilometraje,
+                    'km_proxima'=>$request->km_proxima,
                     ]);
+
+                $vehiculo=Vehiculo::find($request->vehiculo_id);
+                $vehiculo->kilometraje=$request->kilometraje;
+                $vehiculo->km_proxima=$request->km_proxima;
+                $vehiculo->save();
 
                     $rr=RepuestoDetalle::create([
                     'repuesto_id'=>$repuesto->id,
@@ -84,6 +94,7 @@ class RepuestoController extends Controller
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
+                    $coti->iva=0;
                     $coti->save();
                 }
                 if($coti->cliente->sector=='Gran Contribuyente'):
@@ -119,6 +130,7 @@ class RepuestoController extends Controller
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
+                    $coti->iva=0;
                     $coti->save();
                 }
                 if($coti->cliente->sector=='Gran Contribuyente'):
@@ -149,7 +161,7 @@ class RepuestoController extends Controller
         try{
             DB::beginTransaction();
             $repuesto=Repuesto::create([
-                'nombre'=>$request->nombre,
+                'nombre'=>mb_strtoupper($request->nombre),
                 'codigo'=>$request->codigo,
                 'precio'=>$request->precio
             ]);
@@ -175,6 +187,7 @@ class RepuestoController extends Controller
                 $nuevosubto=$sub+($request->precio*1);
                 $coti->subtotal=$nuevosubto;
                 $coti->total=$nuevosubto;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'):
@@ -193,6 +206,22 @@ class RepuestoController extends Controller
             return array(-1,"error",$e->getMessage());
         }
     }
+
+    public function guardar2(Request $request)
+    {
+      $this->validar2($request->all())->validate();
+      try{
+        $trabajo=Repuesto::create([
+            'nombre'=>mb_strtoupper($request->nombre),
+            'codigo'=>$request->codigo,
+            'precio'=>$request->precio
+        ]);
+        return array(1);
+      }catch(Exception $e){
+        return array(-1,"error",$e->getMessage());
+      }
+    }
+
 
     /**
      * Display the specified resource.
@@ -213,7 +242,8 @@ class RepuestoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $repuesto=Repuesto::find($id);
+        return array(1,"exito",$repuesto);
     }
 
     /**
@@ -225,7 +255,15 @@ class RepuestoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validar2($request->all())->validate();
+        try{
+          $r=Repuesto::find($id);
+          $r->fill($request->all());
+          $r->save();
+          return array(1);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**
@@ -234,9 +272,20 @@ class RepuestoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $r,$id)
     {
-        //
+        try{
+          $t=Repuesto::find($id);
+          if($r->borrar==1):
+          $t->estado=2;
+          else:
+          $t->estado=1;
+          endif;
+          $t->save();
+          return array(1);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     protected function validar(array $data)
@@ -250,6 +299,18 @@ class RepuestoController extends Controller
           'nombre'=>'required',
           'precio'=>'required',
           'cantidad'=>'required'
+      ],$mensajes);
+    }
+
+     protected function validar2(array $data)
+    {
+        $mensajes=array(
+          'nombre.required'=>'El nombre del repuesto es obligatorio',
+          'precio.required'=>'El precio del repuesto es obligatorio',
+      );
+      return Validator::make($data, [
+          'nombre'=>'required',
+          'precio'=>'required',
       ],$mensajes);
     }
 }

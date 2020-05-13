@@ -124,7 +124,7 @@
 									<div class="card-body">
 										<div class="row">
 											<div class="col-md-12">
-												<table class="table table-bordered" id="tabita">
+												<table width="100%" class="table-bordered" id="tabita">
 													<thead>
 														<tr>
 															<th>Detalle</th>

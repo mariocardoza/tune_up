@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\RepuestoPrevia;
 use App\RepuestoDetalle;
+use App\Vehiculo;
 use Validator;
 use DB;
 use App\Cotizacione;
@@ -54,8 +55,16 @@ class RepuestodetallesController extends Controller
                 'iva_r'=>0,
                 'subtotal'=>0,
                 'total'=>0,
+                'correlativo'=>Cotizacione::correlativo($request->tipo_documento),
                 'coniva'=>$request->coniva,
+                'kilometraje'=>$request->kilometraje,
+                'km_proxima'=>$request->km_proxima,
                 ]);
+
+                $vehiculo=Vehiculo::find($request->vehiculo_id);
+                $vehiculo->kilometraje=$request->kilometraje;
+                $vehiculo->km_proxima=$request->km_proxima;
+                $vehiculo->save();
 
                 $trabajo=RepuestoDetalle::create([
                 'repuesto_id'=>$request->repuesto_id,
@@ -79,6 +88,7 @@ class RepuestodetallesController extends Controller
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
+                    $coti->iva=0;
                     $coti->save();
                 }
 
@@ -115,6 +125,7 @@ class RepuestodetallesController extends Controller
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
+                    $coti->iva=0;
                     $coti->save();
                 }
                 if($coti->cliente->sector=='Gran Contribuyente'){
@@ -172,6 +183,7 @@ class RepuestodetallesController extends Controller
                 $nuevosubto=$sub+($request->precio*$request->cantidad);
                 $coti->subtotal=$nuevosubto;
                 $coti->total=$nuevosubto;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
@@ -260,6 +272,7 @@ class RepuestodetallesController extends Controller
                 $n=$subto+$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
@@ -311,6 +324,7 @@ class RepuestodetallesController extends Controller
                 $n=$subto+$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
@@ -360,6 +374,7 @@ class RepuestodetallesController extends Controller
                 $n=$subto-$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
                 $deta->delete();
             }
@@ -408,6 +423,7 @@ class RepuestodetallesController extends Controller
                 $n=$subto-$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
                 $deta->delete();
             }

@@ -13,6 +13,11 @@ class Cliente extends Model
     	return $this->hasMany('App\Vehiculo','cliente_id')->where('estado',1);
     }
 
+    public function cotizacion()
+    {
+    	return $this->hasMany('App\Cotizacione')->orderBy('tipo_documento','asc')->orderBy('created_at','desc');
+    }
+
     public static function modal_editar($id)
     {
     	$html='';

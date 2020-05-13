@@ -16,7 +16,7 @@
 		<div class="col-md-12">
 			<div class="card card-primary">
 				<div class="card-header">
-					<h3 class="card-title">Registrar cotización</h3>
+					<h3 class="card-title">Registrar factura de exportación</h3>
 					<div class="float-right">
 						<button type="button" class="btn btn-danger buscaplaca">Buscar</button>
 					</div>
@@ -54,13 +54,14 @@
 									<label for="" class="control-label">Dirección</label>
 									<textarea rows="2" readonly class="form-control direcc"></textarea>
 								</div>
-								<div class="form-group">
+								<!--div class="form-group">
 									<label for="">¿IVA?</label>
 									<select name="" id="eliva" class="chosen-select">
 										<option selected="" value="no">No</option>
 										<option value="si">Si</option>
 									</select>
-								</div>
+								</div-->
+									<input type="hidden" id="eliva" value="no">
 									<input type="hidden" name="total" value="" id="txttotal">
 									<input type="hidden" name="subtotal" value="" id="txtsubtotal">
 								
@@ -425,7 +426,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/cotizaciones.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/exportaciones.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
 	var v_id="";

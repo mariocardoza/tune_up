@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CotizacionPrevia extends Model
+class Taller extends Model
 {
-    //
+    protected $guarded = [];
 }

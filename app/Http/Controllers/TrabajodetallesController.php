@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\TrabajoPrevia;
 use App\TrabajoDetalle;
 use App\Cotizacione;
+use App\Vehiculo;
 use Validator;
 use DB;
 
@@ -53,8 +54,16 @@ class TrabajodetallesController extends Controller
                     'iva'=>0,
                     'subtotal'=>0,
                     'total'=>0,
+                    'correlativo'=>Cotizacione::correlativo($request->tipo_documento),
                     'coniva'=>$request->coniva,
+                    'kilometraje'=>$request->kilometraje,
+                    'km_proxima'=>$request->km_proxima,
                 ]);
+
+                $vehiculo=Vehiculo::find($request->vehiculo_id);
+                $vehiculo->kilometraje=$request->kilometraje;
+                $vehiculo->km_proxima=$request->km_proxima;
+                $vehiculo->save();
 
                 $trabajo=TrabajoDetalle::create([
                     'trabajo_id'=>$request->trabajo_id,
@@ -78,6 +87,7 @@ class TrabajodetallesController extends Controller
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
+                    $coti->iva=0;
                     $coti->save();
                 }
                 if($coti->cliente->sector=='Gran Contribuyente'):
@@ -113,6 +123,7 @@ class TrabajodetallesController extends Controller
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
+                    $coti->iva=0;
                     $coti->save();
                 }
                 if($coti->cliente->sector=='Gran Contribuyente'){
@@ -165,6 +176,7 @@ class TrabajodetallesController extends Controller
                 $nuevosubto=$sub+($request->precio*$request->cantidad);
                 $coti->subtotal=$nuevosubto;
                 $coti->total=$nuevosubto;
+                $coti->iva=0;
                 $coti->save();
             }
 
@@ -253,6 +265,7 @@ class TrabajodetallesController extends Controller
                 $n=$subto+$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
             }
 
@@ -305,6 +318,7 @@ class TrabajodetallesController extends Controller
                 $n=$subto+$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
@@ -352,6 +366,7 @@ class TrabajodetallesController extends Controller
                 $n=$subto-$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
@@ -380,7 +395,7 @@ class TrabajodetallesController extends Controller
     {
         try{
             DB::beginTransaction();
-            $cliente=Cliente::find($request->cliente_id);
+            $coti=Cotizacione::find($request->cotizacion_id);
             $previo=TrabajoDetalle::find($id);
             $previo->delete();
             if($coti->coniva=='si'){
@@ -399,6 +414,7 @@ class TrabajodetallesController extends Controller
                 $n=$subto-$tot;
                 $coti->subtotal=$n;
                 $coti->total=$n;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){

@@ -7,6 +7,7 @@ use App\Trabajo;
 use App\TrabajoPrevia;
 use App\TrabajoDetalle;
 use App\Cotizacione;
+use App\Vehiculo;
 use Validator;
 use DB;
 
@@ -19,7 +20,8 @@ class TrabajoController extends Controller
      */
     public function index()
     {
-        //
+        $trabajos=Trabajo::get();
+        return view('trabajos.index',compact('trabajos'));
     }
 
     /**
@@ -51,16 +53,25 @@ class TrabajoController extends Controller
             ]);
             if($request->cotizacion_id==0):
                 $coti=Cotizacione::create([
-                'vehiculo_id'=>$request->vehiculo_id,
-                'cliente_id'=>$request->cliente_id,
-                'tipo_documento'=>$request->tipo_documento,
-                'n_impresiones'=>0,
-                'fecha'=>invertir_fecha($request->fecha),
-                'iva'=>0,
-                'subtotal'=>0,
-                'total'=>0,
-                'coniva'=>$request->coniva,
+                  'vehiculo_id'=>$request->vehiculo_id,
+                  'cliente_id'=>$request->cliente_id,
+                  'tipo_documento'=>$request->tipo_documento,
+                  'n_impresiones'=>0,
+                  'fecha'=>invertir_fecha($request->fecha),
+                  'iva'=>0,
+                  'subtotal'=>0,
+                  'total'=>0,
+                  'correlativo'=>Cotizacione::correlativo($request->tipo_documento),
+                  'coniva'=>$request->coniva,
+                  'kilometraje'=>$request->kilometraje,
+                  'km_proxima'=>$request->km_proxima,
                 ]);
+
+                $vehiculo=Vehiculo::find($request->vehiculo_id);
+                $vehiculo->kilometraje=$request->kilometraje;
+                $vehiculo->km_proxima=$request->km_proxima;
+                $vehiculo->save();
+
 
                 $trabajo=TrabajoDetalle::create([
                 'trabajo_id'=>$trabajo->id,
@@ -77,6 +88,7 @@ class TrabajoController extends Controller
                 $coti->subtotal=$nuevosubto;
                 $coti->iva=$nuevoiva;
                 $coti->total=$nuevotot;
+                $coti->iva=0;
                 $coti->save();
             }else{
                 $sub=$coti->subtotal;
@@ -112,6 +124,7 @@ class TrabajoController extends Controller
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
                     $coti->total=$nuevotot;
+                    $coti->iva=0;
                     $coti->save();
                 }else{
                     $sub=$coti->subtotal;
@@ -175,6 +188,7 @@ class TrabajoController extends Controller
                 $nuevosubto=$sub+($request->precio*1);
                 $coti->subtotal=$nuevosubto;
                 $coti->total=$nuevosubto;
+                $coti->iva=0;
                 $coti->save();
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
@@ -190,6 +204,21 @@ class TrabajoController extends Controller
         }catch(Exception $e){
             return array(-1,"error",$e->getMessage());
         }
+    }
+
+    public function guardar2(Request $request)
+    {
+      $this->validar($request->all())->validate();
+      try{
+        $repuesto=Repuesto::create([
+            'nombre'=>$request->nombre,
+            'codigo'=>$request->codigo,
+            'precio'=>$request->precio
+        ]);
+        return array(1);
+      }catch(Exception $e){
+        return array(-1,"error",$e->getMessage());
+      }
     }
 
     /**
@@ -211,7 +240,12 @@ class TrabajoController extends Controller
      */
     public function edit($id)
     {
-        //
+        try{
+          $trabajo=Trabajo::find($id);
+          return array(1,"exito",$trabajo);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**
@@ -223,7 +257,15 @@ class TrabajoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validar($request->all())->validate();
+        try{
+          $r=trabajo::find($id);
+          $r->fill($request->all());
+          $r->save();
+          return array(1);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**
@@ -232,9 +274,20 @@ class TrabajoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        try{
+          $t=Trabajo::find($id);
+          if($request->borrar==1):
+          $t->estado=2;
+          else:
+          $t->estado=1;
+          endif;
+          $t->save();
+          return array(1);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     protected function validar(array $data)

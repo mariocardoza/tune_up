@@ -10,6 +10,7 @@ use App\RepuestoPrevia;
 use App\TrabajoPrevia;
 use App\RepuestoDetalle;
 use App\TrabajoDetalle;
+use App\Taller;
 use DB;
 use PDF;
 
@@ -180,12 +181,26 @@ class CotizacionController extends Controller
         //
     }
 
+    public function ivaventas(Request $r)
+    {
+        $fecha1=invertir_fecha($r->fecha1);
+        $fecha2=invertir_fecha($r->fecha2);
+        $cotizaciones=Cotizacione::where('fecha','>=',$fecha1)->where('fecha','<=',$fecha2)->get();
+        $f1=$r->fecha1;
+        $f2=$r->fecha2;
+        //dd($cotizaciones);
+        //dd($cotizacion->repuestodetalle);
+        $pdf = \PDF::loadView('cotizaciones.ivaventas',compact('cotizaciones','f1','f2'));
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('iva.pdf');
+    }
+
     public function pdf($id)
     {
         $cotizacion=Cotizacione::find($id);
-        
+        $taller=Taller::find(1);
         //dd($cotizacion->repuestodetalle);
-        $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion'));
+        $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller'));
         $pdf->setPaper('letter', 'portrait');
         return $pdf->stream('cotizacion.pdf');
     }

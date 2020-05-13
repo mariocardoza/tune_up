@@ -22,6 +22,11 @@ class Vehiculo extends Model
     	return $this->belongsTo('App\Modelo');
     }
 
+    public function cotizaciones()
+    {
+        return $this->hasMany('App\Cotizacione')->orderBy('created_at','DESC');
+    }
+
     public static function info($id)
     {
         $html="";

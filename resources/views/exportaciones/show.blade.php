@@ -6,20 +6,17 @@
 	$repuestos=App\Repuesto::where('estado',1)->get();
 	$trabajos=App\Trabajo::where('estado',1)->get();
 @endphp
-<style>
-	.trr{
-	  height: 5px;
-	}
-</style>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card card-primary">
 				<div class="card-header">
-					<h3 class="card-title">Registrar cotización</h3>
-					<div class="float-right">
-						<button type="button" class="btn btn-danger buscaplaca">Buscar</button>
+					<div class="row">
+						<div class="col-md-4"><a id="anterior" data-id="{{$anterior}}" href="{{url('cotizaciones/'.$anterior)}}" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
+						<div class="col-md-4"><h3 class="card-title">Facturas de exportación</h3></div>
+						<div class="col-md-4"><a id="siguiente" data-id="{{$siguiente}}" href="{{url('cotizaciones/'.$siguiente)}}" class="btn btn-success float-right"><i class="fas fa-angle-right"></i></a></div>
 					</div>
+					
 				</div>
 				<div class="card-body">
 					<form id="form_coti">
@@ -28,11 +25,12 @@
 								<h4 class="text-center">Datos del cliente</h4>
 								<div class="form-group">
 									<label for="" class="control-label">Cliente</label>
-									<input type="hidden" name="cotizacion_id" id="cotizacion_id" value="0">
 									<select name="cliente_id" id="cliente_id" class="chosen-select">
 										<option value="">Seleccione un cliente</option>
 										@foreach($clientes as $c)
-											<option data-sector="{{$c->sector}}" data-direccion="{{$c->direccion}}" value="{{$c->id}}">{{$c->nombre}}</option>
+											@if($c->id==$cotizacion->cliente_id)
+												<option selected data-sector="{{$c->sector}}" data-direccion="{{$c->direccion}}" value="{{$c->id}}">{{$c->nombre}}</option>
+											@endif
 										@endforeach
 									</select>
 								</div>
@@ -40,7 +38,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Fecha</label>
-											<input type="text" name="fecha" class="form-control fecha" value="{{date('d/m/Y')}}">
+											<input type="text" name="fecha" readonly class="form-control" value="{{$cotizacion->fecha->format('d/m/Y')}}">
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -54,16 +52,6 @@
 									<label for="" class="control-label">Dirección</label>
 									<textarea rows="2" readonly class="form-control direcc"></textarea>
 								</div>
-								<div class="form-group">
-									<label for="">¿IVA?</label>
-									<select name="" id="eliva" class="chosen-select">
-										<option selected="" value="no">No</option>
-										<option value="si">Si</option>
-									</select>
-								</div>
-									<input type="hidden" name="total" value="" id="txttotal">
-									<input type="hidden" name="subtotal" value="" id="txtsubtotal">
-								
 							</div>
 							<div class="col-md-6">
 								<h4 class="text-center">Datos del vehículo</h4>
@@ -77,13 +65,13 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km Recepción</label>
-											<input type="number" name="kilometraje" class="form-control kilometraje" >
+											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control kilometraje" >
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km próxima</label>
-											<input type="number" name="km_proxima" class="form-control kmproxi" readonly>
+											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control kmproxi" readonly>
 										</div>
 									</div>
 								</div>
@@ -148,7 +136,9 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-center">
-									<button type="submit" class="btn btn-success">Registrar</button>
+									
+									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
+									<button type="button" class="btn btn-success"><i class="fas fa-envelope"></i> Enviar</button>
 								</div>
 							</div>
 						</div>
@@ -184,7 +174,7 @@
                       <select name="" id="elselect_r" class="chosen-select">
                       	<option value="">Seleccione</option>
                       	@foreach($repuestos as $r)
-                      		<option data-codigo="{{$r->codigo}}" data-precio="{{$r->precio}}" value="{{$r->id}}">{{$r->nombre}}</option>
+                      		<option data-precio="{{$r->precio}}" data-codigo="{{$r->codigo}}" value="{{$r->id}}">{{$r->nombre}}</option>
                       	@endforeach
                       </select>
                     </div>
@@ -204,13 +194,13 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" id="n_precio_r" name="precio" class="form-control precio_r">
+              						<input type="number" id="n_precio_r" name="precio" class="form-control n_precio_r">
               					</div>
               				</div>
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Cantidad (*)</label>
-              						<input type="number" value="1" id="n_cantidad_r" class="form-control cantidad_r">
+              						<input type="number" value="1" id="n_cantidad_r" class="form-control n_cantidad_r">
               					</div>
               				</div>
               			</div>
@@ -218,7 +208,7 @@
               		<div class="col-md-4">
               			<div class="form-group">
       						<label for="" class="control-label">Subtotal (*)</label>
-      						<input type="number" readonly class="form-control subto_r">
+      						<input type="number" readonly class="form-control n_subto_r">
       					</div>
               		</div>
               	</div>
@@ -236,6 +226,7 @@
                       <label for="">Nombre del repuesto</label>
                       
                       <input type="text" name="nombre" class="form-control">
+                      <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -253,13 +244,13 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" name="precio" class="form-control n_precio_r">
+              						<input type="number" name="precio" class="form-control n_precio_rr">
               					</div>
               				</div>
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Cantidad (*)</label>
-              						<input type="number" name="cantidad" value="1" class="form-control n_cantidad_r">
+              						<input type="number" name="cantidad" value="1" class="form-control n_cantidad_rr">
               					</div>
               				</div>
               			</div>
@@ -267,7 +258,7 @@
               		<div class="col-md-4">
               			<div class="form-group">
       						<label for="" class="control-label">Subtotal (*)</label>
-      						<input type="number" readonly class="form-control n_subto_r">
+      						<input type="number" readonly class="form-control n_subto_rr">
       					</div>
               		</div>
               	</div>
@@ -321,7 +312,7 @@
 	                  <div class="col-md-4">
 	                    <div class="form-group">
 	                      <label for="">Código</label>
-	                      <input type="text" readonly readonly class="form-control codi">
+	                      <input type="text" readonly placeholder="" class="form-control codi">
 	                    </div>
 	                  </div>
 	                </div>
@@ -357,13 +348,14 @@
 	                  <div class="col-md-8">
 	                    <div class="form-group">
 	                      <label for="">Nombre de la mano de obra</label>
-	                      <input type="text" name="nombre" class="form-control nont">
+	                      <input type="text" name="nombre" class="form-control">
+	                      <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
 	                    </div>
 	                  </div>
 	                  <div class="col-md-4">
 	                    <div class="form-group">
 	                      <label for="">Código</label>
-	                      <input type="text" name="codigo" placeholder="" class="form-control codt">
+	                      <input type="text" name="codigo" placeholder="" class="form-control">
 	                    </div>
 	                  </div>
 	                </div>
@@ -403,64 +395,55 @@
   </div>
 </div>
 
-<div class="modal fade" id="modal_placa" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h5 class="modal-title " id="exampleModalLabel">Buscar por placa 
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-		<div class="form-group">
-			<input type="text" class="form-control txtplaca">
-		</div>      
-      </div>
-    </div>
-  </div>
-</div>
-
 @endsection
 @section('scripts')
-<script src="{{asset('js/cotizaciones.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/exportaciones_show.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
-	var v_id="";
-	var total=0.0;
+	var elid='<?php echo $cotizacion->id; ?>';
+	var v_id='<?php echo $cotizacion->vehiculo->id; ?>';
 	$(document).ready(function(e){
+		
+		obtenerguardados(elid);
+		info_carro(v_id);
 
-		obtenerprevias();
+		//cambiar el select de cliente
+		$("#cliente_id").trigger("change");
 	});
 
-	function obtenerprevias(){
-		var cotizacion_id=$("#cotizacion_id").val();
-		if(cotizacion_id>0){
-			$.ajax({
-			url:'../cotizaciones/previas/'+cotizacion_id,
+	function obtenerguardados(id){
+		$.ajax({
+			url:'../cotizaciones/guardadas/'+id,
 			type:'get',
 			dataType:'json',
 			success: function(json){
-					if(json[0]==1){
-						$("#tabita>tbody").empty();
-						$("#tabita>tbody").html(json[2]);
-						$("#tabita>tfoot").html(json[3]);
-						total=json[4];
-						$("#txttotal").val(json[4]);
-						$("#txtsubtotal").val(json[4]);
+				if(json[0]==1){
+					$("#tabita>tbody").empty();
+					$("#tabita>tbody").html(json[2]);
+					$("#tabita>tfoot").html(json[3]);
+				}
+			}
+		})
+	}
+
+	function info_carro(id){
+		console.log(id);
+		$.ajax({
+			url:'../vehiculos/info/'+id,
+			type:'get',
+			dataType:'json',
+			success: function(json){
+				if(json[0]==1){
+					$("#datos_carro").empty();
+					$("#datos_carro").html(json[2]);
+					if(json[3]>0){
+						$(".kilometraje").val(json[3])
+						var proxi=json[3]+5000;
+						$(".kmproxi").val(proxi);
 					}
 				}
-			});
-		}else{
-			$("#tabita>tbody").empty();
-			$(".trr").text("$0.00");
-			$(".thiva").text("$0.00");
-			$(".thivar").text("$0.00");
-			$(".thst").text("$0.00");
-			$(".thtotal").text("$0.00");
-		}
+			}
+		});
 	}
 </script>
 @endsection

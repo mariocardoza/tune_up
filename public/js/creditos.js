@@ -160,13 +160,18 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var datos=$("#form_repuesto").serialize();
 		var cotizacion_id=$("#cotizacion_id").val();
-		var vehiculo_id=$("#vehiculo_id").val();
+		var cliente_id=$('#cliente_id').val();
+		var vehiculo_id=$('#vehiculo_id').val();
+		var fecha=$(".fecha").val();
+		var kilometraje=$(".kilometraje").val();
+		var km_proxima=$(".kmproxi").val();
 		modal_cargando();
 		$.ajax({
 			url:'../repuestos',
 			type:'POST',
 			dataType:'json',
-			data:datos+'&cotizacion_id='+cotizacion_id+'&vehiculo_id='+vehiculo_id,
+			data:datos+'&cotizacion_id='+cotizacion_id+'&vehiculo_id='+vehiculo_id+'&cliente_id='+cliente_id+'&fecha='+
+			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=3&coniva=si',
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
@@ -207,13 +212,12 @@ $(document).ready(function(e){
 		var kilometraje=$(".kilometraje").val();
 		var km_proxima=$(".kmproxi").val();
 		var cotizacion_id=$("#cotizacion_id").val();
-		var vehiculo_id=$("#vehiculo_id");
 		modal_cargando();
 		$.ajax({
 			url:'../trabajos',
 			type:'POST',
 			dataType:'json',
-			data:{nombre,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'si',tipo_documento:3,cotizacion_id,vehiculo_id},
+			data:{nombre,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'si',tipo_documento:3,cotizacion_id},
 
 			success: function(json){
 				if(json[0]==1){
@@ -277,14 +281,21 @@ $(document).ready(function(e){
 	//submit para el formulario
 	$(document).on("submit","#form_coti",function(e){
 		e.preventDefault();
-		var html='<button class="btn btn-primary btn-lg siiva">Si</button>'+
+		/*var html='<button class="btn btn-primary btn-lg siiva">Si</button>'+
 		'&nbsp;<button class="btn btn-danger btn-lg noiva">No</button>'+
 		'&nbsp;<button class="btn btn-secondary btn-lg canceliva">Cancelar</button>';
 		swal.fire({
 		  title: '¿Imprimir con IVA?', 
 		  html: html,
 		  showConfirmButton: false
-		});	
+		});	*/
+		var cotizacion=$("#cotizacion_id").val();
+		if(cotizacion>0){
+			toastr.success("Cotizacion registrada con éxito");
+			location.href=cotizacion;
+		}else{
+			toastr.error("No se han agregado items a la factura");
+		}
 	});
 
 	function guardar()
@@ -460,7 +471,7 @@ $(document).ready(function(e){
 			url:'../repuestodetalles',
 			type:'POST',
 			dataType:'json',
-			data:{repuesto_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'si',tipo_documento:2,cotizacion_id},
+			data:{repuesto_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'si',tipo_documento:3,cotizacion_id},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Repuesto aplicado con éxito");

@@ -132,21 +132,34 @@ $marcas=\App\Marca::where('estado',1)->get();
                   <div class="tab-pane" id="historial">
                     <!-- The timeline -->
                     <div class="timeline timeline-inverse">
-                      <!-- timeline time label -->
+                    
+                      @foreach($cliente->cotizacion as $historial)
                       <div class="time-label">
-                        <span class="bg-danger">
-                          10 Feb. 2014
+                        <span class="bg-success">
+                          {{$historial->fecha->format("y/m/Y")}}
                         </span>
                       </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
+
                       <div>
                         <i class="fas fa-envelope bg-primary"></i>
 
                         <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 12:05</span>
+                          <span class="time"><i class="far fa-clock"></i>
+                            
+                            {{$historial->created_at->format("h:i:s A")}}</span>
+  
+                          <h3 class="timeline-header"><a href="#">
+                            @if($historial->tipo_documento==1) Cotización 
 
-                          <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+                            @elseif($historial->tipo_documento==2) Crédito fiscal
+
+                            @elseif($historial->tipo_documento==3) Consumidor final
+
+                            @else Exportación
+
+                            @endif
+
+                            N° {{$historial->correlativo}}</a></h3>
 
                           <div class="timeline-body">
                             Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
@@ -155,68 +168,21 @@ $marcas=\App\Marca::where('estado',1)->get();
                             quora plaxo ideeli hulu weebly balihoo...
                           </div>
                           <div class="timeline-footer">
-                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                            @if($historial->tipo_documento==1)  
+                            <a href="{{url('cotizaciones/'.$historial->id)}}" class="btn btn-primary btn-sm">Ver</a>
+                            @elseif($historial->tipo_documento==2)
+                            <a href="{{url('creditos/'.$historial->id)}}" class="btn btn-primary btn-sm">Ver</a>
+                            @elseif($historial->tipo_documento==3) 
+                            <a href="{{url('facturas/'.$historial->id)}}" class="btn btn-primary btn-sm">Ver</a>
+                            @else 
+                              <a href="{{url('exportaciones/'.$historial->id)}}" class="btn btn-primary btn-sm">Ver</a>
+                            @endif
                           </div>
                         </div>
                       </div>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-user bg-info"></i>
+                      @endforeach
 
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
-
-                          <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
-                          </h3>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-comments bg-warning"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
-
-                          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                          <div class="timeline-body">
-                            Take me to your leader!
-                            Switzerland is small and neutral!
-                            We are more like Germany, ambitious and misunderstood!
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- END timeline item -->
-                      <!-- timeline time label -->
-                      <div class="time-label">
-                        <span class="bg-success">
-                          3 Jan. 2014
-                        </span>
-                      </div>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <div>
-                        <i class="fas fa-camera bg-purple"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
-
-                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                          <div class="timeline-body">
-                            <img src="http://placehold.it/150x100" alt="...">
-                            <img src="http://placehold.it/150x100" alt="...">
-                            <img src="http://placehold.it/150x100" alt="...">
-                            <img src="http://placehold.it/150x100" alt="...">
-                          </div>
-                        </div>
-                      </div>
+                    
                       <!-- END timeline item -->
                       <div>
                         <i class="far fa-clock bg-gray"></i>
@@ -257,7 +223,7 @@ $marcas=\App\Marca::where('estado',1)->get();
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="">N° de placa (*)</label>
-                      <input type="text" name="placa" placeholder="Ingrese número de placa" autocomplete="off" class="form-control">
+                      <input type="text" name="placa" style="text-transform:uppercase;" placeholder="Ingrese número de placa" autocomplete="off" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-6">

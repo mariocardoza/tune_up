@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Porcentaje;
+use App\Taller;
 
 class AdministracionController extends Controller
 {
@@ -15,7 +16,8 @@ class AdministracionController extends Controller
     public function index()
     {
         $porcentajes=Porcentaje::where('estado',1)->get();
-        return view('administracion.create',compact('porcentajes'));
+        $taller=Taller::find(1);
+        return view('administracion.create',compact('porcentajes','taller'));
     }
 
     public function porcentaje(Request $request)
@@ -87,7 +89,14 @@ class AdministracionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $t=Taller::find($id);
+            $t->fill($request->all());
+            $t->save();
+            return array(1);
+        }catch(Exception $e){
+            return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**

@@ -422,7 +422,7 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
 		if(id>0){
-			location.href='../cotizaciones/'+id;
+			location.href='../creditos/'+id;
 		}
 	});
 
@@ -431,7 +431,7 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
 		if(id>0){
-			location.href='../cotizaciones/'+id;
+			location.href='../creditos/'+id;
 		}
 	});
 

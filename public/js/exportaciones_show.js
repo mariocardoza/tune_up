@@ -1,7 +1,4 @@
 $(document).ready(function(e){
-	var eliva=false;
-	var iva=0.0;
-	var totaltotal=0.0;
 	//evento change para obtener los clientes
 	$(document).on("change","#cliente_id",function(e){
 		e.preventDefault();
@@ -36,7 +33,7 @@ $(document).ready(function(e){
 		});
 	});
 
-		//eventro change para el trabajo
+	//eventro change para el trabajo
 	$(document).on("change","#elselect_t",function(e){
 		e.preventDefault();
 		var id=$(this).val();
@@ -51,34 +48,6 @@ $(document).ready(function(e){
 		
 	});
 
-	//evento change para el iva
-	$(document).on("change","#eliva",function(e){
-		e.preventDefault();
-		var sel=$(this).val();
-		if(sel=='si'){
-			eliva=true;
-			iva=iva+(total*0.13);
-			totaltotal=total+iva;
-			$(".thiva").text("$"+iva.toFixed(2));
-			$(".thtotal").text("$"+totaltotal.toFixed(2));
-			$("#txtiva").val(iva);
-			$("#txttotal").val(totaltotal);
-			$("#txtsubtotal").val(total);
-			console.log(total);
-		}else{
-			eliva=false;
-			iva=0;
-			totaltotal=total;
-			$(".thiva").text("$"+iva.toFixed(2));
-			$(".thtotal").text("$"+totaltotal.toFixed(2));
-			$("#txtiva").val(iva);
-			$("#txttotal").val(totaltotal);
-			$("#txtsubtotal").val(total);
-			console.log(iva);
-		}
-		
-	});
-
 	//eventro change para el repuesto
 	$(document).on("change","#elselect_r",function(e){
 		e.preventDefault();
@@ -89,7 +58,7 @@ $(document).ready(function(e){
 		$("#n_precio_r").val(precio);
 		$(".codir").val(codigo);
 
-		$(".precio_r").trigger("input");
+		$(".n_precio_r").trigger("input");
 		console.log(id);
 		
 	});
@@ -159,42 +128,24 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_repuesto",function(e){
 		e.preventDefault();
 		var datos=$("#form_repuesto").serialize();
-		var cotizacion_id=$("#cotizacion_id").val();
-		var cliente_id=$('#cliente_id').val();
-		var vehiculo_id=$('#vehiculo_id').val();
-		var fecha=$(".fecha").val();
-		var kilometraje=$(".kilometraje").val();
-		var km_proxima=$(".kmproxi").val();
-		modal_cargando();
 		$.ajax({
-			url:'../repuestos',
+			url:'../repuestos/guardar',
 			type:'POST',
 			dataType:'json',
-			data:datos+'&cotizacion_id='+cotizacion_id+'&vehiculo_id='+vehiculo_id+'&cliente_id='+cliente_id+'&fecha='+
-			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=2&coniva=no',
+			data:datos,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
 					$("#form_repuesto").trigger("reset");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
-					$("#cotizacion_id").val(json[2]);
-					obtenerprevias();
-					swal.closeModal();
 				}else{
-					if(json[0]==2){
-						toastr.info(json[1]);
-						swal.closeModal();
-					}else{
-						toastr.error("Ocurrió un error");
-						swal.closeModal();
-					}
+					toastr.error("Ocurrió un error");
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
-	      		swal.closeModal();
 			}
 		});
 	});
@@ -202,45 +153,26 @@ $(document).ready(function(e){
 	//submit de los trabajos o la mano de obra
 	$(document).on("submit","#form_trabajo",function(e){
 		e.preventDefault();
-		var nombre=$(".nont").val();
-		var codigo=$(".codt").val();
-		var precio=$(".n_precio_tr").val();
-		var cantidad=1;
-		var cliente_id=$('#cliente_id').val();
-		var vehiculo_id=$('#vehiculo_id').val();
-		var fecha=$(".fecha").val();
-		var kilometraje=$(".kilometraje").val();
-		var km_proxima=$(".kmproxi").val();
-		var cotizacion_id=$("#cotizacion_id").val();
-		modal_cargando();
+		var datos=$("#form_trabajo").serialize();
 		$.ajax({
-			url:'../trabajos',
+			url:'../trabajos/guardar',
 			type:'POST',
 			dataType:'json',
-			data:{nombre,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'no',tipo_documento:2,cotizacion_id},
-
+			data:datos,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
 					$("#form_trabajo").trigger("reset");
 					$( "#btn_volvertrabajos" ).trigger( "click" );
-					$("#cotizacion_id").val(json[2]);
-					obtenerprevias();
-					swal.closeModal();
+					obtenerguardados(elid);
 				}else{
-					swal.closeModal();
-					if(json[0]==2){
-						toastr.info(json[1]);
-					}else{
-						toastr.error("Ocurrió un error");
-					}
+					toastr.error("Ocurrió un error");
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
-	      		swal.closeModal();
 			}
 		});
 	});
@@ -250,30 +182,25 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var id=$("#id_trabajo_previa").val();
 		var datos=$("#form_trabajo_edit").serialize();
-		var cotizacion_id=$("#cotizacion_id").val();
-		modal_cargando();
 		$.ajax({
-			url:'../trabajodetalles/'+id,
+			url:'../trabajodetalles2/'+id,
 			type:'put',
 			dataType:'json',
-			data:datos+'&cotizacion_id='+cotizacion_id,
+			data:datos,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo editado con éxito");
 					$("#form_trabajo_edit").trigger("reset");
 					$("#modal_trabajo_edit").modal("hide");
-					obtenerprevias();
-					swal.closeModal();
+					obtenerguardados(elid);
 				}else{
 					toastr.error("Ocurrió un error");
-					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
-	      		swal.closeModal();
 			}
 		});
 	});
@@ -281,134 +208,19 @@ $(document).ready(function(e){
 	//submit para el formulario
 	$(document).on("submit","#form_coti",function(e){
 		e.preventDefault();
-		/*var html='<button class="btn btn-primary btn-lg siiva">Si</button>'+
-		'&nbsp;<button class="btn btn-danger btn-lg noiva">No</button>'+
-		'&nbsp;<button class="btn btn-secondary btn-lg canceliva">Cancelar</button>';
-		swal.fire({
-		  title: '¿Imprimir con IVA?', 
-		  html: html,
-		  showConfirmButton: false
-		});	*/
-		var cotizacion=$("#cotizacion_id").val();
-		if(cotizacion>0){
-			toastr.success("Cotizacion registrada con éxito");
-			location.href=cotizacion;
-		}else{
-			toastr.error("No se han agregado items a la factura");
-		}
-	});
 
-	function guardar()
-	{
-		
-	}
-
-	//guardar con iva
-	$(document).on("click",".siiva",function(e){
-		e.preventDefault();
-		var tipo_documento=$("#eltipocoti").val();
 		var datos=$("#form_coti").serialize();
 		$.ajax({
 			url:'../cotizaciones',
 			type:'post',
 			dataType:'json',
-			data:datos+'&eliva=si&tipo_documento='+tipo_documento,
+			data:datos,
 			success: function(json){
 				if(json[0]==1){
-					toastr.success("cotización registrada con éxito");
-					location.href='../cotizaciones/'+json[2];
-				}
-			}
-		});
-	});
-
-	//guardar sin iva
-	$(document).on("click",".noiva",function(e){
-		e.preventDefault();
-		var tipo_documento=$("#eltipocoti").val();
-		var datos=$("#form_coti").serialize();
-		$.ajax({
-			url:'../cotizaciones',
-			type:'post',
-			dataType:'json',
-			data:datos+'&eliva=no&tipo_documento='+tipo_documento,
-			success: function(json){
-				if(json[0]==1){
-					toastr.success("cotización registrada con éxito");
-					location.href='../cotizaciones/'+json[2];
 
 				}
 			}
 		});
-	});
-
-	//guardar un carro
-	$(document).on("click",".sicarro",function(e){
-		e.preventDefault();
-		location.href='../clientes';
-	});
-
-	//no guardar un carro
-	$(document).on("click",".nocarro",function(e){
-		e.preventDefault();
-		swal.closeModal();
-	});
-
-	//buscar por placa
-	$(document).on("click",".buscaplaca",function(e){
-		e.preventDefault();
-		$("#modal_placa").modal("show");
-		$(".txtplaca").focus();
-	});
-
-	//enter al campo placa
-	$(document).on("keypress",".txtplaca",function(e){
-		if(e.which == 13) {
-			modal_cargando();
-			var placa=$(this).val();
-          $.ajax({
-          	url:'../vehiculos/porplaca',
-          	type:'get',
-          	dataType:'json',
-          	data:{placa},
-          	success: function(json){
-          		console.log(json);
-          		if(json[1]==null || json[0].length == 0){
-          			swal.closeModal();
-          			var html='<h5>¿Desea guardar el vehículo ahora?</h5>'+
-          			'<button class="btn btn-primary btn-lg sicarro">Si</button>'+
-					'&nbsp;<button class="btn btn-danger btn-lg nocarro">No</button>';
-					swal.fire({
-					  title: 'Placa no encontrada', 
-					  html: html,
-					  showConfirmButton: false
-					});	
-          		}else{
-          			$("#cliente_id").val(json[2].id);
-          			$("#cliente_id").trigger("chosen:updated");
-          			$("#cliente_id").trigger( "change" );
-          			setTimeout(function(){ 
-          				$("#vehiculo_id").val(json[1].id);
-	          			$("#vehiculo_id").trigger("chosen:updated");
-	          			$("#vehiculo_id").trigger( "change" );
-	          			swal.closeModal();
-	          			$("#modal_placa").modal("hide");
-						$(".txtplaca").val("");
-          			 }, 5000);
-          			
-          		}
-          	},error: function(error){
-          		swal.closeModal();
-          	}
-          });
-        }
-		
-	});
-
-	//cancelar el iva
-	$(document).on("click",".canceliva",function(e){
-		e.preventDefault();
-		swal.closeModal();
 	});
 
 	//agregar un trabajo
@@ -416,41 +228,26 @@ $(document).ready(function(e){
 		var trabajo_id=$("#elselect_t").val();
 		var precio=$("#n_precio_t").val();
 		var cantidad=1;
-		var cliente_id=$('#cliente_id').val();
-		var vehiculo_id=$('#vehiculo_id').val();
-		var fecha=$(".fecha").val();
-		var kilometraje=$(".kilometraje").val();
-		var km_proxima=$(".kmproxi").val();
-		var cotizacion_id=$("#cotizacion_id").val();
-		
-		modal_cargando();
 		$.ajax({
-			url:'../trabajodetalles',
+			url:'../trabajodetalles/guardar',
 			type:'POST',
 			dataType:'json',
-			data:{trabajo_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'no',tipo_documento:2,cotizacion_id},
+			data:{trabajo_id,precio,cantidad,cotizacion_id:elid},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
 					$( "#btn_volvertrabajos" ).trigger( "click" );
-					$("#cotizacion_id").val(json[2]);
-					obtenerprevias();
-					swal.closeModal();
+					$("#elselect_t").trigger("chosen:updated");
+					$("#n_precio_t").val("");
+					$(".n_subto_t").val("");
+					obtenerguardados(elid);
 				}else{
-					
-					swal.closeModal();
-					if(json[0]==2){
-						toastr.info(json[1]);
-					}else{
-						toastr.error("Ocurrió un error");
-					}
+					toastr.error("Ocurrió un error");
 				}
-			},
-			error: function(error){
-				swal.closeModal();
-				$.each(error.responseJSON.errors, function(i,v){
-					toastr.error(v);
-				});
+			},error: function(error){
+				$.each(error.responseJSON.errors,function(index,value){
+	      			toastr.error(value);
+	      		});
 			}
 		})
 	});
@@ -460,39 +257,27 @@ $(document).ready(function(e){
 		var repuesto_id=$("#elselect_r").val();
 		var precio=$("#n_precio_r").val();
 		var cantidad=$("#n_cantidad_r").val();
-		var cliente_id=$('#cliente_id').val();
-		var vehiculo_id=$('#vehiculo_id').val();
-		var fecha=$(".fecha").val();
-		var kilometraje=$(".kilometraje").val();
-		var km_proxima=$(".kmproxi").val();
-		var cotizacion_id=$("#cotizacion_id").val();
-		modal_cargando();
 		$.ajax({
-			url:'../repuestodetalles',
+			url:'../repuestodetalles/guardar',
 			type:'POST',
 			dataType:'json',
-			data:{repuesto_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva:'no',tipo_documento:2,cotizacion_id},
+			data:{repuesto_id,precio,cantidad,cotizacion_id:elid},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Repuesto aplicado con éxito");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
-					$("#cotizacion_id").val(json[2]);
-					obtenerprevias();
-					swal.closeModal();
+					obtenerguardados(elid);
+					$("#elselect_r").trigger("chosen:updated");
+					$("#n_precio_r").val("");
+					$("#n_precio_r").val("");
+					$(".n_subto_r").val("");
 				}else{
-					swal.closeModal();
-					if(json[0]==2){
-						toastr.info(json[1]);
-					}else{
-						toastr.error("Ocurrió un error");
-					}
+					toastr.error("Ocurrió un error");
 				}
-			},
-			error: function(error){
-				swal.closeModal();
-				$.each(error.responseJSON.errors, function(i,v){
-					toastr.error(v);
-				});
+			},error: function(error){
+				$.each(error.responseJSON.errors,function(index,value){
+	      			toastr.error(value);
+	      		});
 			}
 		});
 	});
@@ -501,31 +286,26 @@ $(document).ready(function(e){
 	$(document).on("click","#edit_repuesto_previa",function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
-		var cotizacion_id=$("#cotizacion_id").val();
 		var datos=$("#form_repuesto_edit").serialize();
-		modal_cargando();
 		$.ajax({
-			url:'../repuestodetalles/'+id,
+			url:'../repuestodetalles2/'+id,
 			type:'put',
 			dataType:'json',
-			data:datos+'&cotizacion_id='+cotizacion_id,
+			data:datos,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Repuesto editado con éxito");
 					$("#form_repuesto_edit").trigger("reset");
 					$("#modal_repuesto_edit").modal("hide");
-					obtenerprevias();
-					swal.closeModal();
+					obtenerguardados(elid);
 				}else{
 					toastr.error("Ocurrió un error");
-					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
-	      		swal.closeModal();
 			}
 		});
 	});
@@ -535,7 +315,7 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
 		$.ajax({
-			url:'../trabajodetalles/'+id+'/edit',
+			url:'../trabajodetalles/'+id+'/edit2',
 			type:'get',
 			dataType:'json',
 			success: function(json){
@@ -553,7 +333,7 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
 		$.ajax({
-			url:'../repuestodetalles/'+id+'/edit',
+			url:'../repuestodetalles/'+id+'/edit2',
 			type:'get',
 			dataType:'json',
 			success: function(json){
@@ -566,12 +346,10 @@ $(document).ready(function(e){
 		});
 	});
 
-
 	//eliminar un repuesto
 	$(document).on("click","#eliminar_repuesto",function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
-		var cotizacion_id=$("#cotizacion_id").val();
 		swal.fire({
 		  title: '¿Eliminar?',
 		  text: "¿Está seguro de eliminar el repuesto de la cotización?",
@@ -582,18 +360,17 @@ $(document).ready(function(e){
 		  confirmButtonText: 'Si'
 		}).then((result) => {
 		  if (result.value) {
-		  	modal_cargando();
+		    modal_cargando();
 		    $.ajax({
-		    	url:'../repuestodetalles/'+id,
+		    	url:'../repuestodetalles/destroy2/'+id,
 		    	type:'DELETE',
 		    	dataType:'json',
-		    	data:{cotizacion_id},
+		    	data:{'cotizacion_id':elid},
 		    	success: function(json){
 		    		if(json[0]==1){
 		    			toastr.success("Repuesto eliminado con éxito");
 		    			swal.closeModal();
-		    			$("#cotizacion_id").val(json[2]);
-		    			obtenerprevias();
+		    			location.reload();
 		    		}else{
 		    			toastr.error("Ocurrió un error");
 		    			swal.closeModal();
@@ -609,7 +386,6 @@ $(document).ready(function(e){
 	$(document).on("click","#eliminar_trabajo",function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
-		var cotizacion_id=$("#cotizacion_id").val();
 		swal.fire({
 		  title: '¿Eliminar?',
 		  text: "¿Está seguro de eliminar el trabajo de la cotización?",
@@ -622,16 +398,15 @@ $(document).ready(function(e){
 		  if (result.value) {
 		    modal_cargando();
 		    $.ajax({
-		    	url:'../trabajodetalles/'+id,
+		    	url:'../trabajodetalles/destroy2/'+id,
 		    	type:'DELETE',
 		    	dataType:'json',
-		    	data:{cotizacion_id},
+		    	data:{'cotizacion_id':elid},
 		    	success: function(json){
 		    		if(json[0]==1){
-		    			toastr.success("trabajo eliminado con éxito");
+		    			toastr.success("Trabajo eliminado con éxito");
 		    			swal.closeModal();
-		    			$("#cotizacion_id").val(json[2]);
-		    			obtenerprevias();
+		    			location.reload();
 		    		}else{
 		    			toastr.error("Ocurrió un error");
 		    			swal.closeModal();
@@ -640,9 +415,25 @@ $(document).ready(function(e){
 		    });
 		  }
 		});
-		
 	});
 
+	//anterior
+	$(document).on("click","#anterior",function(e){
+		e.preventDefault();
+		var id=$(this).attr("data-id");
+		if(id>0){
+			location.href='../exportaciones/'+id;
+		}
+	});
+
+	//siguiente
+	$(document).on("click","#siguiente",function(e){
+		e.preventDefault();
+		var id=$(this).attr("data-id");
+		if(id>0){
+			location.href='../exportaciones/'+id;
+		}
+	});
 
 
 	//actualizar el campo subtotal para repuestos
@@ -654,18 +445,33 @@ $(document).ready(function(e){
 		$(".n_subto_r").val(subto);
 	});
 
+	$(document).on("input",".n_precio_rr,.n_cantidad_rr",function(e){
+		e.preventDefault();
+		var precio=parseFloat($(".n_precio_rr").val());
+		var cantidad=parseInt($(".n_cantidad_rr").val());
+		var subto=precio*cantidad;
+		$(".n_subto_rr").val(subto);
+	});
+
 	$(document).on("input",".n_precio_t",function(e){
 		e.preventDefault();
 		var precio=parseFloat($(".n_precio_t").val());
-		var subto=precio*1;
+		var subto=precio;
 		$(".n_subto_t").val(subto);
 	});
 
 	$(document).on("input",".n_precio_tr",function(e){
 		e.preventDefault();
 		var precio=parseFloat($(".n_precio_tr").val());
-		var subto=precio*1;
+		var subto=precio;
 		$(".n_subto_tr").val(subto);
+	});
+
+	$(document).on("input",".e_precio_t",function(e){
+		e.preventDefault();
+		var precio=parseFloat($(".e_precio_t").val());
+		var subto=precio;
+		$(".e_subto_t").val(subto);
 	});
 
 	$(document).on("input",".e_precio_r,.e_cantidad_r",function(e){
@@ -692,20 +498,6 @@ $(document).ready(function(e){
 		$(".kmproxi").val(proximo);
 	});
 });
-
-function obtenerprevias(){
-	$.ajax({
-		url:'../cotizaciones/previas',
-		type:'get',
-		dataType:'json',
-		success: function(json){
-			if(json[0]==1){
-				$("#tabita>tbody").empty();
-				$("#tabita>tbody").html(json[2]);
-			}
-		}
-	});
-}
 
 function obtenervehiculos(id,actual=""){
 	$.ajax({

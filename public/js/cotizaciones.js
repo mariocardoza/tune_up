@@ -159,25 +159,43 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_repuesto",function(e){
 		e.preventDefault();
 		var datos=$("#form_repuesto").serialize();
+		var cotizacion_id=$("#cotizacion_id").val();
+		var cliente_id=$('#cliente_id').val();
+		var vehiculo_id=$('#vehiculo_id').val();
+		var fecha=$(".fecha").val();
+		var kilometraje=$(".kilometraje").val();
+		var km_proxima=$(".kmproxi").val();
+		var coniva=$("#eliva").val();
+		modal_cargando();
 		$.ajax({
 			url:'../repuestos',
 			type:'POST',
 			dataType:'json',
-			data:datos,
+			data:datos+'&cotizacion_id='+cotizacion_id+'&vehiculo_id='+vehiculo_id+'&cliente_id='+cliente_id+'&fecha='+
+			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=1&coniva='+coniva,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
 					$("#form_repuesto").trigger("reset");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
+					$("#cotizacion_id").val(json[2]);
 					obtenerprevias();
+					swal.closeModal();
 				}else{
-					toastr.error("Ocurrió un error");
+					if(json[0]==2){
+						toastr.info(json[1]);
+						swal.closeModal();
+					}else{
+						toastr.error("Ocurrió un error");
+						swal.closeModal();
+					}
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -185,26 +203,46 @@ $(document).ready(function(e){
 	//submit de los trabajos o la mano de obra
 	$(document).on("submit","#form_trabajo",function(e){
 		e.preventDefault();
-		var datos=$("#form_trabajo").serialize();
+		var nombre=$(".nont").val();
+		var codigo=$(".codt").val();
+		var precio=$(".n_precio_tr").val();
+		var cantidad=1;
+		var cliente_id=$('#cliente_id').val();
+		var vehiculo_id=$('#vehiculo_id').val();
+		var fecha=$(".fecha").val();
+		var kilometraje=$(".kilometraje").val();
+		var km_proxima=$(".kmproxi").val();
+		var cotizacion_id=$("#cotizacion_id").val();
+		var coniva=$("#eliva").val();
+		modal_cargando();
 		$.ajax({
 			url:'../trabajos',
 			type:'POST',
 			dataType:'json',
-			data:datos,
+			data:{nombre,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
+
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
 					$("#form_trabajo").trigger("reset");
 					$( "#btn_volvertrabajos" ).trigger( "click" );
+					$("#cotizacion_id").val(json[2]);
 					obtenerprevias();
+					swal.closeModal();
 				}else{
-					toastr.error("Ocurrió un error");
+					swal.closeModal();
+					if(json[0]==2){
+						toastr.info(json[1]);
+					}else{
+						toastr.error("Ocurrió un error");
+					}
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -214,12 +252,13 @@ $(document).ready(function(e){
 		e.preventDefault();
 		var id=$("#id_trabajo_previa").val();
 		var datos=$("#form_trabajo_edit").serialize();
+		var cotizacion_id=$("#cotizacion_id").val();
 		modal_cargando();
 		$.ajax({
 			url:'../trabajodetalles/'+id,
 			type:'put',
 			dataType:'json',
-			data:datos,
+			data:datos+'&cotizacion_id='+cotizacion_id,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo editado con éxito");
@@ -244,14 +283,21 @@ $(document).ready(function(e){
 	//submit para el formulario
 	$(document).on("submit","#form_coti",function(e){
 		e.preventDefault();
-		var html='<button class="btn btn-primary btn-lg siiva">Si</button>'+
+		/*var html='<button class="btn btn-primary btn-lg siiva">Si</button>'+
 		'&nbsp;<button class="btn btn-danger btn-lg noiva">No</button>'+
 		'&nbsp;<button class="btn btn-secondary btn-lg canceliva">Cancelar</button>';
 		swal.fire({
 		  title: '¿Imprimir con IVA?', 
 		  html: html,
 		  showConfirmButton: false
-		});	
+		});	*/
+		var cotizacion=$("#cotizacion_id").val();
+		if(cotizacion>0){
+			toastr.success("Cotizacion registrada con éxito");
+			location.href=cotizacion;
+		}else{
+			toastr.error("No se han agregado items a la cotización");
+		}
 	});
 
 	function guardar()
@@ -292,6 +338,7 @@ $(document).ready(function(e){
 				if(json[0]==1){
 					toastr.success("cotización registrada con éxito");
 					location.href='../cotizaciones/'+json[2];
+
 				}
 			}
 		});
@@ -371,21 +418,34 @@ $(document).ready(function(e){
 		var trabajo_id=$("#elselect_t").val();
 		var precio=$("#n_precio_t").val();
 		var cantidad=1;
+		var cliente_id=$('#cliente_id').val();
+		var vehiculo_id=$('#vehiculo_id').val();
+		var fecha=$(".fecha").val();
+		var kilometraje=$(".kilometraje").val();
+		var km_proxima=$(".kmproxi").val();
+		var cotizacion_id=$("#cotizacion_id").val();
+		var coniva=$("#eliva").val();
 		modal_cargando();
 		$.ajax({
 			url:'../trabajodetalles',
 			type:'POST',
 			dataType:'json',
-			data:{trabajo_id,precio,cantidad},
+			data:{trabajo_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
 					$( "#btn_volvertrabajos" ).trigger( "click" );
+					$("#cotizacion_id").val(json[2]);
 					obtenerprevias();
 					swal.closeModal();
 				}else{
-					toastr.error("Ocurrió un error");
+					
 					swal.closeModal();
+					if(json[0]==2){
+						toastr.info(json[1]);
+					}else{
+						toastr.error("Ocurrió un error");
+					}
 				}
 			},
 			error: function(error){
@@ -402,21 +462,33 @@ $(document).ready(function(e){
 		var repuesto_id=$("#elselect_r").val();
 		var precio=$("#n_precio_r").val();
 		var cantidad=$("#n_cantidad_r").val();
+		var cliente_id=$('#cliente_id').val();
+		var vehiculo_id=$('#vehiculo_id').val();
+		var fecha=$(".fecha").val();
+		var kilometraje=$(".kilometraje").val();
+		var km_proxima=$(".kmproxi").val();
+		var cotizacion_id=$("#cotizacion_id").val();
+		var coniva=$("#eliva").val();
 		modal_cargando();
 		$.ajax({
 			url:'../repuestodetalles',
 			type:'POST',
 			dataType:'json',
-			data:{repuesto_id,precio,cantidad},
+			data:{repuesto_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Repuesto aplicado con éxito");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
+					$("#cotizacion_id").val(json[2]);
 					obtenerprevias();
 					swal.closeModal();
 				}else{
-					toastr.error("Ocurrió un error");
-					toastr.closeModal();
+					swal.closeModal();
+					if(json[0]==2){
+						toastr.info(json[1]);
+					}else{
+						toastr.error("Ocurrió un error");
+					}
 				}
 			},
 			error: function(error){
@@ -432,13 +504,14 @@ $(document).ready(function(e){
 	$(document).on("click","#edit_repuesto_previa",function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
+		var cotizacion_id=$("#cotizacion_id").val();
 		var datos=$("#form_repuesto_edit").serialize();
 		modal_cargando();
 		$.ajax({
 			url:'../repuestodetalles/'+id,
 			type:'put',
 			dataType:'json',
-			data:datos,
+			data:datos+'&cotizacion_id='+cotizacion_id,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Repuesto editado con éxito");
@@ -501,6 +574,7 @@ $(document).ready(function(e){
 	$(document).on("click","#eliminar_repuesto",function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
+		var cotizacion_id=$("#cotizacion_id").val();
 		swal.fire({
 		  title: '¿Eliminar?',
 		  text: "¿Está seguro de eliminar el repuesto de la cotización?",
@@ -516,11 +590,13 @@ $(document).ready(function(e){
 		    	url:'../repuestodetalles/'+id,
 		    	type:'DELETE',
 		    	dataType:'json',
+		    	data:{cotizacion_id},
 		    	success: function(json){
 		    		if(json[0]==1){
 		    			toastr.success("Repuesto eliminado con éxito");
 		    			swal.closeModal();
-		    			location.reload();
+		    			$("#cotizacion_id").val(json[2]);
+		    			obtenerprevias();
 		    		}else{
 		    			toastr.error("Ocurrió un error");
 		    			swal.closeModal();
@@ -536,6 +612,7 @@ $(document).ready(function(e){
 	$(document).on("click","#eliminar_trabajo",function(e){
 		e.preventDefault();
 		var id=$(this).attr("data-id");
+		var cotizacion_id=$("#cotizacion_id").val();
 		swal.fire({
 		  title: '¿Eliminar?',
 		  text: "¿Está seguro de eliminar el trabajo de la cotización?",
@@ -551,11 +628,13 @@ $(document).ready(function(e){
 		    	url:'../trabajodetalles/'+id,
 		    	type:'DELETE',
 		    	dataType:'json',
+		    	data:{cotizacion_id},
 		    	success: function(json){
 		    		if(json[0]==1){
 		    			toastr.success("trabajo eliminado con éxito");
 		    			swal.closeModal();
-		    			location.reload();
+		    			$("#cotizacion_id").val(json[2]);
+		    			obtenerprevias();
 		    		}else{
 		    			toastr.error("Ocurrió un error");
 		    			swal.closeModal();

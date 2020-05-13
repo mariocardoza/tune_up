@@ -137,7 +137,7 @@
 							<div class="col-md-12">
 								<div class="text-center">
 									
-									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
+									<a href="{{url('facturas/reporte/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
 									<button type="button" class="btn btn-success"><i class="fas fa-envelope"></i> Enviar</button>
 								</div>
 							</div>

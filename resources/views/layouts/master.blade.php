@@ -16,6 +16,11 @@
   <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker3.min.css')}}">
+  <style>
+    .form-control{
+      text-transform:uppercase;
+    }
+  </style>
 </head>
 @php 
   $uc=$uf=$ucf=$ue=0;
@@ -256,7 +261,54 @@
             </a>
             
           </li>
+
+           <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Informes
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link reportevehiculo">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Por vehículo</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="javascript:void(0)" class="nav-link ivapagar">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Reporte de IVA a pagar</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           
+           <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Utilitarios
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{url('trabajos')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Mano de obra</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{url('repuestos')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Repuestos</p>
+                </a>
+              </li>
+            </ul>
+          </li>
          
         </ul>
 
@@ -286,6 +338,64 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+
+<!-- modales aqui -->
+<div class="modal fade" id="modal_reporte_carro" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Reporte de trabajos por vehiculos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_buscaplaca">
+          <div class="form-group">
+            <label for="" class="control-label">Digite el número de placa</label>
+            <input type="text" class="form-control" id="laplaquita" autocomplete="off" placeholder="Digite la placa">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none"><button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-success">Buscar</button></div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_reporte_iva" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Reporte de IVA</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_buscaiva">
+          <div class="form-group">
+            <label for="" class="control-label">Digite la fecha de inicio</label>
+            <input type="text" class="form-control fecha" id="fecha1" autocomplete="off" placeholder="Digite la fecha 1">
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label">Digite la fecha fin</label>
+            <input type="text" class="form-control fecha" id="fecha2" autocomplete="off" placeholder="Digite la fecha 2">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none"><button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-success">Buscar</button></div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- fin modales -->
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">

@@ -8,7 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Cliente' => $baseDir . '/app/Cliente.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
-    'App\\CotizacionPrevia' => $baseDir . '/app/CotizacionPrevia.php',
     'App\\Cotizacione' => $baseDir . '/app/Cotizacione.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AdministracionController' => $baseDir . '/app/Http/Controllers/AdministracionController.php',
@@ -52,6 +51,7 @@ return array(
     'App\\Repuesto' => $baseDir . '/app/Repuesto.php',
     'App\\RepuestoDetalle' => $baseDir . '/app/RepuestoDetalle.php',
     'App\\RepuestoPrevia' => $baseDir . '/app/RepuestoPrevia.php',
+    'App\\Taller' => $baseDir . '/app/Taller.php',
     'App\\Trabajo' => $baseDir . '/app/Trabajo.php',
     'App\\TrabajoDetalle' => $baseDir . '/app/TrabajoDetalle.php',
     'App\\TrabajoPrevia' => $baseDir . '/app/TrabajoPrevia.php',
@@ -4155,6 +4155,7 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\Mbstring' => $vendorDir . '/symfony/polyfill-mbstring/Mbstring.php',
     'Symfony\\Polyfill\\Php72\\Php72' => $vendorDir . '/symfony/polyfill-php72/Php72.php',
     'Symfony\\Polyfill\\Php73\\Php73' => $vendorDir . '/symfony/polyfill-php73/Php73.php',
+    'TallerSeeder' => $baseDir . '/database/seeds/TallerSeeder.php',
     'Tests\\CreatesApplication' => $baseDir . '/tests/CreatesApplication.php',
     'Tests\\Feature\\ExampleTest' => $baseDir . '/tests/Feature/ExampleTest.php',
     'Tests\\TestCase' => $baseDir . '/tests/TestCase.php',

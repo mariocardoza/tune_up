@@ -34,6 +34,7 @@ Route::Resource('administracion','AdministracionController');
 
 Route::get('clientes/obtenermodelos/{id}','ClienteController@obtenerModelos');
 Route::Resource('clientes','ClienteController');
+Route::get('ivaporventas','CotizacionController@ivaventas');
 Route::get('cotizaciones/vehiculos/{id}','CotizacionController@obtenervehiculos');
 Route::get('cotizaciones/previas/{id}','CotizacionController@obtenerprevia');
 Route::get('cotizaciones/guardadas/{id}','CotizacionController@obtenerguardadas');
@@ -41,17 +42,24 @@ Route::get('cotizaciones/pdfcotizacion/{id}','CotizacionController@pdf');
 
 Route::Resource('cotizaciones','CotizacionController');
 Route::Resource('exportaciones','ExportacionController');
+Route::get('facturas/reporte/{id}','FacturaController@reporte');
 Route::Resource('facturas','FacturaController');
 Route::Resource('creditos','CreditoController');
+
 
 Route::Resource('marcas','MarcaController');
 Route::Resource('modelos','ModeloController');
 Route::get('vehiculos/info/{id}','VehiculoController@info');
 Route::get('vehiculos/porplaca','VehiculoController@placa');
+
+Route::get('vehiculos/historial/{placa}','VehiculoController@historial');
+
 Route::Resource('vehiculos','VehiculoController');
 Route::post('repuestos/guardar','RepuestoController@guardar');
+Route::post('repuestos/guardar2','RepuestoController@guardar2');
 Route::Resource('repuestos','RepuestoController');
 Route::post('trabajos/guardar','TrabajoController@guardar');
+Route::post('trabajos/guardar2','TrabajoController@guardar2');
 Route::Resource('trabajos','TrabajoController');
 Route::get('trabajodetalles/{id}/edit2','TrabajodetallesController@edit2');
 Route::post('trabajodetalles/guardar','TrabajodetallesController@guardar');

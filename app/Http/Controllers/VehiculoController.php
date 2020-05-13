@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Vehiculo;
+use PDF;
 
 class VehiculoController extends Controller
 {
@@ -33,6 +34,16 @@ class VehiculoController extends Controller
             $cliente=$v->cliente;
         }
         return array(1,$v,$cliente);
+    }
+
+    public function historial($placa)
+    {
+        $carro=Vehiculo::find($placa);
+        
+        //dd($cotizacion->repuestodetalle);
+        $pdf = \PDF::loadView('vehiculos.historial',compact('carro'));
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('historial.pdf');
     }
 
     public function index()
