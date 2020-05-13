@@ -70,7 +70,7 @@ return [
             'port' => $DATABASE_URL['port'],
             'database' => ltrim($DATABASE_URL['path'],'/'),
             'username' => $DATABASE_URL['user'],
-            'password' => $DATABASE_URL['past'],
+            'password' => $DATABASE_URL['pass'],
             'client_encoding'=> 'utf8mb4',
             'charset' => 'utf8',
             'prefix' => '',
