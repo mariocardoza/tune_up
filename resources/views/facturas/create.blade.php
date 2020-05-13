@@ -425,7 +425,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/facturas.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{secure_asset('js/facturas.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
 	var v_id="";

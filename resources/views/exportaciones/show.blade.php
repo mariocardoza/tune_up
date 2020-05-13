@@ -397,7 +397,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/exportaciones_show.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{secure_asset('js/exportaciones_show.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
 	var elid='<?php echo $cotizacion->id; ?>';

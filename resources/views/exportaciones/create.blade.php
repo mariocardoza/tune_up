@@ -426,7 +426,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/exportaciones.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{secure_asset('js/exportaciones.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
 	var v_id="";

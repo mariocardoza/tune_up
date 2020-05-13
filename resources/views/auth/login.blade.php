@@ -42,7 +42,7 @@
          
 
           <p class="mb-1">
-            <a href="forgot-password.html">¿Olvidó su contraseña?</a>
+            <a href="javascript:void(0)">¿Olvidó su contraseña?</a>
           </p>
           
         </div>

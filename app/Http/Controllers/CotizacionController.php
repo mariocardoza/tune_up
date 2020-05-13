@@ -131,20 +131,27 @@ class CotizacionController extends Controller
      */
     public function show($id)
     {
-        $siguiente=$anterior=0;
-        $cotizacion=Cotizacione::findorFail($id);
-        $s= Cotizacione::where('id','>', intval($id))->where('tipo_documento',1)->orderBy('id', 'asc')->first();
-        $a= Cotizacione::where('id','<', intval($id))->where('tipo_documento',1)->orderBy('id', 'desc')->first();
-        $clientes=Cliente::where('estado',1)->get();
-        
-        if($s != null){
-            $siguiente=$s->id;
+        if($id!=0)
+        {
+          $siguiente=$anterior=0;
+            $cotizacion=Cotizacione::findorFail($id);
+            $s= Cotizacione::where('id','>', intval($id))->where('tipo_documento',1)->orderBy('id', 'asc')->first();
+            $a= Cotizacione::where('id','<', intval($id))->where('tipo_documento',1)->orderBy('id', 'desc')->first();
+            $clientes=Cliente::where('estado',1)->get();
+            
+            if($s != null){
+                $siguiente=$s->id;
+            }
+            if($a != null){
+                $anterior=$a->id;
+            }
+            
+            return view('cotizaciones.show',compact('cotizacion','clientes','siguiente','anterior'));  
+        }else{
+            $clientes=Cliente::where('estado',1)->get();
+            return redirect('cotizaciones/create')->with('clientes');
         }
-        if($a != null){
-            $anterior=$a->id;
-        }
         
-        return view('cotizaciones.show',compact('cotizacion','clientes','siguiente','anterior'));
     }
 
     /**

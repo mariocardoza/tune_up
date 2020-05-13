@@ -146,7 +146,7 @@
             
           </li>
           <li class="nav-item has-treeview">
-            <a href="{{url('clientes')}}" class="nav-link {{ Route::currentRouteName() == 'clientes.index' ? 'active':null}}">
+            <a href="{{url('clientes')}}" class="nav-link {{ (Route::currentRouteName() == 'clientes.index' ? 'active':null )}}">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Clientes
