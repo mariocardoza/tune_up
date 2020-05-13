@@ -13,7 +13,7 @@ class PorcentajeSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            'porcentajes',
+            //'porcentajes',
         ]);
 
 	    $por= new Porcentaje();

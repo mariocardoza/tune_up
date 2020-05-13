@@ -4,7 +4,7 @@
 <div class="row justify-content-center">
     <div class="login-box ">
       <div class="login-logo">
-        <a href="../../index2.html"><b>TuneUp</a>
+        <a href="{{url('home')}}"><b>TuneUp</a>
       </div>
   <!-- /.login-logo -->
       <div class="card">
