@@ -8,14 +8,14 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
-  <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
-  <link rel="stylesheet" href="{{asset('css/app.css?cod='.date('Yidisus'))}}">
-  <link rel="stylesheet" href="{{asset('css/ionicons.min.css')}}">
-  <link rel="stylesheet" href="{{asset('css/font.css')}}">
-  <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
+  <link rel="stylesheet" href="{{secure_asset('css/all.min.css')}}">
+  <link rel="stylesheet" href="{{secure_asset('css/datatables.min.css')}}">
+  <link rel="stylesheet" href="{{secure_asset('css/app.css?cod='.date('Yidisus'))}}">
+  <link rel="stylesheet" href="{{secure_asset('css/ionicons.min.css')}}">
+  <link rel="stylesheet" href="{{secure_asset('css/font.css')}}">
+  <link rel="stylesheet" href="{{secure_asset('css/toastr.min.css')}}">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker3.min.css')}}">
+  <link rel="stylesheet" href="{{ secure_asset('css/bootstrap-datepicker3.min.css')}}">
   <style>
     .form-control{
       text-transform:uppercase;
@@ -412,13 +412,13 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('js/app.js?cod='.date('Yidisus'))}}"></script>
-<script src="{{asset('js/datatables.min.js?cod='.date('Yidisus'))}}"></script>
-<script src="{{asset('js/toastr.min.js')}}"></script>
-<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
+<script src="{{secure_asset('js/app.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{secure_asset('js/datatables.min.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{secure_asset('js/toastr.min.js')}}"></script>
+<script src="{{secure_asset('js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{secure_asset('js/bootstrap-datepicker.es.min.js')}}"></script>
 
-<script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{secure_asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
 <!-- Bootstrap 4 -->
 @yield('scripts')
 </body>
