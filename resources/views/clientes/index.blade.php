@@ -32,7 +32,7 @@
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-            <div class="card-body">
+            <div class="card-body table-responsive">
               <table class="table table-striped table-bordered" id="tablaclientes">
               	<thead>
               		<tr>

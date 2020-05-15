@@ -96,7 +96,7 @@ $marcas=\App\Marca::where('estado',1)->get();
                   <div class="active tab-pane" id="tabvehiculos">
                     <!-- Post -->
                     <button class="btn btn-primary float-right" type="button" id="nuevo_vehiculo">Nuevo</button><br>
-                    <div class="post">
+                    <div class="table-responsive">
                       <table class="table tabla-bordered" id="tablavehiculos">
                       	<thead>
                       		<tr>
