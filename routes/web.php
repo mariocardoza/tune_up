@@ -17,14 +17,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('email',function(){
-	$cotizacion= \App\Cotizacione::find(5);
-	Mail::send('emails.email', compact('cotizacion'),function (Message $message){
-		$message->to('mario.cardoza.huezo@gmail.com','Mario')
-		->from('mariokr.rocker@gmail.com','Rene')
-		->subject('prueba');
-	});
-});
+Route::get('cotizaciones/email/{id}','CotizacionController@email');
+Route::get('cotizaciones/enviar/{id}','CotizacionController@enviar');
 
 Auth::routes();
 

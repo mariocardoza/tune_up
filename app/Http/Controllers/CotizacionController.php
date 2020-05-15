@@ -13,6 +13,8 @@ use App\TrabajoDetalle;
 use App\Taller;
 use DB;
 use PDF;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 
 class CotizacionController extends Controller
 {
@@ -133,8 +135,10 @@ class CotizacionController extends Controller
     {
         if($id!=0)
         {
-          $siguiente=$anterior=0;
+          $siguiente=$anterior=$primera=$ultima=0;
             $cotizacion=Cotizacione::findorFail($id);
+            $p=Cotizacione::where('tipo_documento',1)->orderby('id','asc')->first();
+            $u=Cotizacione::where('tipo_documento',1)->orderBy('id','desc')->first();
             $s= Cotizacione::where('id','>', intval($id))->where('tipo_documento',1)->orderBy('id', 'asc')->first();
             $a= Cotizacione::where('id','<', intval($id))->where('tipo_documento',1)->orderBy('id', 'desc')->first();
             $clientes=Cliente::where('estado',1)->get();
@@ -145,8 +149,15 @@ class CotizacionController extends Controller
             if($a != null){
                 $anterior=$a->id;
             }
+            if($p !=null){
+              $primera=$p->id;
+            }
+              if($u !=null){
+              $ultima=$u->id;
+            }
+
             
-            return view('cotizaciones.show',compact('cotizacion','clientes','siguiente','anterior'));  
+            return view('cotizaciones.show',compact('cotizacion','clientes','siguiente','anterior','primera','ultima'));  
         }else{
             $clientes=Cliente::where('estado',1)->get();
             return redirect('cotizaciones/create')->with('clientes');
@@ -210,5 +221,35 @@ class CotizacionController extends Controller
         $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller'));
         $pdf->setPaper('letter', 'portrait');
         return $pdf->stream('cotizacion.pdf');
+    }
+
+    public function email($id)
+    {
+      $cotizacion= \App\Cotizacione::find($id);
+        try{
+          $cotizacion=Cotizacione::find($id);
+        $taller=Taller::find(1);
+        //dd($cotizacion->repuestodetalle);
+        $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller'));
+        $pdf->setPaper('letter', 'portrait');
+        $nom=date("d_m_Y_H:i:s").'_cotizacion.pdf';
+        return $pdf->download($nom);
+
+
+         
+        }catch(Exception $e){
+
+        }
+    }
+
+    public function enviar($id)
+    {
+      $cotizacion=Cotizacione::find($id);
+      Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message){
+      $message->to('mario.cardoza.huezo@gmail.com','Mario')
+      ->from('mariokr.rocker@gmail.com','Rene')
+    ->subject('prueba');
+    });
+      
     }
 }

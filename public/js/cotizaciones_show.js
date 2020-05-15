@@ -435,6 +435,25 @@ $(document).ready(function(e){
 		}
 	});
 
+	//ultima
+	$(document).on("click","#ultima",function(e){
+		e.preventDefault();
+		var id=$(this).attr("data-id");
+		if(id>0){
+			location.href='../cotizaciones/'+id;
+		}
+	});
+
+	//primera
+	$(document).on("click","#primera",function(e){
+		e.preventDefault();
+		var id=$(this).attr("data-id");
+		if(id>0){
+			location.href='../cotizaciones/'+id;
+		}
+	});
+
+
 
 	//actualizar el campo subtotal para repuestos
 	$(document).on("input",".n_precio_r,.n_cantidad_r",function(e){

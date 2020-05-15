@@ -96,9 +96,15 @@ class ClienteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Cliente $cliente)
     {
-        //
+        try{
+            $cliente->fill($request->all());
+            $cliente->save();
+            return array(1,"exito");
+        }catch(Exception $e){
+            return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**

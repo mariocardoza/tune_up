@@ -12,9 +12,13 @@
 			<div class="card card-primary">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-4"><a id="anterior" data-id="{{$anterior}}" href="{{url('cotizaciones/'.$anterior)}}" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
+						<div class="col-md-4"><a id="primera" data-id="{{$primera}}" href="javascript:void(0)" title="Primera" class="btn btn-success"><i class="fas fa-angle-double-left"></i></a>&nbsp;<a id="anterior" title="Anterior" data-id="{{$anterior}}" href="javascript:void(0)" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
 						<div class="col-md-4"><h3 class="card-title">Registrar cotización</h3></div>
-						<div class="col-md-4"><a id="siguiente" data-id="{{$siguiente}}" href="{{url('cotizaciones/'.$siguiente)}}" class="btn btn-success float-right"><i class="fas fa-angle-right"></i></a></div>
+						<div class="col-md-4">
+							<a id="ultima" data-id="{{$ultima}}" href="javascript:void(0)" class="btn btn-success float-right" title="Última"><i class="fas fa-angle-double-right"></i></a>
+
+							<a id="siguiente" title="Siguiente" data-id="{{$siguiente}}" href="javascript:void(0)" class="btn btn-success float-right"><i class="fas fa-angle-right"></i></a>&nbsp;&nbsp;
+						</div>
 					</div>
 					
 				</div>
@@ -138,7 +142,7 @@
 								<div class="text-center">
 									
 									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
-									<button type="button" class="btn btn-success"><i class="fas fa-envelope"></i> Enviar</button>
+									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
 								</div>
 							</div>
 						</div>
@@ -409,6 +413,81 @@
 
 		//cambiar el select de cliente
 		$("#cliente_id").trigger("change");
+
+		//enviar por correo
+		$(document).on("click",".enviar_correo",function(e){
+			e.preventDefault();
+			var id=$(this).attr("data-id");
+			
+  			
+			$.ajax({
+				url:'email/'+id,
+				type:'get',
+				cache: false,
+				contentType: false,
+            	processData: false,
+             //xhrFields is what did the trick to read the blob to pdf
+            	xhrFields: {
+                	responseType: 'blob'
+            	},
+				success: function(response, status, xhr){
+					var filename = "";                   
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                 if (disposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                } 
+                var linkelem = document.createElement('a');
+                try {
+                    var blob = new Blob([response], { type: 'application/octet-stream' });                        
+
+                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                        //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                        window.navigator.msSaveBlob(blob, filename);
+                    } else {
+                    	//var test ="C:\\xampp\\htdocs\\taller_t\\public\\";
+						//var URL = test.replace(/\\/g,'\');
+						//console.log(test);
+                        var URL =window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) { 
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.location = downloadUrl;
+                            } else {
+                                a.href = downloadUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.target = "_blank";
+                                a.click();
+                            }
+
+                            $.ajax({
+                            	url:'enviar',
+                            	type:'get',
+                            	data:{filename},
+                            	success: function(json){
+
+                            	}
+                            });
+
+                        } else {
+                            window.location = downloadUrl;
+                        }
+                    }   
+
+                } catch (ex) {
+                    console.log(ex);
+                } 
+				}
+			});
+		});
 	});
 
 	function obtenerguardados(id){

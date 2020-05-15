@@ -389,7 +389,7 @@ $marcas=\App\Marca::where('estado',1)->get();
 @endsection
 
 @section('scripts')
-<script src="{{secure_asset('js/clientes.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/clientes.js?cod='.date('Yidisus'))}}"></script>
 <script>
 	$(document).ready(function(e){
     var cliente_id='<?php echo $cliente->id ?>';
