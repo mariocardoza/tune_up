@@ -293,17 +293,12 @@ $(document).ready(function(e){
 		});	*/
 		var cotizacion=$("#cotizacion_id").val();
 		if(cotizacion>0){
-			toastr.success("Cotizacion registrada con éxito");
+			toastr.success("Exportacion registrada con éxito");
 			location.href=cotizacion;
 		}else{
 			toastr.error("No se han agregado items a la factura");
 		}
 	});
-
-	function guardar()
-	{
-		
-	}
 
 	//guardar con iva
 	$(document).on("click",".siiva",function(e){

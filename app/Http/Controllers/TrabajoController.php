@@ -210,7 +210,7 @@ class TrabajoController extends Controller
     {
       $this->validar($request->all())->validate();
       try{
-        $repuesto=Repuesto::create([
+        $repuesto=Trabajo::create([
             'nombre'=>$request->nombre,
             'codigo'=>$request->codigo,
             'precio'=>$request->precio

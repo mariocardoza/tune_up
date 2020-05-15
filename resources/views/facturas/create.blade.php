@@ -16,7 +16,7 @@
 		<div class="col-md-12">
 			<div class="card card-primary">
 				<div class="card-header">
-					<h3 class="card-title">Registrar crédito fiscal</h3>
+					<h3 class="card-title">Registrar factura</h3>
 					<div class="float-right">
 						<button type="button" class="btn btn-danger buscaplaca">Buscar</button>
 					</div>
@@ -425,7 +425,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{secure_asset('js/facturas.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/facturas.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
 	var v_id="";

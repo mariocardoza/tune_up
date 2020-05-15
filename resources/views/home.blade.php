@@ -93,12 +93,29 @@
               <a href="{{url('creditos/'.$ucf)}}" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+
+           <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-primary">
+              <div class="inner">
+                <h3>{{\App\Cotizacione::where('tipo_documento',4)->count()}}</h3>
+
+                <p>Exportaciones</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+              </div>
+              <a href="{{url('exportaciones/'.$ue)}}" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
           <!-- ./col -->
         </div>
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
+         @php 
+         /*
           <section class="col-lg-7 connectedSortable">
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
@@ -227,6 +244,8 @@
             </div>
             <!-- /.card -->
           </section>
+          */
+          @endphp
           <!-- right col -->
         </div>
         <!-- /.row (main row) -->
