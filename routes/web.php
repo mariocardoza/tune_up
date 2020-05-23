@@ -21,7 +21,7 @@ Route::get('cotizaciones/email/{id}','CotizacionController@email');
 Route::get('cotizaciones/enviar/{id}','CotizacionController@enviar');
 
 Auth::routes();
-Route::post('authenticate','Auth\loginController@authenticate')->name('authenticate');
+Route::post('authenticate','Auth\LoginController@authenticate')->name('authenticate');
 
 ///////////  RUTAS DE RESPALDO Y RESTAURAR BASE DE DATOS
 Route::get('backups','BackupController@index')->name('backups.index');
