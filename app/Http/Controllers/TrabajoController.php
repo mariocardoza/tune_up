@@ -13,6 +13,11 @@ use DB;
 
 class TrabajoController extends Controller
 {
+  // contructor
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *

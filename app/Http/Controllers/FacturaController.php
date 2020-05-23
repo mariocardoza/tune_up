@@ -9,6 +9,11 @@ use PDF;
 
 class FacturaController extends Controller
 {
+    // contructor
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function reporte($id)
     {
