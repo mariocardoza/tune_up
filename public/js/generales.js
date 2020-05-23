@@ -56,10 +56,16 @@ $(document).ready(function(e){
             if(json[1]!=null){
               //location.href='vehiculos/historial/'+placa;
               var dominio2 = window.location.host;
-              window.open(
+              /*window.open(
                 'http://'+dominio2+'/'+carpeta()+'/public/vehiculos/historial/'+json[1].id,
                 '_blank' // <- This is what makes it open in a new window.
-              );
+              );*/
+              $("#modal_reporte_carro").modal("hide");
+
+              var url = 'http://'+dominio2+'/'+carpeta()+'/public/vehiculos/historial/'+json[1].id;
+              $('#verpdf').attr('src', url);
+              //$('#verpdf').reload();
+              $("#modal_pdf").modal("show");
             }else{
               toastr.error("Vehículo no encontrado");
             }
@@ -78,10 +84,15 @@ $(document).ready(function(e){
     var fecha2=$("#fecha2").val();
     if(fecha1!='' && fecha2!=''){
       var dominio = window.location.host;
-      window.open(
+      /*window.open(
         'http://'+dominio+'/'+carpeta()+'/public/ivaporventas?fecha1='+fecha1+'&fecha2='+fecha2,
         '_blank' // <- This is what makes it open in a new window.
-      );
+      );*/
+          $("#modal_reporte_iva").modal("hide");
+          var url = 'http://'+dominio+'/'+carpeta()+'/public/ivaporventas?fecha1='+fecha1+'&fecha2='+fecha2;
+          $('#verpdf').attr('src', url);
+          //$('#verpdf').reload();
+          $("#modal_pdf").modal("show");
     }
   });
 });

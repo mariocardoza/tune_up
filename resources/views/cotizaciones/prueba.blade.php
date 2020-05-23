@@ -161,7 +161,7 @@ top:1.18958in;width:1.79167in;height:0.14583in;">KM.RECEPCIÓN</div><div class="
 top:1.55417in;width:2.27083in;height:0.14583in;">KM. PRÓXIMA REVISIÓN</div><div class="FRX1_44" style="z-Index:26;left:5.73125in;
 top:1.32500in;width:0.96875in;height:0.15625in;">{{$cotizacion->vehiculo->kilometraje}}</div><div class="FRX1_45" style="z-Index:27;left:5.73125in;
 top:1.68958in;width:1.16667in;height:0.15625in;">{{$cotizacion->vehiculo->km_proxima}}</div><div class="FRX1_46" style="z-Index:28;left:0.73125in;
-top:1.71042in;width:4.26042in;height:0.19792in;">TELS.: {{$taller->telefono1}}, {{$taller->telefono1}}     CEL.: {{$taller->celular}}</div>
+top:1.71042in;width:4.26042in;height:0.19792in;">TELS.: {{$taller->telefono1}}, {{$taller->telefono2}}     CEL.: {{$taller->celular}}</div>
 
 <div class="FRX1_24" style="z-Index:3;left:0.51250in;top:3.9in;width:0.42708in;height:0.15625in; font-weight: bold;">    N°</div>
 <div class="FRX1_18" style="z-Index:1;left:1.11667in;top:3.9in;width:4.64583in;height:0.15625in; font-weight: bold;">CONCEPTO</div>

@@ -14,14 +14,14 @@ class TallerSeeder extends Seeder
     public function run()
     {
         $this->truncateTables([
-            //'tallers',
+            'tallers',
         ]);
 
         $taller= new Taller();
 	    $taller->propietario='Hector Rivas';
 	    $taller->direccion='CALLE SAN CARLOS 1004, FINAL 17 AV. NORTE, SAN SALVADOR';
 	    $taller->telefono1='2225-4438';
-	    $taller->telefono2='2317-3535';
+	    $taller->telefono2='2562-7454';
 	    $taller->celular='7730-3565';
 	    $taller->email='h_rivas47@yahoo.com';
 	    $taller->save();
@@ -36,12 +36,12 @@ class TallerSeeder extends Seeder
 
     public function truncateTables(array $tables)
     {
-        //DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
 
         foreach ($tables as $table) {
             DB::table($table)->truncate();
         }
 
-        //DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }

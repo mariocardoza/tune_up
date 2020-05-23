@@ -316,6 +316,27 @@
 
 
 <!-- modales aqui -->
+<div class="modal fade" id="modal_pdf" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe id="verpdf" src="" width="100%" height="900px" frameborder="0"></iframe>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="modal_reporte_carro" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">

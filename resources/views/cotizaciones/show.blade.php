@@ -13,7 +13,7 @@
 				<div class="card-header">
 					<div class="row">
 						<div class="col-md-4"><a id="primera" data-id="{{$primera}}" href="javascript:void(0)" title="Primera" class="btn btn-success"><i class="fas fa-angle-double-left"></i></a>&nbsp;<a id="anterior" title="Anterior" data-id="{{$anterior}}" href="javascript:void(0)" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
-						<div class="col-md-4"><h3 class="card-title">Registrar cotización</h3></div>
+						<div class="col-md-4"><h3 class="card-title">Cotización número: <b>{{$cotizacion->correlativo}}</b></h3></div>
 						<div class="col-md-4">
 							<a id="ultima" data-id="{{$ultima}}" href="javascript:void(0)" class="btn btn-success float-right" title="Última"><i class="fas fa-angle-double-right"></i></a>
 
@@ -141,7 +141,7 @@
 							<div class="col-md-12">
 								<div class="text-center">
 									
-									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
+									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
 								</div>
 							</div>
@@ -399,6 +399,7 @@
   </div>
 </div>
 
+
 @endsection
 @section('scripts')
 <script src="{{asset('js/cotizaciones_show.js?cod='.date('Yidisus'))}}"></script>
@@ -487,6 +488,17 @@
                 } 
 				}
 			});
+		});
+
+		//imprimir frame
+		$(document).on("click",".imprime",function(e){
+			e.preventDefault();
+			      $(".modal").modal("hide");
+
+			var url = $(this).attr('href');
+        	$('#verpdf').attr('src', url);
+        	//$('#verpdf').reload();
+        	$("#modal_pdf").modal("show");
 		});
 	});
 
