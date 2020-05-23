@@ -52,7 +52,7 @@ class LoginController extends Controller
             'password' => $request->password])
             ) {
             //dd('hola');
-            return redirect()->intended('home');
+            return redirect()->intended('home')->with("mensaje","Bienvenido al sistema ".Auth()->user()->name);
         }else{
             return redirect('/')->with('error','El nombre de usuario o contraseña no existe en nuestros registros');
         }
