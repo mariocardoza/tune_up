@@ -282,6 +282,12 @@
                   <p>Repuestos</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{url('backups')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Backups</p>
+                </a>
+              </li>
             </ul>
           </li>
          
@@ -397,8 +403,7 @@
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; {{date("Y")}} <a href="javascript:void(0)">mrcardoza</a>.</strong> All rights
-    reserved.
+    <strong>Copyright &copy; {{date("Y")}} <b>TUNE UP SERVICE</b> <a href="mailto:mario.cardoza.huezo@gmail.com">Mario Cardoza</a>.</strong> Todos los derechos reservados
   </footer>
 
   <!-- Control Sidebar -->
@@ -413,7 +418,6 @@
 <script src="{{asset('js/toastr.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
-
 <script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
 <!-- Bootstrap 4 -->
 @yield('scripts')

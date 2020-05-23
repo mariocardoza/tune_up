@@ -15,7 +15,8 @@ $(document).ready(function(e){
     	format: 'dd/mm/yyyy',
     	minDate: "-60Y",
         maxDate: "-18Y",
-        language:'es'
+        language:'es',
+        autoclose:true
 	});
 
   $(".form-control").on("keypress", function () {
