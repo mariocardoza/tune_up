@@ -53,9 +53,9 @@
 
          
           
-          <p class="mb-1">
+          <!--p class="mb-1">
             <a href="{{url('password/reset')}}">¿Olvidó su contraseña?</a>
-          </p>
+          </p-->
            
         </div>
         <!-- /.login-card-body -->
