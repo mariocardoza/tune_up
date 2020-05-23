@@ -22,6 +22,13 @@ Route::get('cotizaciones/enviar/{id}','CotizacionController@enviar');
 
 Auth::routes();
 
+///////////  RUTAS DE RESPALDO Y RESTAURAR BASE DE DATOS
+Route::get('backups','BackupController@index')->name('backups.index');
+Route::get('backups/create','BackupController@create')->name('backup.create');
+Route::get('backups/descargar/{file_name}','BackupController@descargar');
+Route::get('backups/eliminar/{file_name}', 'BackupController@eliminar');
+Route::get('backups/restaurar/{file_name}', 'BackupController@restaurar');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('administracion/porcentajes','AdministracionController@porcentaje');
 Route::Resource('administracion','AdministracionController');
