@@ -52,7 +52,7 @@ class TrabajoController extends Controller
           if($request->vehiculo_id!=''):
             DB::beginTransaction();
             $trabajo=Trabajo::create([
-                'nombre'=>$request->nombre,
+                'nombre'=>mb_strtoupper($request->nombre),
                 'codigo'=>$request->codigo,
                 'precio'=>$request->precio
             ]);

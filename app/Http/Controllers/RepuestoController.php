@@ -49,7 +49,7 @@ class RepuestoController extends Controller
     {
         $this->validar($request->all())->validate();
         try{
-          if($request->vehiculo_id!='' && $request->coniva==''):
+          if($request->vehiculo_id!=''):
             DB::beginTransaction();
             $repuesto=Repuesto::create([
                 'nombre'=>mb_strtoupper($request->nombre),

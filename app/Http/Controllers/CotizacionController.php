@@ -201,7 +201,18 @@ class CotizacionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+          DB::beginTransaction();
+          $coti=Cotizacione::find($id);
+          $rd=RepuestoDetalle::where('cotizacion_id',$id)->delete();
+          $td=TrabajoDetalle::where('cotizacion_id',$id)->delete();
+          $coti->delete();
+          DB::commit();
+          return array(1);
+        }catch(Exception $e){
+          DB::rollBack();
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     public function ivaventas(Request $r)

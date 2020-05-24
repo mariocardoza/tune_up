@@ -142,6 +142,7 @@
 								<div class="text-center">
 									
 									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
+									<button type="button" title="Eliminar cotizacion" data-id="{{$cotizacion->id}}" class="btn btn-danger eliminar_lacoti"><i class="fas fa-trash"></i> Eliminar</button>
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
 								</div>
 							</div>
@@ -414,9 +415,42 @@
 
 		//cambiar el select de cliente
 		$("#cliente_id").trigger("change");
-
+		//eliminar la coti
+		$(document).on("click",".eliminar_lacoti",function(e){
+			e.preventDefault();
+			var id=$(this).attr("data-id");
+			swal.fire({
+			  title: '¿Eliminar?',
+			  text: "¿Está seguro de eliminar esta cotización?",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Si'
+			}).then((result) => {
+			  if (result.value) {
+			  	modal_cargando();
+			    $.ajax({
+			    	url:'../cotizaciones/'+id,
+			    	type:'DELETE',
+			    	dataType:'json',
+			    	data:{id},
+			    	success: function(json){
+			    		if(json[0]==1){
+			    			toastr.success("Cotización eliminado con éxito");
+			    			swal.closeModal();
+			    			location.href="../cotizaciones/create";
+			    		}else{
+			    			toastr.error("Ocurrió un error");
+			    			swal.closeModal();
+			    		}
+			    	}
+			    });
+			  }
+			});
+		});
 		//enviar por correo
-		$(document).on("click",".enviar_correo",function(e){
+		$(document).on("click",".enviar_correro",function(e){
 			e.preventDefault();
 			var id=$(this).attr("data-id");
 			
