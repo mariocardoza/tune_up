@@ -98,11 +98,15 @@ class TrabajodetallesController extends Controller
                 if($coti->cliente->sector=='Gran Contribuyente'):
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevoivar=$sub*session('ivar');
-                    $nuevotot=$nuevoivar+$toti;
-                    $coti->iva_r=$nuevoivar;
-                    $coti->total=$nuevotot;
-                    $coti->save();
+                    if($toti>=100):
+                        $nuevoivar=$sub*session('ivar');
+                        $nuevotot=$nuevoivar+$toti;
+                        $coti->iva_r=$nuevoivar;
+                        $coti->total=$nuevotot;
+                        $coti->save();
+                    else:
+                        
+                    endif;
                 endif;
             else:
                 $coti=Cotizacione::find($request->cotizacion_id);
@@ -134,11 +138,13 @@ class TrabajodetallesController extends Controller
                 if($coti->cliente->sector=='Gran Contribuyente'){
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevoivar=$sub*session('ivar');
-                    $nuevotot=$nuevoivar+$toti;
-                    $coti->iva_r=$nuevoivar;
-                    $coti->total=$nuevotot;
-                    $coti->save();
+                    if($toti>=100):
+                        $nuevoivar=$sub*session('ivar');
+                        $nuevotot=$nuevoivar+$toti;
+                        $coti->iva_r=$nuevoivar;
+                        $coti->total=$nuevotot;
+                        $coti->save();
+                    endif;
                 }
             endif;
             DB::commit();
@@ -188,11 +194,13 @@ class TrabajodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevoivar=$sub*session('ivar');
-                    $nuevotot=$nuevoivar+$toti;
-                    $coti->iva_r=$nuevoivar;
-                    $coti->total=$nuevotot;
-                    $coti->save();
+                    if($toti>=100):
+                        $nuevoivar=$sub*session('ivar');
+                        $nuevotot=$nuevoivar+$toti;
+                        $coti->iva_r=$nuevoivar;
+                        $coti->total=$nuevotot;
+                        $coti->save();
+                    endif;
                 }
             DB::commit();
             return array(1,"exito");
@@ -277,11 +285,13 @@ class TrabajodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             return array(1,"exito");
@@ -329,11 +339,13 @@ class TrabajodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             return array(1,"exito");
@@ -376,12 +388,14 @@ class TrabajodetallesController extends Controller
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
-                $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($sub>=100):
+                    $toti=$coti->total;
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             if((count($coti->repuestodetalle) == 0) && (count($coti->trabajodetalle)==0)){
@@ -413,6 +427,7 @@ class TrabajodetallesController extends Controller
                 $coti->iva=$iva;
                 $coti->total=$nt;
                 $coti->save();
+
             }else{
                 $tot=$previo->precio*$previo->cantidad;
                 $subto=$coti->subtotal;
@@ -424,12 +439,14 @@ class TrabajodetallesController extends Controller
             }
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
-                $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($sub>=100):
+                    $toti=$coti->total;
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             return array(1,"exito",$coti->id);

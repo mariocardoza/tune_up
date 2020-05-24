@@ -19,13 +19,13 @@ $(document).ready(function(e){
         autoclose:true
 	});
 
-  $(".form-control").on("keypress", function () {
+ /* $(".form-control").on("keypress", function () {
        $input=$(this);
        setTimeout(function () {
         $input.val($input.val().toUpperCase());
        },50);
       })
-
+*/
   //reporte de iva por pagar
   $(document).on("click",".ivapagar",function(e){
     e.preventDefault();

@@ -33,7 +33,7 @@ class ClienteController extends Controller
 
     public function index()
     {
-        $clientes=Cliente::orderBy('id','ASC')->get();
+        $clientes=Cliente::whereEstado(1)->orderBy('id','ASC')->get();
         return view('clientes.index',compact('clientes'));
     }
 
@@ -115,7 +115,14 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $c=Cliente::find($id);
+            $c->estado=2;
+            $c->save();
+            return array(1);
+        }catch(Exception $e){
+            return array(-1,"err",$e->getMessage());
+        }
     }
 
     protected function validar(array $data)

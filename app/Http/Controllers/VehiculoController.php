@@ -86,7 +86,7 @@ class VehiculoController extends Controller
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -97,7 +97,12 @@ class VehiculoController extends Controller
      */
     public function edit($id)
     {
-        //
+         try{
+            $carro=Vehiculo::find($id);
+            return array(1,"exito",$carro);
+        }catch(Exception $e){
+            return array(-1);
+        }
     }
 
     /**
@@ -109,7 +114,14 @@ class VehiculoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+            $carro=Vehiculo::find($id);
+            $carro->fill($request->all());
+            $carro->save();
+            return array(1);
+        }catch(Exception $e){
+            return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**

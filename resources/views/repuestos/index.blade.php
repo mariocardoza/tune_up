@@ -37,7 +37,8 @@
               	<thead>
               		<tr>
               			<th>N°</th>
-              			<th>Nombre</th>
+                    <th>Nombre</th>
+              			<th class="float-right">Precio</th>
               			<th></th>
               		</tr>
               	</thead>
@@ -45,15 +46,16 @@
               		@foreach ($repuestos as $key => $r)
               			<tr>
               				<td>{{$key+1}}</td>
-              				<th>{{$r->nombre}}</th>
-              				<th>
+                      <td>{{$r->nombre}}</td>
+              				<td class="float-right">${{number_format($r->precio,2)}}</td>
+              				<td>
                         @if($r->estado==1)
                         <a href="javascript:void(0)" data-id="{{$r->id}}" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></a>
               					<a href="javascript:void(0)" data-id="{{$r->id}}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash"></i></a>
                         @else 
                         <a href="javascript:void(0)" data-id="{{$r->id}}" class="btn btn-success btn-sm restaurar"><i class="fas fa-undo"></i></a>
                         @endif
-              				</th>
+              				</td>
               			</tr>
               		@endforeach
               	</tbody>

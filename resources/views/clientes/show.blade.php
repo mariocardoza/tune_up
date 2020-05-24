@@ -162,10 +162,7 @@ $marcas=\App\Marca::where('estado',1)->get();
                             N° {{$historial->correlativo}}</a></h3>
 
                           <div class="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
+                            
                           </div>
                           <div class="timeline-footer">
                             @if($historial->tipo_documento==1)  
@@ -302,6 +299,105 @@ $marcas=\App\Marca::where('estado',1)->get();
   </div>
 </div>
 
+<div class="modal fade" id="modal_edit_v" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Editar vehículo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_evehiculo" role="form">
+          <input type="hidden" class="elidv">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="">N° de placa (*)</label>
+                      <input type="text" name="placa" style="text-transform:uppercase;" placeholder="Ingrese número de placa" autocomplete="off" class="form-control placa">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="">Año </label>
+                      <input type="number" name="anio" placeholder="Ingrese el año" class="form-control anio">
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="">Marca (*)</label>
+                      <div class="row">
+                        <div class="col-md-10">
+                          <select name="marca_id" id="marca_ide" class="chosen-select">
+                            <option value="">Seleccione una marca</option>
+                            @foreach($marcas as $m)
+                              <option value="{{$m->id}}">{{$m->marca}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <button type="button" id="btn_modal_marcae" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="">Modelo</label>
+                      <div class="row">
+                        <div class="col-md-10">
+                          <select name="modelo_id" id="modelo_ide" class="chosen-select">
+                            <option value="">Seleccione un modelo</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <button class="btn btn-primary" type="button" id="btn_modal_modeloe"><i class="fas fa-plus"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="row ">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="motor">N° de motor (*)</label>
+                      <input type="text" name="motor" placeholder="Ingrese el número de motor" class="form-control motor">
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="vin">N° VIN</label>
+                      <input type="text" name="vin" placeholder="Ingrese el número de VIN" class="form-control vin">
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="notas">Notas</label>
+                      <textarea name="notas" rows="3" placeholder="Ingrese observaciones" class="form-control notas"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none"><button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-success">Guardar</button></div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <div class="modal fade" id="modal_marca" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -322,6 +418,33 @@ $marcas=\App\Marca::where('estado',1)->get();
       </div>
       <div class="modal-footer">
         <div class="float-none"><button type="button" class="btn btn-danger" id="cerrar_modal_marca">Cerrar</button>
+        <button type="submit" class="btn btn-success">Guardar</button></div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_marca_e" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Registrar marca</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_marcae" role="form">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="">Nombre (*)</label>
+              <input type="text" name="marca" autocomplete="off" class="form-control">
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none"><button type="button" class="btn btn-danger" id="cerrar_modal_marcae">Cerrar</button>
         <button type="submit" class="btn btn-success">Guardar</button></div>
       </div>
       </form>
@@ -355,6 +478,39 @@ $marcas=\App\Marca::where('estado',1)->get();
       </div>
       <div class="modal-footer">
         <div class="float-none"><button type="button" class="btn btn-danger" id="cerrar_modal_modelo">Cerrar</button>
+        <button type="submit" class="btn btn-success">Guardar</button></div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_modeloe" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Registrar modelo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_modeloe" role="form">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="">Nombre (*)</label>
+              <input type="text" name="nombre" class="form-control" autocomplete="off" placeholder="Digite el nombre del modelo">
+            </div>
+
+            <div class="form-group">
+              <label for="">Marca</label>
+              <input type="text" id="n_marcae" class="form-control" readonly>
+              <input type="hidden" id="id_marcae" name="marca_id" class="form-control" readonly>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none"><button type="button" class="btn btn-danger" id="cerrar_modal_modeloe">Cerrar</button>
         <button type="submit" class="btn btn-success">Guardar</button></div>
       </div>
       </form>

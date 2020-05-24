@@ -100,11 +100,13 @@ class RepuestodetallesController extends Controller
                 if($coti->cliente->sector=='Gran Contribuyente'):
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevoivar=$sub*session('ivar');
-                    $nuevotot=$nuevoivar+$toti;
-                    $coti->iva_r=$nuevoivar;
-                    $coti->total=$nuevotot;
-                    $coti->save();
+                    if($toti>=100):
+                        $nuevoivar=$sub*session('ivar');
+                        $nuevotot=$nuevoivar+$toti;
+                        $coti->iva_r=$nuevoivar;
+                        $coti->total=$nuevotot;
+                        $coti->save();
+                    endif;
                 endif;
             else:
                 $coti=Cotizacione::find($request->cotizacion_id);
@@ -136,11 +138,13 @@ class RepuestodetallesController extends Controller
                 if($coti->cliente->sector=='Gran Contribuyente'){
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevoivar=$sub*session('ivar');
-                    $nuevotot=$nuevoivar+$toti;
-                    $coti->iva_r=$nuevoivar;
-                    $coti->total=$nuevotot;
-                    $coti->save();
+                    if($toti>=100):
+                        $nuevoivar=$sub*session('ivar');
+                        $nuevotot=$nuevoivar+$toti;
+                        $coti->iva_r=$nuevoivar;
+                        $coti->total=$nuevotot;
+                        $coti->save();
+                    endif;
                 }
             endif;
             /*$trabajo=TrabajoPrevia::create([
@@ -194,11 +198,13 @@ class RepuestodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             return array(1,"exito");
@@ -283,11 +289,13 @@ class RepuestodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             return array(1,"exito");
@@ -335,11 +343,13 @@ class RepuestodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             return array(1,"exito");
@@ -386,11 +396,13 @@ class RepuestodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             DB::commit();
             if((count($coti->repuestodetalle) == 0) && (count($coti->trabajodetalle)==0)){
@@ -435,11 +447,13 @@ class RepuestodetallesController extends Controller
             if($coti->cliente->sector=='Gran Contribuyente'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevoivar=$sub*session('ivar');
-                $nuevotot=$nuevoivar+$toti;
-                $coti->iva_r=$nuevoivar;
-                $coti->total=$nuevotot;
-                $coti->save();
+                if($toti>=100):
+                    $nuevoivar=$sub*session('ivar');
+                    $nuevotot=$nuevoivar+$toti;
+                    $coti->iva_r=$nuevoivar;
+                    $coti->total=$nuevotot;
+                    $coti->save();
+                endif;
             }
             return array(1,"exito",$coti->id);
         }catch(Exception $e){
