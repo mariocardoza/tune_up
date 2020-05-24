@@ -403,7 +403,7 @@
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; {{date("Y")}} <b>TUNE UP SERVICE</b> <a href="mailto:mario.cardoza.huezo@gmail.com">Mario Cardoza</a>.</strong> Todos los derechos reservados
+    <strong>Copyright &copy; {{date("Y")}} <b>TUNE UP SERVICE</b></strong>, Desarrollado por:<strong> <a href="mailto:mario.cardoza.huezo@gmail.com">Mario Cardoza</a></strong>. Todos los derechos reservados
   </footer>
 
   <!-- Control Sidebar -->

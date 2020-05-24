@@ -44,20 +44,7 @@ class Cotizacione extends Model
         $total=0.0;
     	$html='';
         $tfoot="";
-    	foreach ($repuestos as $i=> $r) {
-    		$html.='<tr>
-				
-				<td>'.$r->repuesto->nombre.'</td>
-				<td>'.$r->precio.'</td>
-				<td>'.$r->cantidad.'</td>
-				<td>'.$r->precio*$r->cantidad.'</td>
-				<td>
-					<button title="Editar repuesto" type="button" id="editar_repuesto" data-id="'.$r->id.'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-					<button title="Eliminar repuesto" type="button" id="eliminar_repuesto" data-id="'.$r->id.'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-				</td>
-    		</tr>';
-            $total=$total+($r->cantidad*$r->precio);
-    	}
+    
 
     	foreach ($trabajos as $i=> $t) {
     		$html.='<tr>
@@ -74,6 +61,20 @@ class Cotizacione extends Model
             $total=$total+($t->cantidad*$t->precio);
     	}
 
+            foreach ($repuestos as $i=> $r) {
+            $html.='<tr>
+                
+                <td>'.$r->repuesto->nombre.'</td>
+                <td>'.number_format($r->precio,2).'</td>
+                <td>'.$r->cantidad.'</td>
+                <td>'.number_format($r->precio*$r->cantidad,2).'</td>
+                <td>
+                    <button title="Editar repuesto" type="button" id="editar_repuesto" data-id="'.$r->id.'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                    <button title="Eliminar repuesto" type="button" id="eliminar_repuesto" data-id="'.$r->id.'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>';
+            $total=$total+($r->cantidad*$r->precio);
+        }
         $tfoot.='
             <tr>
                 <th  colspan="3">NETO</th>
