@@ -220,7 +220,7 @@ $marcas=\App\Marca::where('estado',1)->get();
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="">N° de placa (*)</label>
-                      <input type="text" name="placa" style="text-transform:uppercase;" placeholder="Ingrese número de placa" autocomplete="off" class="form-control">
+                      <input type="text" name="placa" style="text-transform:uppercase;" placeholder="Ingrese número de placa" autocomplete="off" class="form-control laplaca">
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -260,6 +260,15 @@ $marcas=\App\Marca::where('estado',1)->get();
                           <button class="btn btn-primary" type="button" id="btn_modal_modelo"><i class="fas fa-plus"></i></button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="">Tipo de medida</label>
+                      <select name="tipomedida" class="chosen-select" id="">
+                        <option value="km">Kilómetro</option>
+                        <option value="mi">Millas</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -358,6 +367,15 @@ $marcas=\App\Marca::where('estado',1)->get();
                           <button class="btn btn-primary" type="button" id="btn_modal_modeloe"><i class="fas fa-plus"></i></button>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="">Tipo de medida</label>
+                      <select name="tipomedida" class="chosen-select" id="tipomedida">
+                        <option value="km">Kilómetro</option>
+                        <option value="mi">Millas</option>
+                      </select>
                     </div>
                   </div>
                 </div>

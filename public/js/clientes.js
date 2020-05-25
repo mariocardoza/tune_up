@@ -25,6 +25,27 @@ $(document).ready(function(e){
 		});
 	});
 
+	$(document).on("blur",".laplaca",function(e){
+		e.preventDefault();
+		var placa=$(this).val();
+		$.ajax({
+          	url:'../vehiculos/porplaca',
+          	type:'get',
+          	dataType:'json',
+          	data:{placa},
+          	success: function(json){
+          		console.log(json);
+          		if(json[1]==null || json[0].length == 0){
+          				
+          		}else{	
+          			swal.fire('Aviso','La placa ya existe','warning');
+          		}
+          	},error: function(error){
+          	}
+          });
+
+	});
+
 	$(document).on("change","#marca_ide",function(e){
 		e.preventDefault();
 		var id=$(this).val();
@@ -61,6 +82,8 @@ $(document).ready(function(e){
 					$(".vin").val(json[2].vin);
 					$(".notas").val(json[2].notas);
 					$("#marca_ide").val(json[2].marca_id);
+					$("#tipomedida").val(json[2].tipomedida);
+					$("#tipomedida").trigger('chosen:updated');
 					$("#marca_ide").trigger('chosen:updated');
 					$("#marca_ide").trigger("change");
 					setTimeout(() => {

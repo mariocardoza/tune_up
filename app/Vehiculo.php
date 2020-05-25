@@ -29,7 +29,7 @@ class Vehiculo extends Model
 
     public static function info($id)
     {
-        $html="";
+        $html=$kms="";
         $vehiculo=Vehiculo::find($id);
         $html.='<div class="col-md-6">
                     <div class="form-group">
@@ -51,7 +51,34 @@ class Vehiculo extends Model
                         <label for="" class="control-label">N° motor: '.$vehiculo->motor.'</label>
                     </div>
                 </div>';
-        return array(1,"exito",$html,floatval($vehiculo->kilometraje));
+        if($vehiculo->tipomedida=='km'):
+        $kms='<div class="col-md-6">
+                <div class="form-group">
+                    <label for="" class="control-label">Km Recepción</label>
+                    <input type="number" name="kilometraje" class="form-control kilometraje kimi" >
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="" class="control-label">Km próxima</label>
+                    <input type="number" name="km_proxima" class="form-control kmproxi kimiproxi" readonly>
+                </div>
+            </div>';
+        else:
+            $kms='<div class="col-md-6">
+                <div class="form-group">
+                    <label for="" class="control-label">Mi Recepción</label>
+                    <input type="number" name="kilometraje" class="form-control kilometraje millaje" >
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="" class="control-label">Mi próxima</label>
+                    <input type="number" name="km_proxima" class="form-control kmproxi miproxi" readonly>
+                </div>
+            </div>';
+        endif;
+        return array(1,"exito",$html,floatval($vehiculo->kilometraje),$kms);
     }
 
     public static function obtenervehiculos($id,$actual)

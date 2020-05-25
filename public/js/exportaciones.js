@@ -26,11 +26,11 @@ $(document).ready(function(e){
 				if(json[0]==1){
 					$("#datos_carro").empty();
 					$("#datos_carro").html(json[2]);
-					if(json[3]>0){
-						$(".kilometraje").val(json[3])
-						var proxi=json[3]+5000;
-						$(".kmproxi").val(proxi);
-					}
+					$(".kilometrajes").empty();
+					$(".kilometrajes").html(json[4]);
+					$(".kilometraje").val("")
+						//var proxi=json[3]+5000;
+					$(".kmproxi").val("");
 				}
 			}
 		});
@@ -683,11 +683,19 @@ $(document).ready(function(e){
 	});
 
 	//calcular kilometraje
-	$(document).on("input",".kilometraje",function(e){
+	$(document).on("input",".kimi",function(e){
 		e.preventDefault();
 		var actual=parseFloat($(this).val());
 		var proximo=actual+5000;
-		$(".kmproxi").val(proximo);
+		$(".kimiproxi").val(proximo.toFixed(2));
+	});
+
+	//calcular millaje
+	$(document).on("input",".millaje",function(e){
+		e.preventDefault();
+		var actual=parseFloat($(this).val());
+		var proximo=actual+3106.856;
+		$(".miproxi").val(proximo.toFixed(2));
 	});
 });
 

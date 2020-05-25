@@ -62,19 +62,34 @@
 									</select>
 								</div>
 								<div class="row">
+									@if($cotizacion->vehiculo->tipomedida=='km')
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km Recepción</label>
-											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control kilometraje" >
+											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control " >
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km próxima</label>
-											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control kmproxi" readonly>
+											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control " readonly>
 										</div>
 									</div>
-								</div>
+									@else
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Mi Recepción</label>
+											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control " >
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Mi próxima</label>
+											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control " step="any" readonly>
+										</div>
+									</div>
+
+									@endif								</div>
 								<div class="row" id="datos_carro">
 									<div class="col-md-6">
 										<div class="form-group">
@@ -194,7 +209,7 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" id="n_precio_r" name="precio" class="form-control n_precio_r">
+              						<input type="number" step="any" id="n_precio_r" name="precio" class="form-control n_precio_r">
               					</div>
               				</div>
               				<div class="col-md-6">
@@ -244,7 +259,7 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" name="precio" class="form-control n_precio_rr">
+              						<input type="number" step="any" name="precio" class="form-control n_precio_rr">
               					</div>
               				</div>
               				<div class="col-md-6">
@@ -324,7 +339,7 @@
 	              				<div class="col-md-6">
 	              					<div class="form-group">
 	              						<label for="" class="control-label">Precio (*)</label>
-	              						<input type="number" id="n_precio_t" class="form-control n_precio_t">
+	              						<input type="number" step="any" id="n_precio_t" class="form-control n_precio_t">
 	              					</div>
 	              				</div>
 	              			</div>
@@ -367,7 +382,7 @@
 	              				<div class="col-md-6">
 	              					<div class="form-group">
 	              						<label for="" class="control-label">Precio (*)</label>
-	              						<input type="number" name="precio" class="form-control n_precio_tr">
+	              						<input type="number" step="any" name="precio" class="form-control n_precio_tr">
 	              					</div>
 	              				</div>
 	              			</div>
@@ -436,11 +451,7 @@
 				if(json[0]==1){
 					$("#datos_carro").empty();
 					$("#datos_carro").html(json[2]);
-					if(json[3]>0){
-						$(".kilometraje").val(json[3])
-						var proxi=json[3]+5000;
-						$(".kmproxi").val(proxi);
-					}
+					
 				}
 			}
 		});

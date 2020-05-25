@@ -37,6 +37,7 @@ Route::Resource('administracion','AdministracionController');
 Route::get('clientes/obtenermodelos/{id}','ClienteController@obtenerModelos');
 Route::Resource('clientes','ClienteController');
 Route::get('ivaporventas','CotizacionController@ivaventas');
+Route::post('cotizaciones/eliva/{id}','CotizacionController@el_via');
 Route::get('cotizaciones/vehiculos/{id}','CotizacionController@obtenervehiculos');
 Route::get('cotizaciones/previas/{id}','CotizacionController@obtenerprevia');
 Route::get('cotizaciones/guardadas/{id}','CotizacionController@obtenerguardadas');

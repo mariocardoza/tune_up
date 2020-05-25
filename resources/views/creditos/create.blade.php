@@ -73,7 +73,7 @@
 										<option value="">Seleccione</option>
 									</select>
 								</div>
-								<div class="row">
+								<div class="row kilometrajes">
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km Recepción</label>
@@ -204,7 +204,7 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" id="n_precio_r" name="precio" class="form-control precio_r">
+              						<input type="number" id="n_precio_r" step="any" name="precio" class="form-control precio_r">
               					</div>
               				</div>
               				<div class="col-md-6">
@@ -253,7 +253,7 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" name="precio" class="form-control n_precio_r">
+              						<input type="number" step="any" name="precio" class="form-control n_precio_r">
               					</div>
               				</div>
               				<div class="col-md-6">
@@ -333,7 +333,7 @@
 	              				<div class="col-md-6">
 	              					<div class="form-group">
 	              						<label for="" class="control-label">Precio (*)</label>
-	              						<input type="number" id="n_precio_t" class="form-control n_precio_t">
+	              						<input type="number" step="any" id="n_precio_t" class="form-control n_precio_t">
 	              					</div>
 	              				</div>
 	              			</div>
@@ -375,7 +375,7 @@
 	              				<div class="col-md-6">
 	              					<div class="form-group">
 	              						<label for="" class="control-label">Precio (*)</label>
-	              						<input type="number" name="precio" class="form-control n_precio_tr">
+	              						<input type="number" step="any" name="precio" class="form-control n_precio_tr">
 	              					</div>
 	              				</div>
 	              			</div>

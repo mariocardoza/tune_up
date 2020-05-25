@@ -268,4 +268,32 @@ class CotizacionController extends Controller
     });
       
     }
+
+    public function el_via(Request $r,$id)
+    {
+      if($r->aplicariva=='si')
+      {
+        $coti=Cotizacione::find($id);
+        $subto=$coti->subtotal;
+        $ivar=$coti->iva_r;
+        $iva=session('iva')*$subto;
+        $total=$coti->total;
+        $nt=$total+$iva+$ivar;
+        $coti->iva=$iva;
+        $coti->total=$nt;
+        $coti->coniva='si';
+        $coti->save();
+        return array(1,'exito');
+      }else{
+        $coti=Cotizacione::find($id);
+        $total=$coti->total;
+        $iva=$coti->iva;
+        $nt=$total-$iva;
+        $coti->iva=0.0;
+        $coti->total=$nt;
+        $coti->coniva='no';
+        $coti->save();
+        return array(1,'exito');
+      }
+    }
 }

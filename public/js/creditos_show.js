@@ -491,12 +491,7 @@ $(document).ready(function(e){
 	});
 
 	//calcular kilometraje
-	$(document).on("input",".kilometraje",function(e){
-		e.preventDefault();
-		var actual=parseFloat($(this).val());
-		var proximo=actual+5000;
-		$(".kmproxi").val(proximo);
-	});
+
 });
 
 function obtenervehiculos(id,actual=""){

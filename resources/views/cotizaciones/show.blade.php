@@ -66,18 +66,34 @@
 									</select>
 								</div>
 								<div class="row">
+									@if($cotizacion->vehiculo->tipomedida=='km')
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km Recepción</label>
-											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->vehiculo->kilometraje}}" class="form-control kilometraje" >
+											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control " >
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km próxima</label>
-											<input type="number" value="{{$cotizacion->vehiculo->km_proxima}}" name="km_proxima" class="form-control kmproxi" readonly>
+											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control " readonly>
 										</div>
 									</div>
+									@else
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Mi Recepción</label>
+											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control " >
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Mi próxima</label>
+											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control " step="any" readonly>
+										</div>
+									</div>
+
+									@endif
 								</div>
 								<div class="row" id="datos_carro">
 									<div class="col-md-6">
@@ -144,6 +160,11 @@
 									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
 									<button type="button" title="Eliminar cotizacion" data-id="{{$cotizacion->id}}" class="btn btn-danger eliminar_lacoti"><i class="fas fa-trash"></i> Eliminar</button>
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
+									@if($cotizacion->coniva=='no')
+									<button type="button" title="Aplicar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info aplicar_iva"><i class="fas fa-money"></i> Aplicar IVA</button>
+									@else
+									<button type="button" title="Quitar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info quitar_iva"><i class="fas fa-money"></i> Quitar IVA</button>
+									@endif
 								</div>
 							</div>
 						</div>
@@ -199,7 +220,7 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" id="n_precio_r" name="precio" class="form-control n_precio_r">
+              						<input type="number" step="any" id="n_precio_r" name="precio" class="form-control n_precio_r">
               					</div>
               				</div>
               				<div class="col-md-6">
@@ -249,7 +270,7 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" name="precio" class="form-control n_precio_rr">
+              						<input type="number" step="any" name="precio" class="form-control n_precio_rr">
               					</div>
               				</div>
               				<div class="col-md-6">
@@ -329,7 +350,7 @@
 	              				<div class="col-md-6">
 	              					<div class="form-group">
 	              						<label for="" class="control-label">Precio (*)</label>
-	              						<input type="number" id="n_precio_t" class="form-control n_precio_t">
+	              						<input type="number" step="any" id="n_precio_t" class="form-control n_precio_t">
 	              					</div>
 	              				</div>
 	              			</div>
@@ -337,7 +358,7 @@
 	              		<div class="col-md-4">
 	              			<div class="form-group">
 	      						<label for="" class="control-label">Subtotal (*)</label>
-	      						<input type="number" readonly class="form-control n_subto_t">
+	      						<input type="number" step="any" readonly class="form-control n_subto_t">
 	      					</div>
 	              		</div>
 	              	</div>
@@ -372,7 +393,7 @@
 	              				<div class="col-md-6">
 	              					<div class="form-group">
 	              						<label for="" class="control-label">Precio (*)</label>
-	              						<input type="number" name="precio" class="form-control n_precio_tr">
+	              						<input type="number" step="any" name="precio" class="form-control n_precio_tr">
 	              					</div>
 	              				</div>
 	              			</div>
@@ -380,7 +401,7 @@
 	              		<div class="col-md-4">
 	              			<div class="form-group">
 	      						<label for="" class="control-label">Subtotal (*)</label>
-	      						<input type="number" readonly class="form-control n_subto_tr">
+	      						<input type="number" step="any" readonly class="form-control n_subto_tr">
 	      					</div>
 	              		</div>
 	              	</div>
@@ -533,6 +554,50 @@
         	$('#verpdf').attr('src', url);
         	//$('#verpdf').reload();
         	$("#modal_pdf").modal("show");
+		});
+
+		//aplicar iva a la cotizacion
+		$(document).on("click",".aplicar_iva",function(e){
+			e.preventDefault();
+			var id=$(this).attr("data-id");
+			$.ajax({
+				url:'../cotizaciones/eliva/'+id,
+				type:'post',
+				dataType:'json',
+				data:{aplicariva:'si'},
+				success: function(json){
+					if(json[0]==1){
+						toastr.success("IVA aplicado con éxito");
+						location.reload();
+					}else{
+						toastr.success('Ocurrió un error, Intente nuevamente');
+					}
+				},error: function(e){
+					toastr.success('Ocurrió un error, Intente nuevamente');
+				}
+			});
+		});
+
+		//quitar iva a la cotizacion
+		$(document).on("click",".quitar_iva",function(e){
+			e.preventDefault();
+			var id=$(this).attr("data-id");
+			$.ajax({
+				url:'../cotizaciones/eliva/'+id,
+				type:'post',
+				dataType:'json',
+				data:{aplicariva:'no'},
+				success: function(json){
+					if(json[0]==1){
+						toastr.success("IVA quitado con éxito");
+						location.reload();
+					}else{
+						toastr.success('Ocurrió un error, Intente nuevamente');
+					}
+				},error: function(e){
+					toastr.success('Ocurrió un error, Intente nuevamente');
+				}
+			});
 		});
 	});
 
