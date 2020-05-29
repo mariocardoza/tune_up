@@ -71,7 +71,17 @@ class VehiculoController extends Controller
     {
         $this->validar($request->all())->validate();
         try{
-            $vehiculo=Vehiculo::create($request->all());
+            $vehiculo=Vehiculo::create([
+                'cliente_id'=>$request->cliente_id,
+                'placa'=>$request->placa,
+                'anio'=>$request->anio,
+                'marca_id'=>$request->marca_id,
+                'modelo_id'=>$request->modelo_id,
+                'tipomedida'=>$request->tipomedida,
+                'motor' => $request->motor == "" ? 'N/A' : $request->motor,
+                'vin' => $request->vin == "" ? 'N/A' : $request->vin,
+                'notas'=>$request->notas
+            ]);
             return array(1,"exito");
         }catch(Exception $e){
             return array(-1,"error",$e->getMessage());
@@ -155,7 +165,7 @@ class VehiculoController extends Controller
       return Validator::make($data, [
           'placa'=>'required|unique:vehiculos',
           'marca_id'=>'required',
-          'motor'=>'required|unique:vehiculos',
+          'motor'=>'unique:vehiculos',
       ],$mensajes);
     }
 }
