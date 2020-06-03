@@ -8,7 +8,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link  rel="icon"   href="{{asset('images/favicon.png')}}" type="image/png" />
+  <link  rel="shortcut icon"   href="{{asset('images/favicon.png')}}" type="image/png" />
   <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/app.css?cod='.date('Yidisus'))}}">
