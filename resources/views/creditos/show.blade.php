@@ -241,14 +241,14 @@
                     <div class="form-group">
                       <label for="">Nombre del repuesto</label>
                       
-                      <input type="text" name="nombre" class="form-control">
+                      <input type="text" autocomplete="off" name="nombre" class="form-control">
                       <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="">Código</label>
-                      <input type="text" name="codigo" placeholder="Ingrese el año" class="form-control">
+                      <input type="text" autocomplete="off" name="codigo" placeholder="Ingrese el año" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -364,7 +364,7 @@
 	                  <div class="col-md-8">
 	                    <div class="form-group">
 	                      <label for="">Nombre de la mano de obra</label>
-	                      <input type="text" name="nombre" class="form-control">
+	                      <input type="text" autocomplete="off" name="nombre" class="form-control">
 	                      <input type="hidden" name="cotizacion_id" value="{{$cotizacion->id}}">
 	                    </div>
 	                  </div>

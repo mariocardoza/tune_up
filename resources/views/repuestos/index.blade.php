@@ -52,8 +52,6 @@
                         @if($r->estado==1)
                         <a href="javascript:void(0)" data-id="{{$r->id}}" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></a>
               					<a href="javascript:void(0)" data-id="{{$r->id}}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash"></i></a>
-                        @else 
-                        <a href="javascript:void(0)" data-id="{{$r->id}}" class="btn btn-success btn-sm restaurar"><i class="fas fa-undo"></i></a>
                         @endif
               				</td>
               			</tr>

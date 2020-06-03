@@ -236,13 +236,13 @@
                     <div class="form-group">
                       <label for="">Nombre del repuesto</label>
                       
-                      <input type="text" name="nombre" class="form-control">
+                      <input type="text" autocomplete="off" name="nombre" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="">Código</label>
-                      <input type="text" name="codigo" placeholder="Ingrese el año" class="form-control">
+                      <input type="text" autocomplete="off" name="codigo" placeholder="Ingrese el año" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -358,7 +358,7 @@
 	                  <div class="col-md-8">
 	                    <div class="form-group">
 	                      <label for="">Nombre de la mano de obra</label>
-	                      <input type="text" name="nombre" class="form-control nont">
+	                      <input type="text" autocomplete="off" name="nombre" class="form-control nont">
 	                    </div>
 	                  </div>
 	                  <div class="col-md-4">
@@ -417,7 +417,7 @@
       <div class="modal-body">
 
 		<div class="form-group">
-			<input type="text" class="form-control txtplaca">
+			<input type="text" autocomplete="off" class="form-control txtplaca">
 		</div>      
       </div>
     </div>

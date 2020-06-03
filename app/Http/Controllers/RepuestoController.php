@@ -79,6 +79,7 @@ class RepuestoController extends Controller
 
                     $rr=RepuestoDetalle::create([
                     'repuesto_id'=>$repuesto->id,
+                    'nombre'=>$repuesto->nombre,
                     'precio'=>$request->precio,
                     'cantidad'=>$request->cantidad,
                     'cotizacion_id'=>$coti->id
@@ -117,6 +118,7 @@ class RepuestoController extends Controller
                 $coti=Cotizacione::find($request->cotizacion_id);
                 $rr=RepuestoDetalle::create([
                     'repuesto_id'=>$repuesto->id,
+                    'nombre'=>$repuesto->nombre,
                     'precio'=>$request->precio,
                     'cantidad'=>$request->cantidad,
                     'cotizacion_id'=>$request->cotizacion_id
@@ -175,10 +177,12 @@ class RepuestoController extends Controller
                 'precio'=>$request->precio
             ]);
 
-            $previa=RepuestoPrevia::create([
+            $previa=RepuestoDetalle::create([
                 'repuesto_id'=>$repuesto->id,
+                'nombre'=>$repuesto->nombre,
                 'precio'=>$repuesto->precio,
-                'cantidad'=>$request->cantidad
+                'cantidad'=>$request->cantidad,
+                'cotizacion_id'=>$request->cotizacion_id
             ]);
             if($coti->coniva=='si'){
                 $sub=$coti->subtotal;
@@ -317,10 +321,11 @@ class RepuestoController extends Controller
     {
         $mensajes=array(
           'nombre.required'=>'El nombre del repuesto es obligatorio',
+          'nombre.unique'=>'El nombre del repuesto ya existe',
           'precio.required'=>'El precio del repuesto es obligatorio',
       );
       return Validator::make($data, [
-          'nombre'=>'required',
+          'nombre'=>'required|unique:repuestos',
           'precio'=>'required',
       ],$mensajes);
     }

@@ -80,6 +80,7 @@ class TrabajoController extends Controller
 
                 $trabajo=TrabajoDetalle::create([
                 'trabajo_id'=>$trabajo->id,
+                'nombre'=>$trabajo->nombre,
                 'precio'=>$request->precio,
                 'cantidad'=>$request->cantidad,
                 'cotizacion_id'=>$coti->id
@@ -118,6 +119,7 @@ class TrabajoController extends Controller
                 $coti=Cotizacione::find($request->cotizacion_id);
                 $trabajo=TrabajoDetalle::create([
                     'trabajo_id'=>$trabajo->id,
+                    'nombre'=>$trabajo->nombre,
                     'precio'=>$request->precio,
                     'cantidad'=>$request->cantidad,
                     'cotizacion_id'=>$request->cotizacion_id
@@ -170,13 +172,14 @@ class TrabajoController extends Controller
         try{
             $coti=Cotizacione::find($request->cotizacion_id);
             $trabajo=Trabajo::create([
-                'nombre'=>$request->nombre,
+                'nombre'=>mb_strtoupper($request->nombre),
                 'codigo'=>$request->codigo,
                 'precio'=>$request->precio
             ]);
 
             $previa=TrabajoDetalle::create([
                 'trabajo_id'=>$trabajo->id,
+                'nombre'=>$trabajo->nombre,
                 'precio'=>$trabajo->precio,
                 'cantidad'=>1,
                 'cotizacion_id'=>$request->cotizacion_id
@@ -221,7 +224,7 @@ class TrabajoController extends Controller
       $this->validar($request->all())->validate();
       try{
         $repuesto=Trabajo::create([
-            'nombre'=>$request->nombre,
+            'nombre'=>mb_strtoupper($request->nombre),
             'codigo'=>$request->codigo,
             'precio'=>$request->precio
         ]);
@@ -304,10 +307,11 @@ class TrabajoController extends Controller
     {
         $mensajes=array(
           'nombre.required'=>'El nombre del trabajo es obligatorio',
+          'nombre.unique'=>'El nombre del trabajo ya existe',
           'precio.required'=>'El precio del trabajo es obligatorio',
       );
       return Validator::make($data, [
-          'nombre'=>'required',
+          'nombre'=>'required|unique:trabajos',
           'precio'=>'required',
       ],$mensajes);
     }

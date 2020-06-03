@@ -192,7 +192,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="">Código</label>
-                      <input type="text" placeholder="" readonly="" class="form-control codir">
+                      <input type="text" placeholder="" autocomplete="off" readonly="" class="form-control codir">
                     </div>
                   </div>
                 </div>
@@ -204,13 +204,13 @@
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Precio (*)</label>
-              						<input type="number" id="n_precio_r" step="any" name="precio" class="form-control precio_r">
+              						<input type="number" id="n_precio_r" autocomplete="off" step="any" name="precio" class="form-control precio_r">
               					</div>
               				</div>
               				<div class="col-md-6">
               					<div class="form-group">
               						<label for="" class="control-label">Cantidad (*)</label>
-              						<input type="number" value="1" id="n_cantidad_r" class="form-control cantidad_r">
+              						<input type="number" value="1" autocomplete="off" id="n_cantidad_r" class="form-control cantidad_r">
               					</div>
               				</div>
               			</div>
@@ -235,13 +235,13 @@
                     <div class="form-group">
                       <label for="">Nombre del repuesto</label>
                       
-                      <input type="text" name="nombre" class="form-control">
+                      <input type="text" autocomplete="off" name="nombre" autocomplete="off" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="">Código</label>
-                      <input type="text" name="codigo" placeholder="Ingrese el año" class="form-control">
+                      <input type="text" autocomplete="off" name="codigo" placeholder="Ingrese el año" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -357,13 +357,13 @@
 	                  <div class="col-md-8">
 	                    <div class="form-group">
 	                      <label for="">Nombre de la mano de obra</label>
-	                      <input type="text" name="nombre" class="form-control nont">
+	                      <input type="text" autocomplete="off" name="nombre" class="form-control nont">
 	                    </div>
 	                  </div>
 	                  <div class="col-md-4">
 	                    <div class="form-group">
 	                      <label for="">Código</label>
-	                      <input type="text" name="codigo" placeholder="" class="form-control codt">
+	                      <input type="text" name="codigo" autocomplete="off" placeholder="" class="form-control codt">
 	                    </div>
 	                  </div>
 	                </div>

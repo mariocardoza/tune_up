@@ -49,7 +49,7 @@ class Cotizacione extends Model
     	foreach ($trabajos as $i=> $t) {
     		$html.='<tr>
 				
-				<td>'.$t->trabajo->nombre.'</td>
+				<td>'.$t->nombre.'</td>
 				<td>'.number_format($t->precio,2).'</td>
 				<td>'.$t->cantidad.'</td>
 				<td>'.number_format($t->precio*$t->cantidad,2).'</td>
@@ -64,7 +64,7 @@ class Cotizacione extends Model
             foreach ($repuestos as $i=> $r) {
             $html.='<tr>
                 
-                <td>'.$r->repuesto->nombre.'</td>
+                <td>'.$r->nombre.'</td>
                 <td>'.number_format($r->precio,2).'</td>
                 <td>'.$r->cantidad.'</td>
                 <td>'.number_format($r->precio*$r->cantidad,2).'</td>
@@ -116,7 +116,7 @@ class Cotizacione extends Model
     	
     	foreach ($trabajos as $i=> $t) {
     		$html.='<tr style="font-size: 13px;">
-				<td>'.$t->trabajo->nombre.'</td>
+				<td>'.$t->nombre.'</td>
 				<td>'.number_format($t->precio,2).'</td>
 				<td>'.$t->cantidad.'</td>
 				<td>'.number_format($t->precio*$t->cantidad,2).'</td>
@@ -129,7 +129,7 @@ class Cotizacione extends Model
 
         foreach ($repuestos as $i=> $r) {
             $html.='<tr style="font-size: 13px;">
-                <td>'.$r->repuesto->nombre.'</td>
+                <td>'.$r->nombre.'</td>
                 <td>'.number_format($r->precio,2).'</td>
                 <td>'.$r->cantidad.'</td>
                 <td>'.number_format($r->precio*$r->cantidad,2).'</td>

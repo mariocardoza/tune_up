@@ -7,6 +7,7 @@ use App\TrabajoPrevia;
 use App\TrabajoDetalle;
 use App\Cotizacione;
 use App\Vehiculo;
+use App\Trabajo;
 use Validator;
 use DB;
 
@@ -70,8 +71,11 @@ class TrabajodetallesController extends Controller
                 $vehiculo->km_proxima=$request->km_proxima;
                 $vehiculo->save();
 
+                $ttt=Trabajo::find($request->trabajo_id);
+
                 $trabajo=TrabajoDetalle::create([
                     'trabajo_id'=>$request->trabajo_id,
+                    'nombre'=>$ttt->nombre,
                     'precio'=>$request->precio,
                     'cantidad'=>$request->cantidad,
                     'cotizacion_id'=>$coti->id
@@ -110,8 +114,10 @@ class TrabajodetallesController extends Controller
                 endif;
             else:
                 $coti=Cotizacione::find($request->cotizacion_id);
+                $ttt=Trabajo::find($request->trabajo_id);
                 $trabajo=TrabajoDetalle::create([
                     'trabajo_id'=>$request->trabajo_id,
+                    'nombre'=>$ttt->nombre,
                     'precio'=>$request->precio,
                     'cantidad'=>$request->cantidad,
                     'cotizacion_id'=>$request->cotizacion_id
@@ -164,9 +170,10 @@ class TrabajodetallesController extends Controller
         try{
             DB::beginTransaction();
             $coti=Cotizacione::find($request->cotizacion_id);
-            
+            $ttt=Trabajo::find($request->trabajo_id);
             $trabajo=TrabajoDetalle::create([
                 'trabajo_id'=>$request->trabajo_id,
+                'nombre'=>$ttt->nombre,
                 'precio'=>$request->precio,
                 'cantidad'=>$request->cantidad,
                 'cotizacion_id'=>$request->cotizacion_id

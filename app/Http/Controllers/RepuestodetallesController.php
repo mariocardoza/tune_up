@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\RepuestoPrevia;
 use App\RepuestoDetalle;
 use App\Vehiculo;
+use App\Repuesto;
 use Validator;
 use DB;
 use App\Cotizacione;
@@ -71,8 +72,11 @@ class RepuestodetallesController extends Controller
                 $vehiculo->km_proxima=$request->km_proxima;
                 $vehiculo->save();
 
+                $rrr=Repuesto::find($request->repuesto_id);
+
                 $trabajo=RepuestoDetalle::create([
                 'repuesto_id'=>$request->repuesto_id,
+                'nombre'=>$rrr->nombre,
                 'precio'=>$request->precio,
                 'cantidad'=>$request->cantidad,
                 'cotizacion_id'=>$coti->id
@@ -110,8 +114,10 @@ class RepuestodetallesController extends Controller
                 endif;
             else:
                 $coti=Cotizacione::find($request->cotizacion_id);
+                $rrr=Repuesto::find($request->repuesto_id);
                 $trabajo=RepuestoDetalle::create([
                     'repuesto_id'=>$request->repuesto_id,
+                    'nombre'=>$rrr->nombre,
                     'precio'=>$request->precio,
                     'cantidad'=>$request->cantidad,
                     'cotizacion_id'=>$request->cotizacion_id
@@ -170,8 +176,10 @@ class RepuestodetallesController extends Controller
          try{
             DB::beginTransaction();
             $coti=Cotizacione::find($request->cotizacion_id);
+            $repuesto=Repuesto::find($request->repuesto_id);
             $trabajo=RepuestoDetalle::create([
                 'repuesto_id'=>$request->repuesto_id,
+                'nombre'=>$repuesto->nombre,
                 'precio'=>$request->precio,
                 'cantidad'=>$request->cantidad,
                 'cotizacion_id'=>$request->cotizacion_id
