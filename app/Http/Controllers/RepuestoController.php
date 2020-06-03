@@ -307,11 +307,12 @@ class RepuestoController extends Controller
     {
         $mensajes=array(
           'nombre.required'=>'El nombre del repuesto es obligatorio',
+          'nombre.unique'=>'El nombre del repuesto ya existe',
           'precio.required'=>'El precio del repuesto es obligatorio',
           'cantidad.required'=>'La cantidad es obligatoria',
       );
       return Validator::make($data, [
-          'nombre'=>'required',
+          'nombre'=>'required|unique:repuestos',
           'precio'=>'required',
           'cantidad'=>'required'
       ],$mensajes);

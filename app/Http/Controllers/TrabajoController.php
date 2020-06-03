@@ -308,6 +308,7 @@ class TrabajoController extends Controller
         $mensajes=array(
           'nombre.required'=>'El nombre del trabajo es obligatorio',
           'nombre.unique'=>'El nombre del trabajo ya existe',
+          'nombre.unique'=>'El nombre del trabajo ya existe',
           'precio.required'=>'El precio del trabajo es obligatorio',
       );
       return Validator::make($data, [
