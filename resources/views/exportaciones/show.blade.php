@@ -152,7 +152,7 @@
 							<div class="col-md-12">
 								<div class="text-center">
 									
-									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
+									<a href="{{url('exportaciones/reporte/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
 									<button type="button" class="btn btn-success"><i class="fas fa-envelope"></i> Enviar</button>
 								</div>
 							</div>
@@ -424,6 +424,17 @@
 
 		//cambiar el select de cliente
 		$("#cliente_id").trigger("change");
+
+		//imprimir frame
+		$(document).on("click",".imprime",function(e){
+			e.preventDefault();
+			      $(".modal").modal("hide");
+
+			var url = $(this).attr('href');
+        	$('#verpdf').attr('src', url);
+        	//$('#verpdf').reload();
+        	$("#modal_pdf").modal("show");
+		});
 	});
 
 	function obtenerguardados(id){
