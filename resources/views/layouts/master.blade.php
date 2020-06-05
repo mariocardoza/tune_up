@@ -8,7 +8,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <link  rel="shortcut icon"   href="{{asset('images/favicon.png')}}" type="image/png" />
+  <link  rel="shortcut icon"   href="{{asset('favicon.ico')}}" type="image/x-icon" />
   <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/app.css?cod='.date('Yidisus'))}}">
@@ -323,7 +323,7 @@
 
 
 <!-- modales aqui -->
-<div class="modal fade" id="modal_pdf" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_pdf" data-backdrop="static" data-keyboard="false" style="overflow-y: scroll;" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">

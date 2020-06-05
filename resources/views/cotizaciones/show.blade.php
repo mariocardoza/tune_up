@@ -162,8 +162,11 @@
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
 									@if($cotizacion->coniva=='no')
 									<button type="button" title="Aplicar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info aplicar_iva"><i class="fas fa-money"></i> Aplicar IVA</button>
+									<button class="btn btn-success convertir" title="Convertir a Factura" data-id="{{$cotizacion->id}}" data-estado="2" type="button">FCC</button>
+									<button class="btn btn-success convertir" title="Convertir a Factura de exportación" data-id="{{$cotizacion->id}}" data-estado="4" type="button">FE</button>
 									@else
 									<button type="button" title="Quitar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info quitar_iva"><i class="fas fa-money"></i> Quitar IVA</button>
+									<button class="btn btn-success convertir" title="Convertir a Crédito fiscal" data-id="{{$cotizacion->id}}" data-estado="3" type="button">FCF</button>
 									@endif
 								</div>
 							</div>
@@ -176,6 +179,42 @@
 </div>
 
 <!--- Modales -->
+<div class="modal fade" id="modal_convertir" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">¿Está seguro de convertir la cotización?
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	
+        <form id="form_convertir" role="form">
+        	<div class="row">
+        		<div class="col-md-12">
+        			<div class="form-group">
+		        		<label for="">Fecha</label>
+		        		<input type="text" name="fecha" class="form-control fecha" value="{{$cotizacion->fecha->format('d/m/Y')}}">
+		        		<input type="hidden" name="id" class="form-control" value="{{$cotizacion->id}}">
+		        		<input type="hidden" name="estado" class="convertir_estado">
+		        	</div>
+        		</div>
+        	</div>
+        </form>
+          
+      </div>
+      <div class="modal-footer">
+        <div class="float-none">
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        	<button type="button" id="convierte" class="btn btn-success">Confirmar</button>
+    	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="modal_repuesto" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -433,6 +472,40 @@
 		
 		obtenerguardados(elid);
 		info_carro(v_id);
+
+		//modal convertir cotizacion
+		$(document).on("click",".convertir",function(e){
+			e.preventDefault();
+			var estado=$(this).attr("data-estado");
+			$(".convertir_estado").val(estado);
+			$("#modal_convertir").modal("show");
+		});
+
+		//convertir cotizacion
+		$(document).on("click","#convierte",function(e){
+			e.preventDefault();
+			var datos=$("#form_convertir").serialize();
+			modal_cargando();
+			$.ajax({
+				url:'../cotizaciones/convertir',
+				type:'post',
+				dataType:'json',
+				data:datos,
+				success: function(json){
+					if(json[0]==1){
+						toastr.success("Cotización convertida con éxito");
+						location.href=json[2];
+					}else{
+						toastr.error("Ocurrió un error");
+						swal.closeModal();
+					}
+				},
+				error: function(e){
+					toastr.error("Ocurrió un error");
+					swal.closeModal();
+				}
+			});
+		});
 
 		//cambiar el select de cliente
 		$("#cliente_id").trigger("change");

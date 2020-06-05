@@ -45,6 +45,31 @@ class CotizacionController extends Controller
         $retorno=Vehiculo::obtenervehiculos($id,$request->actual);
         return $retorno;
     }
+
+    public function convertir(Request $request)
+    {
+      try{
+        $ruta="";
+        $coti=Cotizacione::find($request->id);
+        $correlativo_a=$coti->correlativo;
+        $coti->correlativo_cotizacion=$correlativo_a;
+        $coti->tipo_documento=$request->estado;
+        $coti->fecha=invertir_fecha($request->fecha);
+        $coti->correlativo=Cotizacione::correlativo($request->estado);
+        $coti->save();
+        if($request->estado==2){
+          $ruta="../facturas/".$request->id;
+        }else if($request->estado==3){
+          $ruta="../creditos/".$request->id;
+        }else{
+          $ruta="../exportaciones/".$request->id;
+        }
+        return array(1,$coti,$ruta);
+      }catch(Exception $e){
+        return array(-1,"error",$e->getMessage());
+      }
+    }
+
     public function index()
     {
         $cotizaciones=Cotizacione::where('tipo_documento',1)->get();

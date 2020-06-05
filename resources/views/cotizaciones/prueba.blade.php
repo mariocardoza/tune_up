@@ -39,7 +39,10 @@
    }   
     .FRX1_19{
   text-align:right;direction:ltr;vertical-align: top; font-family: "Calibri"; font-size: 9pt; border: 0px none; padding: 0px; margin: 0px;font-weight: normal;color:#000000;background-color:transparent;overflow:hidden; position: absolute;
-   }   
+   }  
+   .correo{
+  text-align:left;direction:ltr;vertical-align: top; font-family: "Calibri"; font-size: 11pt; border: 0px none; padding: 0px; margin: 0px;font-weight: normal;color:#000000;background-color:transparent;overflow:hidden; position: absolute;
+   }    
     .FRX1_20{
   text-align:left;direction:ltr;vertical-align: top; font-family: "Courier New"; font-size: 12pt; border: 0px none; padding: 0px; margin: 0px;font-weight: bold;color:#000000;background-color:transparent;overflow:hidden; position: absolute;
    }   
@@ -154,13 +157,13 @@ top:2.84583in;width:0.80625in;height:0.15625in;">FECHA:</div>
 <div class="FRX1_33" style="z-Index:18;left:1.00208in;top:0.11667in;width:3in;height:0.81250in;">TUNE UP</div>
 <div class="FRX1_34" style="z-Index:19;left:1.62708in;top:0.84583in;width:2in;height:0.34375in;">SERVICE</div><div class="FRX1_35" style="z-Index:20;left:0.73125in;
 top:1.22083in;width:4.13125in;height:0.19792in;">REPARACION DE VEHICULOS  MAQUINARIA</div><div class="FRX1_36" style="z-Index:21;left:0.73125in;
-top:1.47083in;width:5.23958in;height:0.69792in;">{{$taller->direccion}}</div><div class="FRX1_39" style="z-Index:22;left:0.73125in;
-top:2.0958in;width:1.61042in;height:0.13542in;">CORREO:{{$taller->email}}</div><div class="FRX1_41" style="z-Index:23;left:0.73125in;
+top:1.47083in;width:5.23958in;height:0.69792in;">{{$taller->direccion}}</div><div class="correo" style="z-Index:22;left:0.73125in;
+top:2.0458in;width:3.09042in;height:0.23542in;">CORREO:{{$taller->email}}</div><div class="FRX1_41" style="z-Index:23;left:0.73125in;
 top:3.16875in;width:4.66083in;height:0.14583in;">N I T: {{$cotizacion->cliente->nit}}</div><div class="FRX1_42" style="z-Index:24;left:5.63125in;
 top:1.18958in;width:1.79167in;height:0.14583in;">KM.RECEPCIÓN</div><div class="FRX1_43" style="z-Index:25;left:5.63125in;
 top:1.55417in;width:2.27083in;height:0.14583in;">KM. PRÓXIMA REVISIÓN</div><div class="FRX1_44" style="z-Index:26;left:5.73125in;
-top:1.32500in;width:0.96875in;height:0.15625in;">{{$cotizacion->vehiculo->kilometraje}}</div><div class="FRX1_45" style="z-Index:27;left:5.73125in;
-top:1.68958in;width:1.16667in;height:0.15625in;">{{$cotizacion->vehiculo->km_proxima}}</div><div class="FRX1_46" style="z-Index:28;left:0.73125in;
+top:1.32500in;width:0.96875in;height:0.15625in;">{{number_format($cotizacion->vehiculo->kilometraje)}}</div><div class="FRX1_45" style="z-Index:27;left:5.73125in;
+top:1.68958in;width:1.16667in;height:0.15625in;">{{number_format($cotizacion->vehiculo->km_proxima)}}</div><div class="FRX1_46" style="z-Index:28;left:0.73125in;
 top:1.85042in;width:4.26042in;height:0.19792in;">TELS.: {{$taller->telefono1}}, {{$taller->telefono2}}     CEL.: {{$taller->celular}}</div>
 
 <div class="FRX1_24" style="z-Index:3;left:0.31250in;top:3.9in;width:0.42708in;height:0.15625in; font-weight: bold;">    N°</div>
@@ -190,15 +193,15 @@ top:1.85042in;width:4.26042in;height:0.19792in;">TELS.: {{$taller->telefono1}}, 
 @endforeach
 
 <div class="FRX1_8" style="z-Index:1;left:5.56667in;
-top:8.06875in;width:1.84375in;height:0.16667in;">        $ {{number_format($cotizacion->subtotal,2)}}</div><div class="FRX1_9" style="z-Index:2;left:5.56667in;
-top:8.35000in;width:1.85417in;height:0.16667in;">        $ {{number_format($cotizacion->iva,2)}}</div><div class="FRX1_10" style="z-Index:3;left:5.56667in;
-top:9.65208in;width:1.85417in;height:0.20833in;">        $ {{number_format($cotizacion->total,2)}}</div><div class="FRX1_11" style="z-Index:4;left:0.52292in;
-top:8.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><div class="FRX1_17" style="z-Index:5;left:5.56667in;
-top:8.57917in;width:1.84375in;height:0.16667in;">        $ {{number_format($cotizacion->total,2)}}</div><div class="FRX1_37" style="z-Index:6;left:5.87708in;
-top:9.68333in;width:1.20000in;height:0.19792in;">TOTAL:</div><div class="FRX1_38" style="z-Index:7;left:4.75208in;
-top:8.57917in;width:2.09375in;height:0.19792in;">TOTAL A PAGAR</div><div class="FRX1_40" style="z-Index:8;left:5.25208in;
-top:8.05833in;width:0.85417in;height:0.18750in;">NETO</div><div class="FRX1_47" style="z-Index:9;left:6.54375in;
-top:8.06875in;width:0.07292in;height:0.15625in;">$</div><div class="FRX1_48" style="z-Index:10;left:6.54375in;
-top:8.32917in;width:0.07292in;height:0.15625in;">$</div><div class="FRX1_49" style="z-Index:11;left:6.54375in;
-top:8.60000in;width:0.07292in;height:0.15625in;">$</div><div class="FRX1_50" style="z-Index:12;left:5.27292in;
-top:8.29792in;width:0.35417in;height:0.18750in;">I.V.A.</div></div></div></body></html>
+top:9.06875in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div><div class="FRX1_9" style="z-Index:2;left:5.56667in;
+top:9.35000in;width:1.85417in;height:0.16667in;">        {{number_format($cotizacion->iva,2)}}</div><div class="FRX1_10" style="z-Index:3;left:5.56667in;
+top:9.57917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div><div class="FRX1_11" style="z-Index:4;left:0.52292in;
+top:9.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><!--div class="FRX1_17" style="z-Index:5;left:5.56667in;
+top:8.57917in;width:1.84375in;height:0.16667in;">         {{number_format($cotizacion->total,2)}}</div--><div class="FRX1_37" style="z-Index:6;left:5.87708in;
+top:9.68333in;width:1.20000in;height:0.19792in;"></div><div class="FRX1_38" style="z-Index:7;left:4.75208in;
+top:9.57917in;width:2.09375in;height:0.19792in;">TOTAL A PAGAR</div><div class="FRX1_40" style="z-Index:8;left:5.25208in;
+top:9.05833in;width:0.85417in;height:0.18750in;">NETO</div><div class="FRX1_47" style="z-Index:9;left:6.54375in;
+top:9.06875in;width:0.07292in;height:0.15625in;">$</div><div class="FRX1_48" style="z-Index:10;left:6.54375in;
+top:9.32917in;width:0.07292in;height:0.15625in;">$</div><div class="FRX1_49" style="z-Index:11;left:6.54375in;
+top:9.60000in;width:0.07292in;height:0.15625in;">$</div><div class="FRX1_50" style="z-Index:12;left:5.27292in;
+top:9.29792in;width:0.35417in;height:0.18750in;">I.V.A.</div></div></div></body></html>

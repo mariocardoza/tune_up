@@ -42,6 +42,7 @@ Route::get('cotizaciones/vehiculos/{id}','CotizacionController@obtenervehiculos'
 Route::get('cotizaciones/previas/{id}','CotizacionController@obtenerprevia');
 Route::get('cotizaciones/guardadas/{id}','CotizacionController@obtenerguardadas');
 Route::get('cotizaciones/pdfcotizacion/{id}','CotizacionController@pdf');
+Route::post('cotizaciones/convertir','CotizacionController@convertir');
 
 Route::Resource('cotizaciones','CotizacionController');
 Route::Resource('exportaciones','ExportacionController');
