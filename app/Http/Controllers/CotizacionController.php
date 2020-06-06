@@ -11,6 +11,7 @@ use App\TrabajoPrevia;
 use App\RepuestoDetalle;
 use App\TrabajoDetalle;
 use App\Taller;
+use Validator;
 use DB;
 use PDF;
 use Illuminate\Mail\Message;
@@ -283,14 +284,20 @@ class CotizacionController extends Controller
         }
     }
 
-    public function enviar($id)
+    public function enviar(Request $request)
     {
-      $cotizacion=Cotizacione::find($id);
-      Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message){
-      $message->to('mario.cardoza.huezo@gmail.com','Mario')
+      $this->validar($request->all())->validate();
+      $cotizacion=Cotizacione::find($request->id);
+      $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
+      $message->to($request->correo,'Mario')
       ->from('mariokr.rocker@gmail.com','Rene')
-    ->subject('prueba');
+    ->subject('Cotización N°: '.$cotizacion->correlativo);
     });
+      $response = [
+        'status' => 'success',
+        'msg' => 'Mail sent successfully',
+    ];
+      return response()->json([$response], 200);
       
     }
 
@@ -320,5 +327,16 @@ class CotizacionController extends Controller
         $coti->save();
         return array(1,'exito');
       }
+    }
+
+     protected function validar(array $data)
+    {
+        $mensajes=array(
+          'correo.required'=>'Debe ingresar el correo electrónico',
+          'correo.email'=>'Debe ser un correo electrónico',
+      );
+      return Validator::make($data, [
+          'correo'=>'required|email',
+      ],$mensajes);
     }
 }

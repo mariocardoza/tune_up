@@ -39,16 +39,21 @@
             
               <!-- /.mailbox-controls -->
               <div class="mailbox-read-message">
-                <p>Hola: {{$cotizacion->cliente->nombre}}</p>
+                <p style="font-weight: bold;">BUEN DÍA: {{$cotizacion->cliente->nombre}}</p>
+                <p style="font-weight: bold;">ESTA ES LA COTIZACIÓN PARA SU VEHÍCULO:</p>
+                <p><span style="font-weight: bold;">PLACA:</span> {{$cotizacion->vehiculo->placa}}</p>
+                <p><span style="font-weight: bold;">MARCA:</span> {{$cotizacion->vehiculo->marca->marca}}</p>
+                <p><span style="font-weight: bold;">MODELO:</span> @if($cotizacion->vehiculo->modelo!=''){{ $cotizacion->vehiculo->modelo->nombre }} @endif</p>
+                <p><span style="font-weight: bold;">AÑO:</span> {{ $cotizacion->vehiculo->anio }}</p>
 
                 <table width="100%" rules="all">
                   <thead>
                     <tr>
                       <th width="5%">N°</th>
-                      <th width="60%">Descripción</th>
-                      <th width="10%">Precio ($)</th>
-                      <th width="10%">Cantidad</th>
-                      <th width="15%">Total</th>
+                      <th width="60%">DESCRIPCIÓN</th>
+                      <th width="10%">PRECIO ($)</th>
+                      <th width="10%">CANTIDAD</th>
+                      <th width="15%">TOTAL ($)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -77,6 +82,10 @@
                     @endforeach
                   </tbody>
                 </table>
+                <br>
+                <p style="text-align: right;">SUBTOTAL: ${{number_format($cotizacion->subtotal,2)}}</p>
+                <p style="text-align: right;">IVA: ${{number_format($cotizacion->iva,2)}}</p>
+                <p style="text-align: right;">TOTAL: ${{number_format($cotizacion->total,2)}}</p>
 
               </div>
               <!-- /.mailbox-read-message -->

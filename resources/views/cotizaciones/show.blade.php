@@ -70,20 +70,20 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km Recepción</label>
-											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control " >
+											<input type="number" name="kilometraje" value="{{$cotizacion->kilometraje}}" class="form-control " >
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km próxima</label>
-											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control " readonly>
+											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control " readonly="">
 										</div>
 									</div>
 									@else
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Mi Recepción</label>
-											<input type="number" name="kilometraje" readonly="" value="{{$cotizacion->kilometraje}}" class="form-control " >
+											<input type="number" name="kilometraje" value="{{$cotizacion->kilometraje}}" class="form-control " >
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -209,6 +209,42 @@
         <div class="float-none">
         	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
         	<button type="button" id="convierte" class="btn btn-success">Confirmar</button>
+    	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_enviar" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">¿Enviar cotización por correo electrónico?
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	
+        <form id="form_email" role="form">
+        	<div class="row">
+        		<div class="col-md-12">
+        			<div class="form-group">
+		        		<label for="">Correo electrónico</label>
+		        		<input type="text" name="correo" class="form-control " value="{{$cotizacion->cliente->correo}}">
+		        		<input type="hidden" name="id" class="form-control" value="{{$cotizacion->id}}">
+		        		
+		        	</div>
+        		</div>
+        	</div>
+        </form>
+          
+      </div>
+      <div class="modal-footer">
+        <div class="float-none">
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        	<button type="button" id="enviar" class="btn btn-success">Enviar</button>
     	</div>
       </div>
     </div>
@@ -507,6 +543,44 @@
 			});
 		});
 
+		//enviar cotizacion por correo
+		$(document).on("click",".enviar_correo",function(e){
+			e.preventDefault();
+			$("#modal_enviar").modal("show");
+		});
+
+		$(document).on("click","#enviar",function(e){
+			e.preventDefault();
+			var datos=$("#form_email").serialize();
+			modal_cargando();
+			$.ajax({
+				url:'enviar',
+				type:'post',
+				data:datos,
+				dataType:'json',
+				
+            	processData: true,
+             //xhrFields is what did the trick to read the blob to pdf
+            	
+				success: function(response, status, xhr){
+					
+                	if(response){
+                		toastr.success("Cotización enviada con éxito");
+                		swal.closeModal();
+                	}else{
+                		swal.closeModal();
+                		toastr.error("Ocurrió un error");
+                	}
+				},
+				error: function(error){
+					$.each(error.responseJSON.errors,function(index,value){
+	      				toastr.error(value);
+	      			});
+	      			swal.closeModal();
+				}
+			});
+		});
+
 		//cambiar el select de cliente
 		$("#cliente_id").trigger("change");
 		//eliminar la coti
@@ -549,73 +623,7 @@
 			var id=$(this).attr("data-id");
 			
   			
-			$.ajax({
-				url:'email/'+id,
-				type:'get',
-				cache: false,
-				contentType: false,
-            	processData: false,
-             //xhrFields is what did the trick to read the blob to pdf
-            	xhrFields: {
-                	responseType: 'blob'
-            	},
-				success: function(response, status, xhr){
-					var filename = "";                   
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-
-                 if (disposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    var matches = filenameRegex.exec(disposition);
-                    if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                } 
-                var linkelem = document.createElement('a');
-                try {
-                    var blob = new Blob([response], { type: 'application/octet-stream' });                        
-
-                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                        //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                        window.navigator.msSaveBlob(blob, filename);
-                    } else {
-                    	//var test ="C:\\xampp\\htdocs\\taller_t\\public\\";
-						//var URL = test.replace(/\\/g,'\');
-						//console.log(test);
-                        var URL =window.URL || window.webkitURL;
-                        var downloadUrl = URL.createObjectURL(blob);
-
-                        if (filename) { 
-                            // use HTML5 a[download] attribute to specify filename
-                            var a = document.createElement("a");
-
-                            // safari doesn't support this yet
-                            if (typeof a.download === 'undefined') {
-                                window.location = downloadUrl;
-                            } else {
-                                a.href = downloadUrl;
-                                a.download = filename;
-                                document.body.appendChild(a);
-                                a.target = "_blank";
-                                a.click();
-                            }
-
-                            $.ajax({
-                            	url:'enviar',
-                            	type:'get',
-                            	data:{filename},
-                            	success: function(json){
-
-                            	}
-                            });
-
-                        } else {
-                            window.location = downloadUrl;
-                        }
-                    }   
-
-                } catch (ex) {
-                    console.log(ex);
-                } 
-				}
-			});
+			
 		});
 
 		//imprimir frame

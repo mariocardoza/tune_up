@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('cotizaciones/email/{id}','CotizacionController@email');
-Route::get('cotizaciones/enviar/{id}','CotizacionController@enviar');
+Route::post('cotizaciones/enviar','CotizacionController@enviar');
 
 Auth::routes();
 Route::post('authenticate','Auth\LoginController@authenticate')->name('authenticate');
