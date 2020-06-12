@@ -289,7 +289,9 @@ class CotizacionController extends Controller
     {
       $this->validar($request->all())->validate();
       $cotizacion=Cotizacione::find($request->id);
-      
+      $clienti=$cotizacion->cliente;
+      $clienti->correo=$request->correo;
+      $clienti->save();
       if($request->adicional!='' && filter_var($request->adicional, FILTER_VALIDATE_EMAIL)):
         $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
         $message->to($request->correo,$cotizacion->cliente->nombre)
