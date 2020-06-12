@@ -236,6 +236,11 @@
 		        		<input type="hidden" name="id" class="form-control" value="{{$cotizacion->id}}">
 		        		
 		        	</div>
+		        	<div class="form-group">
+		        		<label for="">Correo adicional</label>
+		        		<input type="text" name="adicional" class="form-control">
+		        		
+		        	</div>
         		</div>
         	</div>
         </form>

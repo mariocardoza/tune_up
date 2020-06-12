@@ -84,8 +84,9 @@ class CotizacionController extends Controller
      */
     public function create()
     {
+        $correlativo=Cotizacione::correlativo(1);
         $clientes=Cliente::where('estado',1)->get();
-        return view('cotizaciones.create',compact('clientes'));
+        return view('cotizaciones.create',compact('clientes','correlativo'));
     }
 
     /**
@@ -288,11 +289,23 @@ class CotizacionController extends Controller
     {
       $this->validar($request->all())->validate();
       $cotizacion=Cotizacione::find($request->id);
-      $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
-      $message->to($request->correo,'Mario')
-      ->from('mariokr.rocker@gmail.com','Rene')
-    ->subject('Cotización N°: '.$cotizacion->correlativo);
-    });
+      
+      if($request->adicional!='' && filter_var($request->adicional, FILTER_VALIDATE_EMAIL)):
+        $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
+        $message->to($request->correo,$cotizacion->cliente->nombre)
+        ->from('tuneupservis@gmail.com','TUNE - UP SERVICE')
+        ->cc($request->adicional,'')
+        ->replyTo('h_rivas47@yahoo.com', 'Héctor Rivas')
+        ->subject('Cotización N°: '.$cotizacion->correlativo);
+      });
+      else:
+        $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
+        $message->to($request->correo,$cotizacion->cliente->nombre)
+        ->from('tuneupservis@gmail.com','TUNE - UP SERVICE')
+        ->subject('Cotización N°: '.$cotizacion->correlativo);
+      });
+      endif;
+    
       $response = [
         'status' => 'success',
         'msg' => 'Mail sent successfully',
@@ -333,10 +346,12 @@ class CotizacionController extends Controller
     {
         $mensajes=array(
           'correo.required'=>'Debe ingresar el correo electrónico',
-          'correo.email'=>'Debe ser un correo electrónico',
+          'correo.email'=>'Debe ser un correo electrónico válido',
+          'adicional.email'=>'El correo adicional debe ser un correo electrónico válido',
       );
       return Validator::make($data, [
           'correo'=>'required|email',
+          //'adicional'=>'email',
       ],$mensajes);
     }
 }

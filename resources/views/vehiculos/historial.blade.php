@@ -124,7 +124,7 @@ padding-right : 5px;
 					<td width="5%" rowspan="1">{{$correlativo}}</td>
 					<td width="8%" colspan="1">&nbsp;</td>
 					<td width="8%" colspan="1">&nbsp;</td>
-					<td width="54%" style="text-align: left;" rowspan="1">{{$t->trabajo->nombre}}</td>
+					<td width="54%" style="text-align: left;" rowspan="1">{{$t->nombre}}</td>
 					<td width="5%" style="text-align: center;" rowspan="1">{{$t->cantidad}}</td>
 					<td width="10%" style="text-align: right;" rowspan="1">{{number_format($t->precio,2)}}</td>
 					<td width="10%" style="text-align: right;" rowspan="1">{{number_format($t->precio*$t->cantidad,2)}}</td>
@@ -138,7 +138,7 @@ padding-right : 5px;
 					<td width="5%" rowspan="1">{{$correlativo}}</td>
 					<td width="8%" colspan="1">&nbsp;</td>
 					<td width="8%" colspan="1">&nbsp;</td>
-					<td width="54%" style="text-align: left;" rowspan="1">{{$r->repuesto->nombre}}</td>
+					<td width="54%" style="text-align: left;" rowspan="1">{{$r->nombre}}</td>
 					<td width="5%" style="text-align: center;" rowspan="1">{{$r->cantidad}}</td>
 					<td width="10%" style="text-align: right;" rowspan="1">{{number_format($r->precio,2)}}</td>
 					<td width="10%" style="text-align: right;" rowspan="1">{{number_format($r->precio*$r->cantidad,2)}}</td>

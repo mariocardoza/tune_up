@@ -30,8 +30,9 @@ class CreditoController extends Controller
      */
     public function create()
     {
+        $correlativo=Cotizacione::correlativo(3);
         $clientes=Cliente::where('estado',1)->get();
-        return view('creditos.create',compact('clientes'));
+        return view('creditos.create',compact('clientes','correlativo'));
     }
 
     /**

@@ -24,8 +24,12 @@
 				<div class="card-body">
 					<form id="form_coti">
 						<div class="row">
+							<div class="col-md-12">
+								<span class="col-md-1">Cotización :</span><input type="text" value="{{$correlativo}}" class="form-control col-md-1">
+							</div>
 							<div class="col-md-6">
 								<h4 class="text-center">Datos del cliente</h4>
+								<h5>Cotizacion n°: </h5>
 								<div class="form-group">
 									<label for="" class="control-label">Cliente</label>
 									<input type="hidden" name="cotizacion_id" id="cotizacion_id" value="0">

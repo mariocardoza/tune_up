@@ -65,6 +65,8 @@ class RepuestodetallesController extends Controller
                 'coniva'=>$request->coniva,
                 'kilometraje'=>$request->kilometraje,
                 'km_proxima'=>$request->km_proxima,
+                'facturar_a'=>$request->facturar_a,
+                'imprimir_veh'=>$request->imprimir_veh,
                 ]);
 
                 $vehiculo=Vehiculo::find($request->vehiculo_id);

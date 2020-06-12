@@ -24,6 +24,9 @@
 				<div class="card-body">
 					<form id="form_coti">
 						<div class="row">
+							<div class="col-md-12">
+								<span class="col-md-1">Crédito :</span><input type="text" value="{{$correlativo}}" class="form-control col-md-1">
+							</div>
 							<div class="col-md-6">
 								<h4 class="text-center">Datos del cliente</h4>
 								<div class="form-group">
@@ -33,6 +36,15 @@
 										<option value="">Seleccione un cliente</option>
 										@foreach($clientes as $c)
 											<option data-sector="{{$c->sector}}" data-direccion="{{$c->direccion}}" value="{{$c->id}}">{{$c->nombre}}</option>
+										@endforeach
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="" class="control-label">Facturar a nombre</label>
+									<select name="facturar_a" id="facturar_a" class="chosen-select">
+										<option value="">Seleccione un cliente</option>
+										@foreach($clientes as $c)
+											<option value="{{$c->id}}">{{$c->nombre}}</option>
 										@endforeach
 									</select>
 								</div>
@@ -67,11 +79,24 @@
 							</div>
 							<div class="col-md-6">
 								<h4 class="text-center">Datos del vehículo</h4>
-								<div class="form-group">
-									<label for="" class="control-label">Vehículo</label>
-									<select name="vehiculo_id" id="vehiculo_id" class="chosen-select">
-										<option value="">Seleccione</option>
-									</select>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Vehículo</label>
+											<select name="vehiculo_id" id="vehiculo_id" class="chosen-select">
+												<option value="">Seleccione</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Imprimir datos</label>
+											<select name="imprimir_veh" id="imprimir_veh" class="chosen-select">
+												<option value="Si">Si</option>
+												<option value="No">No</option>
+											</select>
+										</div>
+									</div>
 								</div>
 								<div class="row kilometrajes">
 									<div class="col-md-6">

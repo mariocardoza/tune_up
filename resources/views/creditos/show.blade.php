@@ -34,6 +34,19 @@
 										@endforeach
 									</select>
 								</div>
+								@if($cotizacion->facturar_a!='')
+								<div class="form-group">
+									<label for="" class="control-label">Facturar a</label>
+									<select name="facturar_a" id="facturar_a" class="chosen-select">
+										<option value="">Seleccione un cliente</option>
+										@foreach($clientes as $c)
+											@if($c->id==$cotizacion->facturar_a)
+												<option selected data-sector="{{$c->sector}}" data-direccion="{{$c->direccion}}" value="{{$c->id}}">{{$c->nombre}}</option>
+											@endif
+										@endforeach
+									</select>
+								</div>
+								@endif
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
@@ -55,11 +68,30 @@
 							</div>
 							<div class="col-md-6">
 								<h4 class="text-center">Datos del vehículo</h4>
-								<div class="form-group">
-									<label for="" class="control-label">Vehículo</label>
-									<select name="vehiculo_id" id="vehiculo_id" class="chosen-select">
-										<option value="">Seleccione</option>
-									</select>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Vehículo</label>
+											<select name="vehiculo_id" id="vehiculo_id" class="chosen-select">
+												<option value="">Seleccione</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="control-label">Imprimir datos</label>
+											<select name="imprimir_veh" id="imprimir_veh" class="chosen-select">
+												@if($cotizacion->imprimir_veh=='si')
+												<option selected="" value="Si">Si</option>
+												<option value="No">No</option>
+												@else
+												<option value="Si">Si</option>
+												<option selected value="No">No</option>
+												@endif
+												
+											</select>
+										</div>
+									</div>
 								</div>
 								<div class="row">
 									@if($cotizacion->vehiculo->tipomedida=='km')
@@ -154,7 +186,7 @@
 								<div class="text-center">
 									
 									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
-									<button type="button" class="btn btn-success"><i class="fas fa-envelope"></i> Enviar</button>
+									<button type="button" data-id="{{$cotizacion->id}}" class="btn btn-success"><i class="fas fa-money"></i> Clonar</button>
 								</div>
 							</div>
 						</div>

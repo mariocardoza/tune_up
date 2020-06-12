@@ -39,6 +39,7 @@
             
               <!-- /.mailbox-controls -->
               <div class="mailbox-read-message">
+                <h2>TUNE UP SERVICE</h2>
                 <p style="font-weight: bold;">BUEN DÍA: {{$cotizacion->cliente->nombre}}</p>
                 <p style="font-weight: bold;">ESTA ES LA COTIZACIÓN PARA SU VEHÍCULO:</p>
                 <p><span style="font-weight: bold;">PLACA:</span> {{$cotizacion->vehiculo->placa}}</p>
