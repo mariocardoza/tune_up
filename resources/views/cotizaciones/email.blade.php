@@ -46,8 +46,8 @@
                 <p><span style="font-weight: bold;">MARCA:</span> {{$cotizacion->vehiculo->marca->marca}}</p>
                 <p><span style="font-weight: bold;">MODELO:</span> @if($cotizacion->vehiculo->modelo!=''){{ $cotizacion->vehiculo->modelo->nombre }} @endif</p>
                 <p><span style="font-weight: bold;">AÑO:</span> {{ $cotizacion->vehiculo->anio }}</p>
-
-                <table width="100%" rules="all">
+                <div class="table-responsive">
+                  <table width="100%" rules="all" class="table table-bordered">
                   <thead>
                     <tr>
                       <th width="5%">N°</th>
@@ -83,6 +83,8 @@
                     @endforeach
                   </tbody>
                 </table>
+                </div>
+                
                 <br>
                 <p style="text-align: right;">SUBTOTAL: ${{number_format($cotizacion->subtotal,2)}}</p>
                 <p style="text-align: right;">IVA: ${{number_format($cotizacion->iva,2)}}</p>
