@@ -40,6 +40,7 @@
               <!-- /.mailbox-controls -->
               <div class="mailbox-read-message">
                 <h2>TUNE UP SERVICE</h2>
+                <i class="fas fa-remove"></i>
                 <p style="font-weight: bold;">BUEN DÍA: {{$cotizacion->cliente->nombre}}</p>
                 <p style="font-weight: bold;">ESTA ES LA COTIZACIÓN PARA SU VEHÍCULO:</p>
                 <p><span style="font-weight: bold;">PLACA:</span> {{$cotizacion->vehiculo->placa}}</p>
@@ -47,7 +48,7 @@
                 <p><span style="font-weight: bold;">MODELO:</span> @if($cotizacion->vehiculo->modelo!=''){{ $cotizacion->vehiculo->modelo->nombre }} @endif</p>
                 <p><span style="font-weight: bold;">AÑO:</span> {{ $cotizacion->vehiculo->anio }}</p>
                 <div class="table-responsive">
-                  <table width="100%" rules="all" class="table table-bordered">
+                  <table width="100%" rules="all" class="table table-bordered"  style="max-width: 100%; padding: 10px; margin:0 auto; border-collapse: collapse;">
                   <thead>
                     <tr>
                       <th width="5%">N°</th>
@@ -106,7 +107,13 @@
   </div>
 </div>
 <!-- ./wrapper -->
-
+<!-- jQuery -->
+<script src="{{asset('js/app.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/datatables.min.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/toastr.min.js')}}"></script>
+<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
+<script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
 
 </body>
 </html>

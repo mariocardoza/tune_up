@@ -114,7 +114,13 @@ $marcas=\App\Marca::where('estado',1)->get();
                       			<tr>
                       				<td>{{$v->placa}}</td>
                       				<td>{{$v->marca->marca}}</td>
-                      				<td>{{$v->modelo->nombre}}</td>
+                      				<td>
+                                @if($v->modelo_id!='')
+                                {{$v->modelo->nombre}}
+                                @else
+                                --
+                                @endif
+                              </td>
                       				<td>{{$v->motor}}</td>
                       				<td>
                       					<a href="javascript:void(0)" data-id="{{$v->id}}" id="edit_veh" class="btn btn-primary"><i class="fas fa-edit"></i></a>

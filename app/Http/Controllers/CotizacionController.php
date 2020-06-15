@@ -270,13 +270,13 @@ class CotizacionController extends Controller
     {
       $cotizacion= \App\Cotizacione::find($id);
         try{
-          $cotizacion=Cotizacione::find($id);
+          /*$cotizacion=Cotizacione::find($id);
         $taller=Taller::find(1);
-        //dd($cotizacion->repuestodetalle);
-        $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller'));
+        //dd($PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller'));
         $pdf->setPaper('letter', 'portrait');
         $nom=date("d_m_Y_H:i:s").'_cotizacion.pdf';
-        return $pdf->download($nom);
+        $pdf = \
+        return $pdf->download($nom);*/
 
 
          
@@ -287,6 +287,7 @@ class CotizacionController extends Controller
 
     public function enviar(Request $request)
     {
+      //
       $this->validar($request->all())->validate();
       $cotizacion=Cotizacione::find($request->id);
       $clienti=$cotizacion->cliente;
