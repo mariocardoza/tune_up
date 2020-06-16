@@ -11,9 +11,7 @@
 	  height: 5px;
 	}
 </style>
-<script type="text/javascript">
-  modal_cargando();
-</script>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">

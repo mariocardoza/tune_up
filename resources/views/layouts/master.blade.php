@@ -430,6 +430,9 @@
 <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
 <script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
+<script type="text/javascript">
+  modal_cargando();
+</script>
 <!-- Bootstrap 4 -->
 @yield('scripts')
 </body>

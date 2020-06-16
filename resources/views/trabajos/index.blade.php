@@ -199,6 +199,7 @@
 @section('scripts')
 <script>
 	$(document).ready(function(e){
+    swal.closeModal();
 		$("#tabla").DataTable({
 	      "ordering": false,
 	      dom: 'Bfrtip',

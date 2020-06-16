@@ -6,9 +6,7 @@
 	$repuestos=App\Repuesto::where('estado',1)->get();
 	$trabajos=App\Trabajo::where('estado',1)->get();
 @endphp
-<script type="text/javascript">
-  modal_cargando();
-</script>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">

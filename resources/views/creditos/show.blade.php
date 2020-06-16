@@ -451,7 +451,7 @@
 	var elid='<?php echo $cotizacion->id; ?>';
 	var v_id='<?php echo $cotizacion->vehiculo->id; ?>';
 	$(document).ready(function(e){
-		
+		swal.closeModal();
 		obtenerguardados(elid);
 		info_carro(v_id);
 

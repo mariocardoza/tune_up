@@ -432,7 +432,7 @@
 	var v_id="";
 	var total=0.0;
 	$(document).ready(function(e){
-
+		swal.closeModal();
 		obtenerprevias();
 	});
 

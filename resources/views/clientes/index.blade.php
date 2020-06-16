@@ -205,7 +205,8 @@
 @section('scripts')
 <script>
 	$(document).ready(function(e){
-     
+        swal.closeModal();
+
 		$("#tablaclientes").DataTable({
       "ordering": false,
       dom: 'Bfrtip',

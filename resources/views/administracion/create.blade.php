@@ -123,6 +123,7 @@
 @section('scripts')
 <script type="text/javascript">
   $(document).ready(function(e){
+        swal.closeModal();
 
     //Guardar o editar taller
     $(document).on("submit","#form_taller",function(e){

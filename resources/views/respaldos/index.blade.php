@@ -89,6 +89,7 @@
 @section('scripts')
 <script>
   $(document).ready(function(e){
+    swal.closeModal();
     //crear un nuevo backup
     $(document).on("click","#nuevo_backup",function(e){
       e.preventDefault();

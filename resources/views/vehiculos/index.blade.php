@@ -21,9 +21,7 @@ $clientes=App\Cliente::where('estado',1)->get();
 @endsection
 
 @section('content')
-<script type="text/javascript">
-  modal_cargando();
-</script>
+
 <div class="container-fluid">
     <div class="row">
     	<div class="col-md-12">
