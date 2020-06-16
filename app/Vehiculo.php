@@ -9,7 +9,7 @@ class Vehiculo extends Model
     protected $guarded = [];
     public function cliente()
     {
-    	return $this->belongsTo('App\Cliente');
+    	return $this->belongsTo('App\Cliente')->withDefault();
     }
 
     public function marca()

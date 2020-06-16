@@ -48,7 +48,8 @@ class VehiculoController extends Controller
 
     public function index()
     {
-        //
+        $vehiculos=Vehiculo::whereEstado(1)->orderby('cliente_id','asc')->get();
+        return view('vehiculos.index',compact('vehiculos'));
     }
 
     /**
@@ -145,6 +146,7 @@ class VehiculoController extends Controller
         try{
             $v=Vehiculo::find($id);
             $v->estado=2;
+            $v->placa='';
             $v->save();
             return array(1,$v);
         }catch(Exception $e){
@@ -157,6 +159,7 @@ class VehiculoController extends Controller
     {
         $mensajes=array(
           'placa.required'=>'La placa es obligatoria',
+          'cliente_id.required'=>'El cliente es obligatorio',
           'placa.unique'=>'La placa digitada ya existe en la base de datos',
           'marca_id.required'=>'La marca es obligatoria',
           'motor.required'=>'El número de motor es obligatorio',
@@ -166,6 +169,7 @@ class VehiculoController extends Controller
           'placa'=>'required|unique:vehiculos',
           'marca_id'=>'required',
           'motor'=>'unique:vehiculos',
+          'cliente_id'=>'required',
       ],$mensajes);
     }
 }

@@ -84,7 +84,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4  position-fixed">
+  <aside class="main-sidebar sidebar-dark-primary elevation-4  position-fixed" >
     <!-- Brand Logo -->
     <a href="{{url('home')}}" class="brand-link">
       <img src="{{asset('dist/img/AdminLTELogo.png')}}"
@@ -107,7 +107,7 @@
       </div>
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
+      <nav class="mt-2" style="overflow-y: auto;">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
@@ -238,6 +238,16 @@
             
           </li>
 
+          <li class="nav-item has-treeview">
+            <a href="{{url('vehiculos')}}" class="nav-link {{ Route::currentRouteName() == 'vehiculos.index' ? 'active':null}}">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Vehículos
+              </p>
+            </a>
+            
+          </li>
+
            <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-copy"></i>
@@ -310,7 +320,7 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
+    <section id="app" class="content">
       @yield('content')
       <!-- Default box -->
       

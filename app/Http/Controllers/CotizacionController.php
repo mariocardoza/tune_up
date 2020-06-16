@@ -29,6 +29,18 @@ class CotizacionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function cambiarkm(Request $request)
+    {
+      try{
+        $cotizacion=Cotizacione::find($request->cotizacion_id);
+        $cotizacion->kilometraje=$request->kilometraje;
+        $cotizacion->km_proxima=$request->km_proxima;
+        $cotizacion->save();
+        return array(1);
+      }catch(Exception $e){
+        return array(-1,"error",$e->getMessage());
+      }
+    }
     public function obtenerprevia($id)
     {
         $retorno=Cotizacione::obtenerprevias($id);
