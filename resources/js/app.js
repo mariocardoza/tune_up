@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 require('admin-lte');
-
+window.toastr = require('toastr');
 window.Vue = require('vue');
 
 /**

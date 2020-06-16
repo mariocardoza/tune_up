@@ -9,14 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link  rel="shortcut icon"   href="{{asset('favicon.ico')}}" type="image/x-icon" />
-  <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
-  <link rel="stylesheet" href="{{asset('css/datatables.min.css')}}">
   <link rel="stylesheet" href="{{asset('css/app.css?cod='.date('Yidisus'))}}">
-  <link rel="stylesheet" href="{{asset('css/ionicons.min.css')}}">
-  <link rel="stylesheet" href="{{asset('css/font.css')}}">
-  <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker3.min.css')}}">
+  <link rel="stylesheet" href="{{asset('css/otros.css?cod='.date('Yidisus'))}}">
+
 
 
   <style>
@@ -86,7 +81,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4  position-fixed" >
+  <aside class="main-sidebar sidebar-dark-primary elevation-4  " >
     <!-- Brand Logo -->
     <a href="{{url('home')}}" class="brand-link">
       <img src="{{asset('dist/img/AdminLTELogo.png')}}"
@@ -428,7 +423,6 @@
 <!-- jQuery -->
 <script src="{{asset('js/app.js?cod='.date('Yidisus'))}}"></script>
 <script src="{{asset('js/datatables.min.js?cod='.date('Yidisus'))}}"></script>
-<script src="{{asset('js/toastr.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
 <script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>

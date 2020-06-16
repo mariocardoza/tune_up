@@ -28,6 +28,7 @@
         "chosen-js": "^1.8.7",
         "inputmask": "^5.0.3",
         "moment": "^2.24.0",
-        "sweetalert2": "^9.8.2"
+        "sweetalert2": "^9.8.2",
+        "toastr": "^2.1.4"
     }
 }
