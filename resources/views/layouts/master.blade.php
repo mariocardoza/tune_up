@@ -81,7 +81,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4  " >
+  <aside class="main-sidebar sidebar-dark-primary elevation-4  position-fixed" style="height: 300px; overflow-y: auto;">
     <!-- Brand Logo -->
     <a href="{{url('home')}}" class="brand-link">
       <img src="{{asset('dist/img/AdminLTELogo.png')}}"
