@@ -11,6 +11,9 @@
 	  height: 5px;
 	}
 </style>
+<script type="text/javascript">
+  modal_cargando();
+</script>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
@@ -432,7 +435,6 @@
 <script src="{{asset('js/cotizaciones.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
-	modal_cargando();
 	var v_id="";
 	var total=0.0;
 	$(document).ready(function(e){
