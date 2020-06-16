@@ -688,6 +688,7 @@
 	});
 
 	function obtenerguardados(id){
+		modal_cargando();
 		$.ajax({
 			url:'../cotizaciones/guardadas/'+id,
 			type:'get',
@@ -697,9 +698,15 @@
 					$("#tabita>tbody").empty();
 					$("#tabita>tbody").html(json[2]);
 					$("#tabita>tfoot").html(json[3]);
+					swal.closeModal();
+				}else{
+					swal.closeModal();
 				}
+			},
+			error:function(e){
+				swal.closeModal();
 			}
-		})
+		});
 	}
 
 	function info_carro(id){
