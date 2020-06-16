@@ -9,8 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link  rel="shortcut icon"   href="{{asset('favicon.ico')}}" type="image/x-icon" />
-  <link rel="stylesheet" href="{{asset('css/app.css)}}">
-  <link rel="stylesheet" href="{{asset('css/otros.css)}}">
+  <link rel="stylesheet" href="{{asset('css/app.css')}}">
+  <link rel="stylesheet" href="{{asset('css/otros.css')}}">
 
 
 
@@ -421,11 +421,11 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('js/app.js)}}"></script>
-<script src="{{asset('js/datatables.min.js)}}"></script>
+<script src="{{asset('js/app.js')}}"></script>
+<script src="{{asset('js/datatables.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
-<script src="{{asset('js/generales.js)}}"></script>
+<script src="{{asset('js/generales.js')}}"></script>
 <script type="text/javascript">
   modal_cargando();
 </script>
