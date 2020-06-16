@@ -462,8 +462,10 @@ $clientes=App\Cliente::where('estado',1)->get();
 
 @section('scripts')
 <script>
+  modal_cargando();
 	$(document).ready(function(e){
-     
+    swal.closeModal();
+ 
 		$("#tablaclientes").DataTable({
       "ordering": false,
       dom: 'Bfrtip',

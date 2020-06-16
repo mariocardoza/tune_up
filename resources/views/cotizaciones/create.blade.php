@@ -432,10 +432,11 @@
 <script src="{{asset('js/cotizaciones.js?cod='.date('Yidisus'))}}"></script>
 
 <script>
+	modal_cargando();
 	var v_id="";
 	var total=0.0;
 	$(document).ready(function(e){
-
+		swal.closeModal();
 		obtenerprevias();
 	});
 
