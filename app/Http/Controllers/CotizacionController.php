@@ -181,10 +181,10 @@ class CotizacionController extends Controller
         {
           $siguiente=$anterior=$primera=$ultima=0;
             $cotizacion=Cotizacione::findorFail($id);
-            $p=Cotizacione::where('tipo_documento',1)->orderby('fecha','asc')->first();
-            $u=Cotizacione::where('tipo_documento',1)->orderBy('fecha','desc')->first();
-            $s= Cotizacione::where('id','>', intval($id))->where('tipo_documento',1)->orderBy('fecha', 'asc')->first();
-            $a= Cotizacione::where('id','<', intval($id))->where('tipo_documento',1)->orderBy('fecha', 'desc')->first();
+            $p=Cotizacione::where('tipo_documento',1)->orderby('id','asc')->first();
+            $u=Cotizacione::where('tipo_documento',1)->orderBy('id','desc')->first();
+            $s= Cotizacione::where('id','>', intval($id))->where('tipo_documento',1)->orderBy('id', 'asc')->first();
+            $a= Cotizacione::where('id','<', intval($id))->where('tipo_documento',1)->orderBy('id', 'desc')->first();
             $clientes=Cliente::where('estado',1)->get();
             
             if($s != null){
