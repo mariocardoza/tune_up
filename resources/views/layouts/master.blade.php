@@ -320,7 +320,7 @@
     </section>
 
     <!-- Main content -->
-    <section id="app" class="content">
+    <section  class="content">
       @yield('content')
       <!-- Default box -->
       
