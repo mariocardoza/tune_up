@@ -18,15 +18,7 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker3.min.css')}}">
 
-  <script src="{{asset('js/app.js?cod='.date('Yidisus'))}}"></script>
-<script src="{{asset('js/datatables.min.js?cod='.date('Yidisus'))}}"></script>
-<script src="{{asset('js/toastr.min.js')}}"></script>
-<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
-<script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
-<script type="text/javascript">
-  modal_cargando();
-</script>
+
   <style>
     .form-control{
       text-transform:uppercase;
@@ -434,7 +426,15 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-
+<script src="{{asset('js/app.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/datatables.min.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/toastr.min.js')}}"></script>
+<script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{asset('js/bootstrap-datepicker.es.min.js')}}"></script>
+<script src="{{asset('js/generales.js?cod='.date('Yidisus'))}}"></script>
+<script type="text/javascript">
+  modal_cargando();
+</script>
 <!-- Bootstrap 4 -->
 @yield('scripts')
 </body>
