@@ -259,3 +259,14 @@
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
 @endsection
+@section('scripts')
+<script type="text/javascript">
+  $(document).ready(function(e){
+        swal.closeModal();
+
+    //Guardar o editar taller
+
+
+  });
+</script>
+@endsection
