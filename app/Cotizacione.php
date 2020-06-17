@@ -170,4 +170,63 @@ class Cotizacione extends Model
 
     	return array(1,"exito",$html,$tfoot);
     }
+
+    public static function carcular_ivar($id)
+    {
+        $coti=Cotizacione::find($id);
+        if($coti->cliente->sector=='Gran Contribuyente'):
+            $sub=$coti->subtotal;
+            $toti=$coti->total;
+            if($sub>=100):
+                $nuevoivar=$sub*session('ivar');
+                $nuevotot=$toti-$nuevoivar;
+                $coti->iva_r=$nuevoivar;
+                $coti->total=$nuevotot;
+                $coti->save();
+            else:
+                $elr=$coti->iva_r;
+                $coti->total=$coti->total+$elr;
+                $coti->iva_r=0;
+                $coti->save();
+            endif;
+        endif;
+    }
+
+    public static function aplicar_iva($id)
+    {
+        $coti=Cotizacione::find($id);
+        $subto=$coti->subtotal;
+        $iva=session('iva')*$subto;
+        $total=$coti->total;
+        $nt=$total+$iva;
+        $coti->iva=$iva;
+        $coti->total=$nt;
+        $coti->coniva='si';
+        $coti->save();
+    }
+
+    public static function quitar_iva($id)
+    {
+        $coti=Cotizacione::find($id);
+        $total=$coti->total;
+        $iva=$coti->iva;
+        $nt=$total-$iva;
+        $coti->iva=0.0;
+        $coti->total=$nt;
+        $coti->coniva='no';
+        $coti->save();
+        $elr=$coti->iva_r;
+        $coti->total=$coti->total+$elr;
+        $coti->iva_r=0;
+        $coti->save();
+    }
+
+    public static function quitar_ivar($id)
+    {
+        $coti=Cotizacione::find($id);
+        $elr=$coti->iva_r;
+        $coti->total=$coti->total+$elr;
+        $coti->iva_r=0;
+        $coti->save();
+    }
 }

@@ -59,13 +59,8 @@
 									<label for="" class="control-label">Dirección</label>
 									<textarea rows="2" readonly class="form-control direcc"></textarea>
 								</div>
-								<div class="form-group">
-									<label for="">¿IVA?</label>
-									<select name="" id="eliva" class="chosen-select">
-										<option selected="" value="no">No</option>
-										<option value="si">Si</option>
-									</select>
-								</div>
+				
+									<input type="hidden" name="eliva" value="" value="no">
 									<input type="hidden" name="total" value="" id="txttotal">
 									<input type="hidden" name="subtotal" value="" id="txtsubtotal">
 								

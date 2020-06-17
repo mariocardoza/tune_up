@@ -64,6 +64,7 @@ class RepuestoController extends Controller
                     'n_impresiones'=>0,
                     'fecha'=>invertir_fecha($request->fecha),
                     'iva'=>0,
+                    'iva_r'=>0,
                     'subtotal'=>0,
                     'total'=>0,
                     'coniva'=>$request->coniva,
@@ -96,6 +97,7 @@ class RepuestoController extends Controller
                     $coti->iva=$nuevoiva;
                     $coti->total=$nuevotot;
                     $coti->save();
+                    Cotizacione::carcular_ivar($coti->id);
                 }else{
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
@@ -104,18 +106,9 @@ class RepuestoController extends Controller
                     $coti->total=$nuevosubto;
                     $coti->iva=0;
                     $coti->save();
+                    Cotizacione::quitar_ivar($coti->id);
                 }
-                if($coti->cliente->sector=='Gran Contribuyente'):
-                  $sub=$coti->subtotal;
-                  $toti=$coti->total;
-                  if($toti>=100):
-                        $nuevoivar=$sub*session('ivar');
-                        $nuevotot=$nuevoivar+$toti;
-                        $coti->iva_r=$nuevoivar;
-                        $coti->total=$nuevotot;
-                        $coti->save();
-                    endif;
-                endif;
+                
             else:
                 $coti=Cotizacione::find($request->cotizacion_id);
                 $rr=RepuestoDetalle::create([
@@ -126,6 +119,7 @@ class RepuestoController extends Controller
                     'cotizacion_id'=>$request->cotizacion_id
                 ]);
                 if($coti->coniva=='si'){
+                  Cotizacione::carcular_ivar($coti->id);
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
@@ -135,6 +129,7 @@ class RepuestoController extends Controller
                     $coti->iva=$nuevoiva;
                     $coti->total=$nuevotot;
                     $coti->save();
+                    Cotizacione::carcular_ivar($coti->id);
                 }else{
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
@@ -143,18 +138,8 @@ class RepuestoController extends Controller
                     $coti->total=$nuevosubto;
                     $coti->iva=0;
                     $coti->save();
+                    Cotizacione::quitar_ivar($coti->id);
                 }
-                if($coti->cliente->sector=='Gran Contribuyente'):
-                  $sub=$coti->subtotal;
-                  $toti=$coti->total;
-                  if($toti>=100):
-                        $nuevoivar=$sub*session('ivar');
-                        $nuevotot=$nuevoivar+$toti;
-                        $coti->iva_r=$nuevoivar;
-                        $coti->total=$nuevotot;
-                        $coti->save();
-                    endif;
-                endif;
             endif;
             DB::commit();
             return array(1,"exito",$coti->id,$repuesto->id,$repuesto->precio,$request->cantidad);
@@ -196,6 +181,7 @@ class RepuestoController extends Controller
                 $coti->iva=$nuevoiva;
                 $coti->total=$nuevotot;
                 $coti->save();
+                Cotizacione::carcular_ivar($coti->id);
             }else{
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
@@ -204,18 +190,9 @@ class RepuestoController extends Controller
                 $coti->total=$nuevosubto;
                 $coti->iva=0;
                 $coti->save();
+                Cotizacione::quitar_ivar($coti->id);
             }
-            if($coti->cliente->sector=='Gran Contribuyente'):
-              $sub=$coti->subtotal;
-              $toti=$coti->total;
-              if($toti>=100):
-                        $nuevoivar=$sub*session('ivar');
-                        $nuevotot=$nuevoivar+$toti;
-                        $coti->iva_r=$nuevoivar;
-                        $coti->total=$nuevotot;
-                        $coti->save();
-                    endif;
-            endif;
+            
             DB::commit();
             return array(1,"exito",$repuesto->id,$repuesto->precio,$request->cantidad);
         }catch(Exception $e){

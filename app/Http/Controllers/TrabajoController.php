@@ -64,6 +64,7 @@ class TrabajoController extends Controller
                   'n_impresiones'=>0,
                   'fecha'=>invertir_fecha($request->fecha),
                   'iva'=>0,
+                  'iva_r'=>0,
                   'subtotal'=>0,
                   'total'=>0,
                   'correlativo'=>Cotizacione::correlativo($request->tipo_documento),
@@ -96,8 +97,9 @@ class TrabajoController extends Controller
                 $coti->subtotal=$nuevosubto;
                 $coti->iva=$nuevoiva;
                 $coti->total=$nuevotot;
-                $coti->iva=0;
+                //$coti->iva=0;
                 $coti->save();
+                Cotizacione::carcular_ivar($coti->id);
             }else{
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
@@ -105,18 +107,9 @@ class TrabajoController extends Controller
                 $coti->subtotal=$nuevosubto;
                 $coti->total=$nuevosubto;
                 $coti->save();
+                Cotizacione::quitar_ivar($coti->id);
             }
-            if($coti->cliente->sector=='Gran Contribuyente'):
-                  $sub=$coti->subtotal;
-                  $toti=$coti->total;
-                  if($toti>=100):
-                        $nuevoivar=$sub*session('ivar');
-                        $nuevotot=$nuevoivar+$toti;
-                        $coti->iva_r=$nuevoivar;
-                        $coti->total=$nuevotot;
-                        $coti->save();
-                    endif;
-                endif;
+
             else:
                 $coti=Cotizacione::find($request->cotizacion_id);
                 $trabajo=TrabajoDetalle::create([
@@ -135,8 +128,9 @@ class TrabajoController extends Controller
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
                     $coti->total=$nuevotot;
-                    $coti->iva=0;
+                    //$coti->iva=0;
                     $coti->save();
+                    Cotizacione::carcular_ivar($coti->id);
                 }else{
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
@@ -144,18 +138,9 @@ class TrabajoController extends Controller
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
                     $coti->save();
+                    Cotizacione::quitar_ivar($coti->id);
                 }
-                if($coti->cliente->sector=='Gran Contribuyente'){
-                  $sub=$coti->subtotal;
-                  $toti=$coti->total;
-                  if($toti>=100):
-                        $nuevoivar=$sub*session('ivar');
-                        $nuevotot=$nuevoivar+$toti;
-                        $coti->iva_r=$nuevoivar;
-                        $coti->total=$nuevotot;
-                        $coti->save();
-                    endif;
-                }
+
             endif;
             DB::commit();
             return array(1,"exito",$coti->id);
@@ -196,6 +181,7 @@ class TrabajoController extends Controller
                 $coti->iva=$nuevoiva;
                 $coti->total=$nuevotot;
                 $coti->save();
+                Cotizacione::carcular_ivar($coti->id);
             }else{
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
@@ -204,17 +190,9 @@ class TrabajoController extends Controller
                 $coti->total=$nuevosubto;
                 $coti->iva=0;
                 $coti->save();
+                Cotizacione::quitar_ivar($coti->id);
             }
-            if($coti->cliente->sector=='Gran Contribuyente'){
-                  $sub=$coti->subtotal;
-                  $toti=$coti->total;
-                  if($toti>=100):
-                        $nuevoivar=$sub*session('ivar');
-                        $nuevotot=$nuevoivar+$toti;
-                        $coti->iva_r=$nuevoivar;
-                        $coti->total=$nuevotot;
-                        $coti->save();
-                    endif;                }
+           
             return array(1,"exito",$trabajo->id,$trabajo->precio);
         }catch(Exception $e){
             return array(-1,"error",$e->getMessage());

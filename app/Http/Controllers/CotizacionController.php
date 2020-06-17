@@ -331,31 +331,19 @@ class CotizacionController extends Controller
 
     public function el_via(Request $r,$id)
     {
+      $coti=Cotizacione::find($id);
       if($r->aplicariva=='si')
       {
-        $coti=Cotizacione::find($id);
-        $subto=$coti->subtotal;
-        $ivar=$coti->iva_r;
-        $iva=session('iva')*$subto;
-        $total=$coti->total;
-        $nt=$total+$iva+$ivar;
-        $coti->iva=$iva;
-        $coti->total=$nt;
-        $coti->coniva='si';
-        $coti->save();
+        Cotizacione::carcular_ivar($coti->id);
+        Cotizacione::aplicar_iva($coti->id);
         return array(1,'exito');
       }else{
-        $coti=Cotizacione::find($id);
-        $total=$coti->total;
-        $iva=$coti->iva;
-        $nt=$total-$iva;
-        $coti->iva=0.0;
-        $coti->total=$nt;
-        $coti->coniva='no';
-        $coti->save();
+        Cotizacione::quitar_iva($coti->id);
         return array(1,'exito');
       }
     }
+
+
 
      protected function validar(array $data)
     {
