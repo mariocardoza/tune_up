@@ -64,12 +64,7 @@ class CotizacionController extends Controller
       try{
         $ruta="";
         $coti=Cotizacione::find($request->id);
-        $correlativo_a=$coti->correlativo;
-        $coti->correlativo_cotizacion=$correlativo_a;
-        $coti->tipo_documento=$request->estado;
-        $coti->fecha=invertir_fecha($request->fecha);
-        $coti->correlativo=Cotizacione::correlativo($request->estado);
-        $coti->save();
+        $retorno=Cotizacione::convertir($coti->id,$request->estado,$request->fecha);
         if($request->estado==2){
           $ruta="../facturas/".$request->id;
         }else if($request->estado==3){
@@ -77,7 +72,7 @@ class CotizacionController extends Controller
         }else{
           $ruta="../exportaciones/".$request->id;
         }
-        return array(1,$coti,$ruta);
+        return array(1,$coti,$ruta,$retorno);
       }catch(Exception $e){
         return array(-1,"error",$e->getMessage());
       }

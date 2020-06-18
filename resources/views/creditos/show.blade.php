@@ -82,11 +82,11 @@
 											<label for="" class="control-label">Imprimir datos</label>
 											<select name="imprimir_veh" id="imprimir_veh" class="chosen-select">
 												@if($cotizacion->imprimir_veh=='si')
-												<option selected="" value="Si">Si</option>
-												<option value="No">No</option>
+												<option selected="" value="si">Si</option>
+												<option value="no">No</option>
 												@else
-												<option value="Si">Si</option>
-												<option selected value="No">No</option>
+												<option value="si">Si</option>
+												<option selected value="no">No</option>
 												@endif
 												
 											</select>
@@ -153,8 +153,10 @@
 									<div class="card-header">
 										<h3 class="float-left">Detalle</h3>
 										<div class="float-right">
+											@if($cotizacion->estado==1)
 											<button type="button" id="md_trabajos" class="btn btn-info"><i class="fas fa-plus"></i> Mano de obra</button>
 											<button type="button" id="md_repuestos" class="btn btn-info"><i class="fas fa-plus"></i> Repuesto</button>
+											@endif
 										</div>
 									</div>
 									<div class="card-body">
@@ -184,9 +186,10 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-center">
-									
-									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
-									<button type="button" data-id="{{$cotizacion->id}}" class="btn btn-success"><i class="fas fa-money"></i> Clonar</button>
+									@if($cotizacion->estado==1)
+									<a href="{{url('creditos/reporte/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
+									<button type="button" data-id="{{$cotizacion->id}}" class="btn btn-success clonar"><i class="fas fa-money"></i> Swap</button>
+									@endif
 								</div>
 							</div>
 						</div>
@@ -443,6 +446,56 @@
   </div>
 </div>
 
+<div class="modal fade" id="modal_clonar" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Swap de documentos
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	
+        <form id="form_clonar" role="form">
+        	<div class="row">
+        		<div class="col-md-4">
+        			<div class="form-group">
+        				<label for="">Tipo de Documento</label>
+        				<select name="tipo_documento" class="chosen-select">
+        					<option value="3">Crédito fiscal</option>
+        				</select>
+        			</div>
+        		</div>
+        		<div class="col-md-4">
+        			<div class="form-group">
+        				<label for="">Número de Documento</label>
+        				<input type="text" value="{{$correlativo}}" readonly="" class="form-control">
+        			</div>
+        		</div>
+        		<div class="col-md-4">
+        			<div class="form-group">
+		        		<label for="">Fecha</label>
+		        		<input type="text" name="fecha" class="form-control fecha" value="{{date('d/m/Y')}}">
+		        		<input type="hidden" name="id" class="form-control" value="{{$cotizacion->id}}">
+
+		        	</div>
+        		</div>
+        	</div>
+        </form>
+          
+      </div>
+      <div class="modal-footer">
+        <div class="float-none">
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        	<button type="button" id="swap" class="btn btn-success">Confirmar</button>
+    	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 @section('scripts')
 <script src="{{asset('js/creditos_show.js?cod='.date('Yidisus'))}}"></script>
@@ -457,6 +510,43 @@
 
 		//cambiar el select de cliente
 		$("#cliente_id").trigger("change");
+		//imprimir frame
+		$(document).on("click",".imprime",function(e){
+			e.preventDefault();
+			      $(".modal").modal("hide");
+
+			var url = $(this).attr('href');
+        	$('#verpdf').attr('src', url);
+        	//$('#verpdf').reload();
+        	$("#modal_pdf").modal("show");
+		});
+
+		//modal clonar el crédito fiscal
+		$(document).on("click",".clonar",function(e){
+			e.preventDefault();
+			$("#modal_clonar").modal("show");
+		});
+
+		//clonar crédito fiscal
+		$(document).on("click",'#swap',function(e){
+			e.preventDefault();
+			var datos=$("#form_clonar").serialize();
+			$.ajax({
+				url:'../creditos/clonar',
+				type:'post',
+				dataType:'json',
+				data:datos,
+				success: function(json){
+					if(json[0]==1){
+						toastr.success("Crédito fiscal clonado con éxito");
+						location.href=json[2];
+					}else{
+						toastr.error("Ocurrió un error");
+						swal.closeModal();
+					}
+				}
+			});
+		});
 	});
 
 	function obtenerguardados(id){

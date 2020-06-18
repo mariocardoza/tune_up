@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cliente;
 use App\Cotizacione;
+use App\Taller;
 
 class CreditoController extends Controller
 {
@@ -12,6 +13,17 @@ class CreditoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function reporte($id)
+    {
+        $cotizacion=Cotizacione::find($id);
+        $taller=Taller::find(1);
+        $pdf = \PDF::loadView('creditos.reporte',compact('cotizacion','taller'));
+        $customPaper = array(0,0,360,360);
+        //$pdf->setPaper($customPaper);
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('factura.pdf');
     }
     /**
      * Display a listing of the resource.
@@ -67,8 +79,10 @@ class CreditoController extends Controller
             if($a != null){
                 $anterior=$a->id;
             }
+
+            $correlativo=Cotizacione::correlativo(3);
             
-            return view('creditos.show',compact('cotizacion','clientes','siguiente','anterior'));
+            return view('creditos.show',compact('cotizacion','clientes','siguiente','anterior','correlativo'));
         }else{
             $clientes=Cliente::where('estado',1)->get();
             return redirect('creditos/create')->with('clientes');
@@ -107,5 +121,23 @@ class CreditoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function clonar(Request $request)
+    {
+        $coti=Cotizacione::find($request->id);
+        try{
+            $retorno=Cotizacione::clonar($coti->id,$request->tipo_documento,$request->fecha);
+            if($request->tipo_documento==2){
+                $ruta="../facturas/".$request->id;
+            }else if($request->tipo_documento==3){
+                $ruta="../creditos/".$request->id;
+            }else{
+                $ruta="../exportaciones/".$request->id;
+            }
+            return array(1,$retorno,$ruta);
+        }catch(Excetion $e){
+            return array(-1,"error",$e->getMessage());
+        }
     }
 }

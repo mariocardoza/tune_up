@@ -126,8 +126,10 @@
 									<div class="card-header">
 										<h3 class="float-left">Detalle</h3>
 										<div class="float-right">
+											@if($cotizacion->estado==1)
 											<button type="button" id="md_trabajos" class="btn btn-info"><i class="fas fa-plus"></i> Mano de obra</button>
 											<button type="button" id="md_repuestos" class="btn btn-info"><i class="fas fa-plus"></i> Repuesto</button>
+											@endif
 										</div>
 									</div>
 									<div class="card-body">
@@ -140,7 +142,9 @@
 															<th>Precio ($)</th>
 															<th>Cantidad</th>
 															<th>Subtotal ($)</th>
+															@if($cotizacion->estado==1)
 															<th>Acciones</th>
+															@endif
 														</tr>
 													</thead>
 													<tbody>
@@ -157,7 +161,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-center">
-									
+									@if($cotizacion->estado==1)
 									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
 									<button type="button" title="Eliminar cotizacion" data-id="{{$cotizacion->id}}" class="btn btn-danger eliminar_lacoti"><i class="fas fa-trash"></i> Eliminar</button>
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
@@ -168,6 +172,7 @@
 									@else
 									<button type="button" title="Quitar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info quitar_iva"><i class="fas fa-money"></i> Quitar IVA</button>
 									<button class="btn btn-success convertir" title="Convertir a Crédito fiscal" data-id="{{$cotizacion->id}}" data-estado="3" type="button">FCF</button>
+									@endif
 									@endif
 								</div>
 							</div>

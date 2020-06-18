@@ -153,7 +153,7 @@
 								<div class="text-center">
 									
 									<a href="{{url('exportaciones/reporte/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
-									<button type="button" class="btn btn-success"><i class="fas fa-envelope"></i> Enviar</button>
+									
 								</div>
 							</div>
 						</div>

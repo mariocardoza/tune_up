@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Cotizacione extends Model
 {
@@ -87,13 +88,13 @@ class Cotizacione extends Model
                 <th></th>
             </tr>
             <tr>
-                <th  colspan="3">1% RET</th>
-                <th class="thivar">$'.number_format($coti->iva_r,2).'</th>
+                <th  colspan="3">SUBTOTAL</th>
+                <th class="thst">$'.number_format($coti->subtotal+$coti->iva,2).'</th>
                 <th></th>
             </tr>
-            <tr>
-                <th  colspan="3">SUBTOTAL</th>
-                <th class="thst">$'.number_format($coti->subtotal,2).'</th>
+             <tr>
+                <th  colspan="3">1% RET</th>
+                <th class="thivar">$'.number_format($coti->iva_r,2).'</th>
                 <th></th>
             </tr>
             <tr>
@@ -119,12 +120,12 @@ class Cotizacione extends Model
 				<td>'.$t->nombre.'</td>
 				<td>'.number_format($t->precio,2).'</td>
 				<td>'.$t->cantidad.'</td>
-				<td>'.number_format($t->precio*$t->cantidad,2).'</td>
-				<td>
-					<button title="Editar trabajo" type="button" class="btn btn-warning btn-sm" id="editar_trabajo" data-id="'.$t->id.'"><i class="fas fa-edit"></i></button>
-					<button title="Eliminar trabajo" type="button" class="btn btn-danger btn-sm" id="eliminar_trabajo" data-id="'.$t->id.'"><i class="fas fa-trash"></i></button>
-				</td>
-    		</tr>';
+				<td>'.number_format($t->precio*$t->cantidad,2).'</td>';
+                if($coti->estado==1):
+					$html.='<td><button title="Editar trabajo" type="button" class="btn btn-warning btn-sm" id="editar_trabajo" data-id="'.$t->id.'"><i class="fas fa-edit"></i></button>
+					<button title="Eliminar trabajo" type="button" class="btn btn-danger btn-sm" id="eliminar_trabajo" data-id="'.$t->id.'"><i class="fas fa-trash"></i></button></td>';
+                endif;
+			$html.='</tr>';
     	}
 
         foreach ($repuestos as $i=> $r) {
@@ -132,12 +133,14 @@ class Cotizacione extends Model
                 <td>'.$r->nombre.'</td>
                 <td>'.number_format($r->precio,2).'</td>
                 <td>'.$r->cantidad.'</td>
-                <td>'.number_format($r->precio*$r->cantidad,2).'</td>
-                <td>
-                    <button title="Editar repuesto" type="button" id="editar_repuesto" data-id="'.$r->id.'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                <td>'.number_format($r->precio*$r->cantidad,2).'</td>';
+                if($coti->estado==1):
+                    $html.='<td><button title="Editar repuesto" type="button" id="editar_repuesto" data-id="'.$r->id.'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                     <button title="Eliminar repuesto" type="button" id="eliminar_repuesto" data-id="'.$r->id.'" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>';
+
+                </td>';
+            endif;
+            $html.='</tr>';
         }
 
         $tfoot.='
@@ -151,14 +154,15 @@ class Cotizacione extends Model
                 <th class="thiva">$'.number_format($coti->iva,2).'</th>
                 <th></th>
             </tr>
+  
             <tr>
-                <th colspan="3">1% RET</th>
-                <th>$'.number_format($coti->iva_r,2).'</th>
+                <th colspan="3">SUBTOTAL</th>
+                <th>$'.number_format($coti->subtotal+$coti->iva,2).'</th>
                 <th></th>
             </tr>
             <tr>
-                <th colspan="3">SUBTOTAL</th>
-                <th>$'.number_format($coti->subtotal,2).'</th>
+                <th colspan="3">1% RET</th>
+                <th>$'.number_format($coti->iva_r,2).'</th>
                 <th></th>
             </tr>
             <tr>
@@ -228,5 +232,107 @@ class Cotizacione extends Model
         $coti->total=$coti->total+$elr;
         $coti->iva_r=0;
         $coti->save();
+    }
+
+    public static function convertir($id,$tipo,$fecha)
+    {
+        $coti=Cotizacione::find($id);
+        try{
+            DB::beginTransaction();
+            $nueva=Cotizacione::create([
+                'vehiculo_id'=>$coti->vehiculo_id,
+                'cliente_id'=>$coti->cliente_id,
+                'tipo_documento'=>$tipo,
+                'n_impresiones'=>0,
+                'fecha'=>invertir_fecha($fecha),
+                'iva'=>$coti->iva,
+                'iva_r'=>$coti->iva_r,
+                'subtotal'=>$coti->subtotal,
+                'total'=>$coti->total,
+                'coniva'=>$coti->coniva,
+                'correlativo'=>Cotizacione::correlativo($tipo),
+                'correlativo_cotizacion'=>$coti->correlativo,
+                'kilometraje'=>$coti->kilometraje,
+                'km_proxima'=>$coti->km_proxima,
+            ]);
+            foreach($coti->trabajodetalle as $t):
+                $t_detalle=TrabajoDetalle::create([
+                    'trabajo_id'=>$t->trabajo_id,
+                    'precio'=>$t->precio,
+                    'cantidad'=>$t->cantidad,
+                    'nombre'=>$t->nombre,
+                    'cotizacion_id'=>$nueva->id
+                ]);
+            endforeach;
+            foreach($coti->repuestodetalle as $r):
+                $r_detalle=RepuestoDetalle::create([
+                    'repuesto_id'=>$r->repuesto_id,
+                    'precio'=>$r->precio,
+                    'cantidad'=>$r->cantidad,
+                    'nombre'=>$r->nombre,
+                    'cotizacion_id'=>$nueva->id
+                ]);
+            endforeach;
+            $coti->estado=2;
+            $coti->save();
+            DB::commit();
+            return array(3,$nueva);
+        }catch(Exception $e){
+            DB::rollback();
+            return array(-1,"error",$e->getMessage());
+        }
+        //return array(3,$cotizacion);
+    }
+
+    public static function clonar($id,$tipo,$fecha)
+    {
+        $coti=Cotizacione::find($id);
+        try{
+            DB::beginTransaction();
+            $nueva=Cotizacione::create([
+                'vehiculo_id'=>$coti->vehiculo_id,
+                'cliente_id'=>$coti->cliente_id,
+                'tipo_documento'=>$tipo,
+                'n_impresiones'=>0,
+                'fecha'=>invertir_fecha($fecha),
+                'iva'=>$coti->iva,
+                'iva_r'=>$coti->iva_r,
+                'subtotal'=>$coti->subtotal,
+                'total'=>$coti->total,
+                'coniva'=>$coti->coniva,
+                'facturar_a'=>$coti->facturar_a,
+                'imprimir_veh'=>$coti->imprimir_veh,
+                'correlativo'=>Cotizacione::correlativo($tipo),
+                //'correlativo_cotizacion'=>$coti->correlativo,
+                'kilometraje'=>$coti->kilometraje,
+                'km_proxima'=>$coti->km_proxima,
+            ]);
+            foreach($coti->trabajodetalle as $t):
+                $t_detalle=TrabajoDetalle::create([
+                    'trabajo_id'=>$t->trabajo_id,
+                    'precio'=>$t->precio,
+                    'cantidad'=>$t->cantidad,
+                    'nombre'=>$t->nombre,
+                    'cotizacion_id'=>$nueva->id
+                ]);
+            endforeach;
+            foreach($coti->repuestodetalle as $r):
+                $r_detalle=RepuestoDetalle::create([
+                    'repuesto_id'=>$r->repuesto_id,
+                    'precio'=>$r->precio,
+                    'cantidad'=>$r->cantidad,
+                    'nombre'=>$r->nombre,
+                    'cotizacion_id'=>$nueva->id
+                ]);
+            endforeach;
+            $coti->estado=2;
+            $coti->save();
+            DB::commit();
+            return array(3,$nueva);
+        }catch(Exception $e){
+            DB::rollback();
+            return array(-1,"error",$e->getMessage());
+        }
+        //return array(3,$cotizacion);
     }
 }

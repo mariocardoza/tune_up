@@ -47,9 +47,12 @@ Route::get('cotizaciones/pdfcotizacion/{id}','CotizacionController@pdf');
 Route::post('cotizaciones/convertir','CotizacionController@convertir');
 
 Route::Resource('cotizaciones','CotizacionController');
+Route::get('exportaciones/reporte/{id}','ExportacionController@reporte');
 Route::Resource('exportaciones','ExportacionController');
 Route::get('facturas/reporte/{id}','FacturaController@reporte');
 Route::Resource('facturas','FacturaController');
+Route::get('creditos/reporte/{id}','CreditoController@reporte');
+Route::post('creditos/clonar','CreditoController@clonar');
 Route::Resource('creditos','CreditoController');
 
 

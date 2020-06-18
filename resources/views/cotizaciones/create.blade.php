@@ -60,7 +60,7 @@
 									<textarea rows="2" readonly class="form-control direcc"></textarea>
 								</div>
 				
-									<input type="hidden" name="eliva" value="" value="no">
+									<input type="hidden" name="eliva" id="eliva" value="no">
 									<input type="hidden" name="total" value="" id="txttotal">
 									<input type="hidden" name="subtotal" value="" id="txtsubtotal">
 								

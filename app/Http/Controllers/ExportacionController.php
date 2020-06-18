@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Cliente;
 use App\Cotizacione;
+use App\Taller;
 
 class ExportacionController extends Controller
 {
@@ -106,5 +107,16 @@ class ExportacionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function reporte($id)
+    {
+        $cotizacion=Cotizacione::find($id);
+        $taller=Taller::find(1);
+        $pdf = \PDF::loadView('creditos.reporte',compact('cotizacion','taller'));
+        $customPaper = array(0,0,360,360);
+        //$pdf->setPaper($customPaper);
+        $pdf->setPaper('letter', 'portrait');
+        return $pdf->stream('factura.pdf');
     }
 }
