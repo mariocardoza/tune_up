@@ -27,6 +27,11 @@ class Vehiculo extends Model
         return $this->hasMany('App\Cotizacione')->orderBy('created_at','DESC');
     }
 
+    public function cotis_activas()
+    {
+        return $this->hasMany('App\Cotizacione')->where('estado',1)->orderBy('created_at','DESC');
+    }
+
     public static function info($id)
     {
         $html=$kms="";

@@ -253,7 +253,7 @@ class CotizacionController extends Controller
     {
         $fecha1=invertir_fecha($r->fecha1);
         $fecha2=invertir_fecha($r->fecha2);
-        $cotizaciones=Cotizacione::where('fecha','>=',$fecha1)->where('fecha','<=',$fecha2)->get();
+        $cotizaciones=Cotizacione::where('fecha','>=',$fecha1)->where('fecha','<=',$fecha2)->where('estado',1)->get();
         $f1=$r->fecha1;
         $f2=$r->fecha2;
         //dd($cotizaciones);

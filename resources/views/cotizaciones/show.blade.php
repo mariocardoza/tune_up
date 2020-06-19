@@ -167,11 +167,11 @@
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
 									@if($cotizacion->coniva=='no')
 									<button type="button" title="Aplicar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info aplicar_iva"><i class="fas fa-money"></i> Aplicar IVA</button>
-									<button class="btn btn-success convertir" title="Convertir a Factura" data-id="{{$cotizacion->id}}" data-estado="2" type="button">FCC</button>
+									<button class="btn btn-success convertir" title="Convertir a Factura" data-id="{{$cotizacion->id}}" data-estado="2" type="button">FCF</button>
 									<button class="btn btn-success convertir" title="Convertir a Factura de exportación" data-id="{{$cotizacion->id}}" data-estado="4" type="button">FE</button>
 									@else
 									<button type="button" title="Quitar IVA" data-id="{{$cotizacion->id}}" class="btn btn-info quitar_iva"><i class="fas fa-money"></i> Quitar IVA</button>
-									<button class="btn btn-success convertir" title="Convertir a Crédito fiscal" data-id="{{$cotizacion->id}}" data-estado="3" type="button">FCF</button>
+									<button class="btn btn-success convertir" title="Convertir a Crédito fiscal" data-id="{{$cotizacion->id}}" data-estado="3" type="button">CCF</button>
 									@endif
 									@endif
 								</div>

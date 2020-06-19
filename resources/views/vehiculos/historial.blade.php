@@ -84,7 +84,7 @@ padding-right : 5px;
 	</table>
 	<br><br>
 	<?php $eltotal=0.0; ?>
-	@foreach($carro->cotizaciones as $c)
+	@foreach($carro->cotis_activas as $c)
 	<?php $eltotal=$eltotal+$c->subtotal; ?>
 	<table class="tablita">
 		<tr>
