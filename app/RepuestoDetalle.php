@@ -36,14 +36,14 @@ class RepuestoDetalle extends Model
 			                    <div class="form-group">
 			                      <label for="">Nombre del repuesto</label>
 			                      
-			                      <input type="text" readonly value="'.$repuesto->repuesto->nombre.'" class="form-control">
+			                      <input type="text" readonly value="'.$repuesto->nombre.'" class="form-control">
 			                      <input type="hidden" name="cotizacion_id" value="'.$repuesto->cotizacion_id.'">
 			                    </div>
 			                  </div>
 			                  <div class="col-md-4">
 			                    <div class="form-group">
 			                      <label for="">Código</label>
-			                      <input type="text" readonly value="'.$repuesto->repuesto->codigo.'" placeholder="" class="form-control">
+			                      <input type="text" readonly value="" placeholder="" class="form-control">
 			                    </div>
 			                  </div>
 			                </div>

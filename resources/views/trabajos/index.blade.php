@@ -49,10 +49,9 @@
                       <td>{{$t->nombre}}</td>
               				<td class="float-right">${{number_format($t->precio,2)}}</td>
               				<td>
-              					@if($t->estado==1)
+              					
               					<a href="javascript:void(0)" data-id="{{$t->id}}" class="btn btn-warning btn-sm edit"><i class="fas fa-edit"></i></a>
               					<a href="javascript:void(0)" data-id="{{$t->id}}" class="btn btn-danger btn-sm delete"><i class="fas fa-trash"></i></a>
-              					@endif
               				</td>
               			</tr>
               		@endforeach

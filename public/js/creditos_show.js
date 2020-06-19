@@ -138,6 +138,7 @@ $(document).ready(function(e){
 					toastr.success("Trabajo aplicado con éxito");
 					$("#form_repuesto").trigger("reset");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
+					obtenerguardados(elid);
 				}else{
 					toastr.error("Ocurrió un error");
 				}

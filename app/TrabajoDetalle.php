@@ -36,14 +36,14 @@ class TrabajoDetalle extends Model
 					                  <div class="col-md-8">
 					                    <div class="form-group">
 					                      <label for="">Nombre de la mano de obra</label>
-					                      <input type="text" readonly value="'.$trabajo->trabajo->nombre.'" class="form-control">
+					                      <input type="text" readonly value="'.$trabajo->nombre.'" class="form-control">
 					                      <input type="hidden" name="cotizacion_id" value="'.$trabajo->cotizacion_id.'">
 					                    </div>
 					                  </div>
 					                  <div class="col-md-4">
 					                    <div class="form-group">
 					                      <label for="">Código</label>
-					                      <input type="text" value="'.$trabajo->trabajo->codigo.'" readonly placeholder="" class="form-control">
+					                      <input type="text" value="" readonly placeholder="" class="form-control">
 					                    </div>
 					                  </div>
 					                </div>

@@ -275,7 +275,8 @@ class RepuestoController extends Controller
           else:
           $t->estado=1;
           endif;
-          $t->save();
+          $t->delete();
+          
           return array(1);
         }catch(Exception $e){
           return array(-1,"error",$e->getMessage());
