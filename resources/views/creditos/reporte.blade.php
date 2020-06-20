@@ -148,6 +148,7 @@ top:2.61875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direcci
 top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->cliente->dui}}</div>
 <div class="FRX1_14" style="z-Index:3;left:4.62292in;
 top:2.66667in;width:1.38542in;height:0.17708in;">  {{$cotizacion->fecha->format('d/m/Y')}}</div>
+@if($cotizacion->imprimir_veh=='si')
 <div class="FRX1_14" style="z-Index:7;left:5.22292in;
 top:2.66667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->marca->marca}}</div>
 <div class="FRX1_14" style="z-Index:9;left:6.12292in;
@@ -156,7 +157,7 @@ top:2.66667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->anio}}
 top:2.66667in;width:1.38542in;height:0.17708in;">@if($cotizacion->vehiculo->modelo_id!=''){{$cotizacion->vehiculo->modelo->nombre}}@endif</div>
 <div class="FRX1_14" style="z-Index:6;left:4.62292in;
 top:2.9667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}</div>
-
+@endif
 <div class="FRX1_15" style="z-Index:4;left:0.93125in;top:2.87708in;width:3.65625in;height:0.30208in;"></div><div class="FRX1_16" style="z-Index:5;left:1.27292in;
 top:3.16875in;width:1.86458in;height:0.15625in;"></div>
 
