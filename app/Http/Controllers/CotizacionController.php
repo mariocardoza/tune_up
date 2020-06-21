@@ -297,22 +297,28 @@ class CotizacionController extends Controller
       //
       $this->validar($request->all())->validate();
       $cotizacion=Cotizacione::find($request->id);
+      $taller=Taller::find(1);
       $clienti=$cotizacion->cliente;
       $clienti->correo=$request->correo;
       $clienti->save();
+      $pdf = PDF::loadView('cotizaciones.prueba', compact('cotizacion','taller'));
       if($request->adicional!='' && filter_var($request->adicional, FILTER_VALIDATE_EMAIL)):
-        $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
+        $retorno=Mail::send('cotizaciones.email', compact('cotizacion','taller'),function (Message $message) use ($request,$cotizacion,$pdf){
         $message->to($request->correo,$cotizacion->cliente->nombre)
         ->from('tuneupservis@gmail.com','TUNE - UP SERVICE')
         ->cc($request->adicional,'')
         ->replyTo('h_rivas47@yahoo.com', 'Héctor Rivas')
-        ->subject('Cotización N°: '.$cotizacion->correlativo);
+        ->subject('Cotización N°: '.$cotizacion->correlativo)
+        ->attachData($pdf->output(), "cotizacion.pdf");
       });
+
+
       else:
-        $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion){
+        $retorno=Mail::send('cotizaciones.email', compact('cotizacion'),function (Message $message) use ($request,$cotizacion,$pdf){
         $message->to($request->correo,$cotizacion->cliente->nombre)
         ->from('tuneupservis@gmail.com','TUNE - UP SERVICE')
-        ->subject('Cotización N°: '.$cotizacion->correlativo);
+        ->subject('Cotización N°: '.$cotizacion->correlativo)
+        ->attachData($pdf->output(), "cotizacion.pdf");
       });
       endif;
     
