@@ -291,6 +291,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{url('marcas')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Marcas</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{url('backups')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Backups</p>

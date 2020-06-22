@@ -14,12 +14,12 @@ class Vehiculo extends Model
 
     public function marca()
     {
-    	return $this->belongsTo('App\Marca');
+    	return $this->belongsTo('App\Marca')->withDefault();
     }
 
     public function modelo()
     {
-    	return $this->belongsTo('App\Modelo');
+    	return $this->belongsTo('App\Modelo')->withDefault();
     }
 
     public function cotizaciones()

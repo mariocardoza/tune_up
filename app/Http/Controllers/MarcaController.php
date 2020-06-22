@@ -19,7 +19,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        $marcas=Marca::whereEstado(1)->get();
+        return view('marcas.index',compact('marcas'));
     }
 
     /**
@@ -68,7 +69,12 @@ class MarcaController extends Controller
      */
     public function edit($id)
     {
-        //
+        try{
+          $trabajo=Marca::find($id);
+          return array(1,"exito",$trabajo);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**
@@ -80,7 +86,15 @@ class MarcaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $this->validar($request->all())->validate();
+        try{
+          $r=Marca::find($id);
+          $r->fill($request->all());
+          $r->save();
+          return array(1);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     /**
@@ -89,9 +103,21 @@ class MarcaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,Request $r)
     {
-        //
+        try{
+          $t=Marca::find($id);
+          if($r->borrar==1):
+          $t->estado=2;
+          else:
+          $t->estado=1;
+          endif;
+          $t->save();
+          
+          return array(1);
+        }catch(Exception $e){
+          return array(-1,"error",$e->getMessage());
+        }
     }
 
     protected function validar(array $data)
