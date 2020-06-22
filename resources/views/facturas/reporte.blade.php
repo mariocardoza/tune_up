@@ -193,11 +193,12 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}<
 @endforeach
 
 <div class="FRX1_8" style="z-Index:1;left:5.16667in;
-top:8.29917.06875in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div>
+top:8.31917in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div>
 
 <div class="FRX1_11" style="z-Index:4;left:0.82292in;
 top:8.34083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div>
+
 <div class="FRX1_8" style="z-Index:3;left:5.16667in;
-top:9.47917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
+top:9.68917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
 <div class="FRX1_37" style="z-Index:6;left:5.87708in;
 top:9.68333in;width:1.20000in;height:0.19792in;"></div></div></div></body></html>
