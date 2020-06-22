@@ -142,9 +142,9 @@
 <div class="FRX1_12" style="z-Index:1;left:6.15833in;
 top:1.95000in;width:1.27083in;height:0.17708in;"></div>
 <div class="FRX1_11" style="z-Index:2;left:0.503125in;
-top:1.21875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nombre}}</div>
+top:1.61875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nombre}}</div>
 <div class="FRX1_11" style="z-Index:2;left:0.63125in;
-top:2.31875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
+top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
 <div class="FRX1_11" style="z-Index:23;left:2.73125in;
 top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->cliente->dui}}</div>
 <div class="FRX1_14" style="z-Index:3;left:4.62292in;
@@ -164,13 +164,13 @@ top:3.16875in;width:1.86458in;height:0.15625in;"></div>
 
 
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.17875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
+top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
 
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
+top:1.67875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
 
-<div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.77875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
+<div class="FRX1_24" style="z-Index:2;left:5.32292in;
+top:2.07875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
 
 
 <?php $salto=3.6; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
@@ -180,8 +180,8 @@ top:1.77875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}<
 <div class="FRX1_24" style="z-Index:3;left:0.11250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$t->cantidad}}</div>
 <div class="FRX1_18" style="z-Index:1;left:0.41667in;top:{{$salto}}in;width:5.64583in;height:0.15625in;">{{$t->nombre}}</div>
 
-<div class="FRX1_19" style="z-Index:2;left:3.26667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($t->precio,2)}}</div>
-<div class="FRX1_19" style="z-Index:2;left:4.76667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($t->precio*$t->cantidad,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:3.36667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($t->precio,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:5.16667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($t->precio*$t->cantidad,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($t->cantidad*$t->precio);?>
 @endforeach
 
@@ -189,21 +189,21 @@ top:1.77875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}<
 <div class="FRX1_24" style="z-Index:3;left:0.11250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$r->cantidad}}</div>
 <div class="FRX1_18" style="z-Index:1;left:0.41667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;">{{$r->nombre}}</div>
 
-<div class="FRX1_19" style="z-Index:2;left:3.26667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($r->precio,2)}}</div>
-<div class="FRX1_19" style="z-Index:2;left:4.76667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($r->precio*$r->cantidad,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:3.36667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($r->precio,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:5.16667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($r->precio*$r->cantidad,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($r->cantidad*$r->precio); ?>
 @endforeach
 
-<div class="FRX1_8" style="z-Index:1;left:4.86667in;
-top:7.97917.06875in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div>
-<div class="FRX1_9" style="z-Index:2;left:4.86667in;
+<div class="FRX1_8" style="z-Index:1;left:5.16667in;
+top:8.09917.06875in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div>
+<div class="FRX1_9" style="z-Index:2;left:5.16667in;
 top:8.35000in;width:1.85417in;height:0.16667in;">       {{number_format($cotizacion->iva,2)}}</div>
-<div class="FRX1_8" style="z-Index:3;left:4.86667in;
-top:8.67917in;width:1.85417in;height:0.20833in;">        {{number_format($cotizacion->subtotal+$cotizacion->iva,2)}}</div>
-<div class="FRX1_8" style="z-Index:3;left:4.86667in;
-top:9.00917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->iva_r,2)}}</div>
-<div class="FRX1_8" style="z-Index:3;left:4.86667in;
-top:9.57917in;width:1.85417in;height:0.20833in;">       $  {{number_format($cotizacion->total,2)}}</div>
+<div class="FRX1_8" style="z-Index:3;left:5.16667in;
+top:8.62917in;width:1.85417in;height:0.20833in;">        {{number_format($cotizacion->subtotal+$cotizacion->iva,2)}}</div>
+<div class="FRX1_8" style="z-Index:3;left:5.1667in;
+top:8.89917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->iva_r,2)}}</div>
+<div class="FRX1_8" style="z-Index:3;left:5.16667in;
+top:9.67917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
 <div class="FRX1_11" style="z-Index:4;left:0.82292in;
 top:8.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><!--div class="FRX1_17" style="z-Index:5;left:5.56667in;
 top:8.57917in;width:1.84375in;height:0.16667in;">         {{number_format($cotizacion->total,2)}}</div--><div class="FRX1_37" style="z-Index:6;left:5.87708in;
