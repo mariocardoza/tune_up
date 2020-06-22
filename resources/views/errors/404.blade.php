@@ -14,3 +14,10 @@
         <!-- /.error-content -->
       </div>
 @endsection
+@section('scripts')
+<script>
+  $(document).ready(function(e){
+    swal.closeModal();
+  });
+</script>
+@endsection

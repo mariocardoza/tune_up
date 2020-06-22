@@ -156,7 +156,7 @@ top:2.46667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->anio}}
 <div class="FRX1_11" style="z-Index:8;left:6.42292in;
 top:2.46667in;width:1.38542in;height:0.17708in;">@if($cotizacion->vehiculo->modelo_id!=''){{$cotizacion->vehiculo->modelo->nombre}}@endif</div>
 <div class="FRX1_11" style="z-Index:6;left:4.62292in;
-top:2.9667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}</div>
+top:2.9367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}</div>
 @endif
 
 
