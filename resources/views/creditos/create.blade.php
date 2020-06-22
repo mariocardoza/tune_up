@@ -92,8 +92,8 @@
 										<div class="form-group">
 											<label for="" class="control-label">Imprimir datos</label>
 											<select name="imprimir_veh" id="imprimir_veh" class="chosen-select">
-												<option value="Si">Si</option>
-												<option value="No">No</option>
+												<option value="si">Si</option>
+												<option value="no">No</option>
 											</select>
 										</div>
 									</div>
