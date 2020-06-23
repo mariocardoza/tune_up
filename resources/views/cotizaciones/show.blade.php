@@ -238,7 +238,7 @@
         		<div class="col-md-12">
         			<div class="form-group">
 		        		<label for="">Correo electrónico</label>
-		        		<input type="text" name="correo" class="form-control " value="{{$cotizacion->cliente->correo}}">
+		        		<input type="text" name="correo" class="form-control correito" value="{{$cotizacion->cliente->correo}}">
 		        		<input type="hidden" name="id" class="form-control" value="{{$cotizacion->id}}">
 		        		
 		        	</div>
@@ -515,6 +515,7 @@
 <script>
 	var elid='<?php echo $cotizacion->id; ?>';
 	var v_id='<?php echo $cotizacion->vehiculo->id; ?>';
+	var correito='<?php echo $cotizacion->cliente->correo; ?>';
 	$(document).ready(function(e){
 		swal.closeModal();
 		obtenerguardados(elid);
@@ -557,6 +558,7 @@
 		//enviar cotizacion por correo
 		$(document).on("click",".enviar_correo",function(e){
 			e.preventDefault();
+			$(".correito").val(correito);
 			$("#modal_enviar").modal("show");
 		});
 

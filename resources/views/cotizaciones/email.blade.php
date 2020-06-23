@@ -32,7 +32,7 @@
                 <h2>TUNE UP SERVICE</h2>
                 <i class="fas fa-remove"></i>
                 <p style="font-weight: bold;">BUEN DÍA: {{$cotizacion->cliente->nombre}}</p>
-                <p style="font-weight: bold;">ESTA ES LA COTIZACIÓN PARA SU VEHÍCULO:</p>
+                <p style="font-weight: bold;">ESTA ES LA COTIZACIÓN PARA SU VEHÍCULO: {{$cotizacion->vehiculo->placa}}</p>
             
               </div>
               <!-- /.mailbox-read-message -->

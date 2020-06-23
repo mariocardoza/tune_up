@@ -299,8 +299,11 @@ class CotizacionController extends Controller
       $cotizacion=Cotizacione::find($request->id);
       $taller=Taller::find(1);
       $clienti=$cotizacion->cliente;
-      $clienti->correo=$request->correo;
-      $clienti->save();
+      if($clienti->correo==''){
+        $clienti->correo=$request->correo;
+        $clienti->save();
+      }
+      
       $pdf = PDF::loadView('cotizaciones.prueba', compact('cotizacion','taller'));
       if($request->adicional!='' && filter_var($request->adicional, FILTER_VALIDATE_EMAIL)):
         $retorno=Mail::send('cotizaciones.email', compact('cotizacion','taller'),function (Message $message) use ($request,$cotizacion,$pdf){

@@ -150,7 +150,7 @@
         					<div class="col-md-6">
         						<div class="from-group">
         							<label for="fecha_nacimiento">Fecha de nacimiento</label>
-        							<input type="text" name="fecha_nacimiento" class="form-control fecha">
+        							<input type="date" name="fecha_nacimiento" class="form-control">
         						</div>
         					</div>
         					<div class="col-md-6">
