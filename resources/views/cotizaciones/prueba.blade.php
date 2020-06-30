@@ -173,7 +173,8 @@ top:1.85042in;width:4.26042in;height:0.19792in;">TELS.: {{$taller->telefono1}}, 
 <div class="FRX1_19" style="z-Index:2;left:3.76667in;top:3.9in;width:1.86458in;height:0.15625in; font-weight: bold;">       PRECIO U.</div>
 <?php $salto=4.1; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
 
-
+<div class="FRX1_18" style="z-Index:1;left:1.51667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;"><b>---- MANO DE OBRA ----</b></div>
+<?php $salto=4.3; ?>
 @foreach($cotizacion->trabajodetalle as $t)
 <div class="FRX1_18" style="z-Index:1;left:0.81667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;">{{$t->nombre}}</div>
 <div class="FRX1_19" style="z-Index:2;left:5.56667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($t->precio*$t->cantidad,2)}}</div>
@@ -182,7 +183,8 @@ top:1.85042in;width:4.26042in;height:0.19792in;">TELS.: {{$taller->telefono1}}, 
 <div class="FRX1_19" style="z-Index:2;left:3.76667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($t->precio,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($t->cantidad*$t->precio);?>
 @endforeach
-
+<div class="FRX1_18" style="z-Index:1;left:1.51667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;"><b>---- REPUESTOS ----</b></div>
+<?php $salto=$salto+0.2; ?>
 @foreach($cotizacion->repuestodetalle as $r)
 <div class="FRX1_18" style="z-Index:1;left:0.81667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;">{{$r->nombre}}</div>
 <div class="FRX1_19" style="z-Index:2;left:5.56667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">        $ {{number_format($r->precio*$r->cantidad,2)}}</div>

@@ -507,10 +507,10 @@ $(document).ready(function(e){
 	});
 
 	//submit de kilometraje
-	$(document).on("blur",".kimi",function(e){
+	$(document).on("blur",".kimi,.kimiproxi",function(e){
 		e.preventDefault();
 		var kilometraje=0;var km_proxima=0;
-		kilometraje=$(this).val();
+		kilometraje=$(".kimi").val();
 		km_proxima=$(".kimiproxi").val();
 		$.ajax({
 			url:'../cotizaciones/cambiarkm',
@@ -528,10 +528,10 @@ $(document).ready(function(e){
 	});
 
 	//submit de millaje
-	$(document).on("blur",".millaje",function(e){
+	$(document).on("blur",".millaje,.miproxi",function(e){
 		e.preventDefault();
 		var kilometraje=0;var km_proxima=0;
-		kilometraje=$(this).val();
+		kilometraje=$(".millaje").val();
 		km_proxima=$(".miproxi").val();
 		$.ajax({
 			url:'../cotizaciones/cambiarkm',
