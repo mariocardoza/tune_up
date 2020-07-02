@@ -17,7 +17,7 @@ class Cotizacione extends Model
 
     public function facturar_aa()
     {
-        return $this->belongsTo('App\Cliente','facturar_a',)->withDefault();
+        return $this->belongsTo('App\Cliente','facturar_a')->withDefault();
     }
 
     public function vehiculo()
