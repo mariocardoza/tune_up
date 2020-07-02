@@ -250,6 +250,7 @@ class RepuestodetallesController extends Controller
             //edito el repuesto
             $repuesto->precio=$request->precio;
             $repuesto->cantidad=$request->cantidad;
+            $repuesto->nombre=$request->nombre;
             $repuesto->cotizacion_id=$request->cotizacion_id;
             $repuesto->save();
             if($coti->coniva=='si'){
@@ -296,6 +297,7 @@ class RepuestodetallesController extends Controller
             //edito el repuesto
             $repuesto->precio=$request->precio;
             $repuesto->cantidad=$request->cantidad;
+            $repuesto->nombre=$request->nombre;
             $repuesto->cotizacion_id=$request->cotizacion_id;
             $repuesto->save();
             if($coti->coniva=='si'){

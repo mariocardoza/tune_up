@@ -33,6 +33,96 @@ $(document).ready(function(e){
 		});
 	});
 
+	///evento imprimir vehiculo
+	$(document).on("change","#imprimir_veh",function(e){
+		e.preventDefault();
+		var valor=$(this).val();
+		$.ajax({
+			url:'../creditos/imprimir_veh',
+			type:'post',
+			dataType:'json',
+			data:{'cotizacion_id':elid,valor},
+			success: function(json){
+	    		if(json[0]==1){
+	    			toastr.success("Se cambió la configuracion de imprimir vehículo");
+	    			swal.closeModal();
+	    			location.reload();
+	    		}else{
+	    			toastr.error("Ocurrió un error");
+	    			swal.closeModal();
+	    		}
+	    	},error: function(error){
+	    		toastr.error("Ocurrió un error");
+	    		swal.closeModal();
+	    	}
+		});
+	});
+
+	//evento facturar a
+	$(document).on("change","#facturar_a",function(e){
+		e.preventDefault();
+		var id=$(this).val();
+		var imprimir_veh=$("#imprimir_veh").val();
+		if(id!=''){
+			swal.fire({
+			  title: '¿Cambiar nombre?',
+			  text: "¿Está seguro de cambiar el nombre de la factura?",
+			  icon: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Si'
+			}).then((result) => {
+			  if (result.value) {
+			    modal_cargando();
+			    $.ajax({
+			    	url:'../creditos/facturar_a',
+			    	type:'post',
+			    	dataType:'json',
+			    	data:{'cotizacion_id':elid,facturar_a:id,imprimir_veh},
+			    	success: function(json){
+			    		if(json[0]==1){
+			    			toastr.success("Nombre de la factura cambiado");
+			    			swal.closeModal();
+			    			location.reload();
+			    		}else{
+			    			toastr.error("Ocurrió un error");
+			    			swal.closeModal();
+			    		}
+			    	},error: function(error){
+			    		toastr.error("Ocurrió un error");
+			    		swal.closeModal();
+			    	}
+			    });
+			  }else{
+			  		$("#facturar_a").val("");
+				  	$("#facturar_a").trigger("chosen:updated");
+				  	
+			  }
+			});	
+		}else{
+			$.ajax({
+		  		url:'../creditos/cancelarfacturar',
+		  		type:'post',
+		  		dataType:'json',
+		  		data:{'cotizacion_id':elid},
+		  		success: function(json){
+		    		if(json[0]==1){
+		    			toastr.success("Nombre de la factura cancelado");
+		    			swal.closeModal();
+		    			location.reload();
+		    		}else{
+		    			toastr.error("Ocurrió un error");
+		    			swal.closeModal();
+		    		}
+		    	},error: function(error){
+		    		toastr.error("Ocurrió un error");
+		    		swal.closeModal();
+		    	}
+		  	});
+		}
+	});
+
 	//eventro change para el trabajo
 	$(document).on("change","#elselect_t",function(e){
 		e.preventDefault();

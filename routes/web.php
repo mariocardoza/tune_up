@@ -53,6 +53,9 @@ Route::get('facturas/reporte/{id}','FacturaController@reporte');
 Route::Resource('facturas','FacturaController');
 Route::get('creditos/reporte/{id}','CreditoController@reporte');
 Route::post('creditos/clonar','CreditoController@clonar');
+Route::post('creditos/facturar_a','CreditoController@facturar_a');
+Route::post('creditos/cancelarfacturar','CreditoController@cancelarfacturar');
+Route::post('creditos/imprimir_veh','CreditoController@imprimir_veh');
 Route::Resource('creditos','CreditoController');
 
 

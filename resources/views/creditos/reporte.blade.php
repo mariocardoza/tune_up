@@ -140,12 +140,21 @@
 
 <div style=" width:100%;top:0in;position:absolute; ">
 
+@if($cotizacion->facturar_a=='')
 <div class="FRX1_11" style="z-Index:2;left:0.533125in;
 top:1.62875in;width:3.85208in;height:1.70625in;">{{$cotizacion->cliente->nombre}}</div>
 <div class="FRX1_11" style="z-Index:2;left:0.63125in;
 top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
 <div class="FRX1_11" style="z-Index:23;left:2.73125in;
 top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->cliente->dui}}</div>
+@else
+<div class="FRX1_11" style="z-Index:2;left:0.533125in;
+top:1.62875in;width:3.85208in;height:1.70625in;">{{$cotizacion->facturar_aa->nombre}}</div>
+<div class="FRX1_11" style="z-Index:2;left:0.63125in;
+top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->facturar_aa->direccion}}</div>
+<div class="FRX1_11" style="z-Index:23;left:2.73125in;
+top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->facturar_aa->dui}}</div>
+@endif
 <div class="FRX1_11" style="z-Index:3;left:4.62292in;
 top:2.46667in;width:1.38542in;height:0.17708in;">  {{$cotizacion->fecha->format('d/m/Y')}}</div>
 @if($cotizacion->imprimir_veh=='si')
@@ -172,7 +181,8 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}<
 
 
 <?php $salto=3.6; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
-
+<div class="FRX1_24" style="z-Index:3;left:0.91250in;top:{{$salto}}in;width:1.92708in;height:0.15625in;"><b>--- MANO DE OBRA ---</b></div>
+<?php $salto=3.8; ?>
 
 @foreach($cotizacion->trabajodetalle as $t)
 <div class="FRX1_24" style="z-Index:3;left:0.11250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$t->cantidad}}</div>
@@ -182,6 +192,10 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}<
 <div class="FRX1_19" style="z-Index:2;left:5.16667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($t->precio*$t->cantidad,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($t->cantidad*$t->precio);?>
 @endforeach
+
+<div class="FRX1_24" style="z-Index:3;left:0.91250in;top:{{$salto}}in;width:1.92708in;height:0.15625in;"><b>--- REPUESTOS ---</b></div>
+
+<?php $salto=$salto+0.2; ?>
 
 @foreach($cotizacion->repuestodetalle as $r)
 <div class="FRX1_24" style="z-Index:3;left:0.11250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$r->cantidad}}</div>

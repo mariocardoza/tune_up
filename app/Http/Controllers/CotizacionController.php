@@ -66,11 +66,11 @@ class CotizacionController extends Controller
         $coti=Cotizacione::find($request->id);
         $retorno=Cotizacione::convertir($coti->id,$request->estado,$request->fecha);
         if($request->estado==2){
-          $ruta="../facturas/".$request->id;
+          $ruta="../facturas/".$retorno[2];
         }else if($request->estado==3){
-          $ruta="../creditos/".$request->id;
+          $ruta="../creditos/".$retorno[2];
         }else{
-          $ruta="../exportaciones/".$request->id;
+          $ruta="../exportaciones/".$retorno[2];
         }
         return array(1,$coti,$ruta,$retorno);
       }catch(Exception $e){

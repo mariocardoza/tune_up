@@ -36,7 +36,7 @@ class RepuestoDetalle extends Model
 			                    <div class="form-group">
 			                      <label for="">Nombre del repuesto</label>
 			                      
-			                      <input type="text" readonly value="'.$repuesto->nombre.'" class="form-control">
+			                      <input type="text" name="nombre" autocomplete="off" value="'.$repuesto->nombre.'" class="form-control">
 			                      <input type="hidden" name="cotizacion_id" value="'.$repuesto->cotizacion_id.'">
 			                    </div>
 			                  </div>

@@ -15,6 +15,11 @@ class Cotizacione extends Model
     	return $this->belongsTo('App\Cliente');
     }
 
+    public function facturar_aa()
+    {
+        return $this->belongsTo('App\Cliente','facturar_a',)->withDefault();
+    }
+
     public function vehiculo()
     {
     	return $this->belongsTo('App\Vehiculo');
@@ -32,8 +37,15 @@ class Cotizacione extends Model
 
     public static function correlativo($tipo_documento)
     {
-        $numero=Cotizacione::where('tipo_documento',$tipo_documento)->count();
-        return $numero+1;
+        if($tipo_documento==3){
+            $numero=377;
+            $numero2=Cotizacione::where('tipo_documento',$tipo_documento)->count();
+            return $numero+$numero2;
+        }else{
+            $numero=Cotizacione::where('tipo_documento',$tipo_documento)->count();
+            return $numero+1;  
+        }
+        
     }
 
 
@@ -276,7 +288,7 @@ class Cotizacione extends Model
             $coti->estado=2;
             $coti->save();
             DB::commit();
-            return array(3,$nueva);
+            return array(3,$nueva,$nueva->id);
         }catch(Exception $e){
             DB::rollback();
             return array(-1,"error",$e->getMessage());
@@ -328,7 +340,7 @@ class Cotizacione extends Model
             $coti->estado=2;
             $coti->save();
             DB::commit();
-            return array(3,$nueva);
+            return array(3,$nueva,$nueva->id);
         }catch(Exception $e){
             DB::rollback();
             return array(-1,"error",$e->getMessage());

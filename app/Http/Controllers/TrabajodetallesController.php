@@ -243,6 +243,7 @@ class TrabajodetallesController extends Controller
             $coti->save();
             //edito el trabajo
             $trabajo->precio=$request->precio;
+            $trabajo->nombre=$request->nombre;
             $trabajo->save();
             //cambio los totales
             if($coti->coniva=='si'){
@@ -288,6 +289,7 @@ class TrabajodetallesController extends Controller
             $coti->save();
             //edito el trabajo
             $trabajo->precio=$request->precio;
+            $trabajo->nombre=$request->nombre;
             $trabajo->save();
             //cambio los totales
             if($coti->coniva=='si'){

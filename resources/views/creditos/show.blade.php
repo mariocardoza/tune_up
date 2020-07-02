@@ -13,7 +13,7 @@
 				<div class="card-header">
 					<div class="row">
 						<div class="col-md-4"><a id="anterior" data-id="{{$anterior}}" href="{{url('cotizaciones/'.$anterior)}}" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
-						<div class="col-md-4"><h3 class="card-title">Créditos fiscal</h3></div>
+						<div class="col-md-4"><h3 class="card-title">Créditos fiscal: <b>{{$cotizacion->correlativo}}</b></h3></div>
 						<div class="col-md-4"><a id="siguiente" data-id="{{$siguiente}}" href="{{url('cotizaciones/'.$siguiente)}}" class="btn btn-success float-right"><i class="fas fa-angle-right"></i></a></div>
 					</div>
 					
@@ -34,19 +34,19 @@
 										@endforeach
 									</select>
 								</div>
-								@if($cotizacion->facturar_a!='')
 								<div class="form-group">
 									<label for="" class="control-label">Facturar a</label>
 									<select name="facturar_a" id="facturar_a" class="chosen-select">
-										<option value="">Seleccione un cliente</option>
+										<option value="">No</option>
 										@foreach($clientes as $c)
 											@if($c->id==$cotizacion->facturar_a)
-												<option selected data-sector="{{$c->sector}}" data-direccion="{{$c->direccion}}" value="{{$c->id}}">{{$c->nombre}}</option>
+												<option selected value="{{$c->id}}">{{$c->nombre}}</option>
+											@else
+												<option  value="{{$c->id}}">{{$c->nombre}}</option>
 											@endif
 										@endforeach
 									</select>
 								</div>
-								@endif
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">

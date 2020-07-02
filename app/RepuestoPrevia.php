@@ -36,7 +36,7 @@ class RepuestoPrevia extends Model
 			                    <div class="form-group">
 			                      <label for="">Nombre del repuesto</label>
 			                      
-			                      <input type="text" readonly value="'.$repuesto->repuesto->nombre.'" class="form-control">
+			                      <input type="text" name="nombre" autocomplete="off" value="'.$repuesto->nombre.'" class="form-control">
 			                    </div>
 			                  </div>
 			                  <div class="col-md-4">

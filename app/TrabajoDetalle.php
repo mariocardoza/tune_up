@@ -36,7 +36,7 @@ class TrabajoDetalle extends Model
 					                  <div class="col-md-8">
 					                    <div class="form-group">
 					                      <label for="">Nombre de la mano de obra</label>
-					                      <input type="text" readonly value="'.$trabajo->nombre.'" class="form-control">
+					                      <input type="text" name="nombre" autocomplete="off" value="'.$trabajo->nombre.'" class="form-control">
 					                      <input type="hidden" name="cotizacion_id" value="'.$trabajo->cotizacion_id.'">
 					                    </div>
 					                  </div>

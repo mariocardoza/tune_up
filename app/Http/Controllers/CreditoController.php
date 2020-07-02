@@ -129,14 +129,53 @@ class CreditoController extends Controller
         try{
             $retorno=Cotizacione::clonar($coti->id,$request->tipo_documento,$request->fecha);
             if($request->tipo_documento==2){
-                $ruta="../facturas/".$request->id;
+                $ruta="../facturas/".$retorno[2];
             }else if($request->tipo_documento==3){
-                $ruta="../creditos/".$request->id;
+                $ruta="../creditos/".$retorno[2];
             }else{
-                $ruta="../exportaciones/".$request->id;
+                $ruta="../exportaciones/".$retorno[2];
             }
             return array(1,$retorno,$ruta);
         }catch(Excetion $e){
+            return array(-1,"error",$e->getMessage());
+        }
+    }
+
+    public function facturar_a(Request $request)
+    {
+        try{
+            $coti=Cotizacione::find($request->cotizacion_id);
+            $coti->facturar_a=$request->facturar_a;
+            $coti->imprimir_veh=$request->imprimir_veh;
+            $coti->save();
+            return array(1);
+
+        }catch(Excetion $e){
+            return array(-1,"error",$e->getMessage());
+        }
+    }
+
+    public function cancelarfacturar(Request $request)
+    {
+        try{
+            $coti=Cotizacione::find($request->cotizacion_id);
+            $coti->facturar_a=null;
+            $coti->imprimir_veh='si';
+            $coti->save();
+            return array(1);
+        }catch(Exception $e){
+            return array(-1,"error",$e->getMessage());
+        }
+    }
+
+    public function imprimir_veh(Request $request)
+    {
+        try{
+            $coti=Cotizacione::find($request->cotizacion_id);
+            $coti->imprimir_veh=$request->valor;
+            $coti->save();
+            return array(1);
+        }catch(Exception $e){
             return array(-1,"error",$e->getMessage());
         }
     }
