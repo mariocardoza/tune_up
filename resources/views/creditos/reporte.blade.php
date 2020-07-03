@@ -169,7 +169,7 @@ top:2.9367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}
 @endif
 
 
-
+@if($cotizacion->facturar_a=='')
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
 top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
 
@@ -178,7 +178,16 @@ top:1.67875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</
 
 <div class="FRX1_24" style="z-Index:2;left:4.82292in;
 top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
+@else
+<div class="FRX1_11" style="z-Index:2;left:5.32292in;
+top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->reg_iva}}</div>
 
+<div class="FRX1_11" style="z-Index:2;left:5.32292in;
+top:1.67875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->nit}}</div>
+
+<div class="FRX1_24" style="z-Index:2;left:4.82292in;
+top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->giro}}</div>
+@endif
 
 <?php $salto=3.6; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
 <div class="FRX1_24" style="z-Index:3;left:0.91250in;top:{{$salto}}in;width:1.92708in;height:0.15625in;"><b>--- MANO DE OBRA ---</b></div>
