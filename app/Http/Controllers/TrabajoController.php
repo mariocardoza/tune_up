@@ -91,7 +91,7 @@ class TrabajoController extends Controller
             if($coti->coniva=='si'){
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevosubto=$sub+($request->precio*$request->cantidad);
+                $nuevosubto=$sub+($request->precio*1);
                 $nuevoiva=$nuevosubto*session('iva');
                 $nuevotot=$nuevoiva+$nuevosubto;
                 $coti->subtotal=$nuevosubto;
@@ -103,7 +103,7 @@ class TrabajoController extends Controller
             }else{
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
-                $nuevosubto=$sub+($request->precio*$request->cantidad);
+                $nuevosubto=$sub+($request->precio*1);
                 $coti->subtotal=$nuevosubto;
                 $coti->total=$nuevosubto;
                 $coti->save();
@@ -122,7 +122,7 @@ class TrabajoController extends Controller
                 if($coti->coniva=='si'){
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevosubto=$sub+($request->precio*$request->cantidad);
+                    $nuevosubto=$sub+($request->precio*1);
                     $nuevoiva=$nuevosubto*session('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
@@ -134,7 +134,7 @@ class TrabajoController extends Controller
                 }else{
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
-                    $nuevosubto=$sub+($request->precio*$request->cantidad);
+                    $nuevosubto=$sub+($request->precio*1);
                     $coti->subtotal=$nuevosubto;
                     $coti->total=$nuevosubto;
                     $coti->save();

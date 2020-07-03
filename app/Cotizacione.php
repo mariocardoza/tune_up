@@ -347,4 +347,24 @@ class Cotizacione extends Model
         }
         //return array(3,$cotizacion);
     }
+
+    public static function calcular_subtotal($id)
+    {
+        $coti=Cotizacione::find($id);
+        $repuestos=RepuestoDetalle::where('cotizacion_id',$id)->get();
+        $trabajos=TrabajoDetalle::where('cotizacion_id',$id)->get();
+        $total=0;
+
+        foreach ($trabajos as $i=> $t) {
+            $total=$total+($t->cantidad*$t->precio);
+        }
+
+        foreach ($repuestos as $i=> $r) {
+            $total=$total+($r->cantidad*$r->precio);
+        }
+
+        $coti->subtotal=$total;
+        $coti->total=$total;
+        $coti->save();
+    }
 }
