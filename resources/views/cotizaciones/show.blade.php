@@ -71,26 +71,26 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km Recepción</label>
-											<input type="number" name="kilometraje" value="{{$cotizacion->kilometraje}}" class="form-control kimi" >
+											<input type="number" {{ $cotizacion->estado==1 ? '' : 'readonly' }} name="kilometraje" value="{{$cotizacion->kilometraje}}" class="form-control kimi" >
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Km próxima</label>
-											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control kimiproxi" >
+											<input type="number" {{ $cotizacion->estado==1 ? '' : 'readonly' }} value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control kimiproxi" >
 										</div>
 									</div>
 									@else
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Mi Recepción</label>
-											<input type="number" name="kilometraje" value="{{$cotizacion->kilometraje}}" class="form-control millaje" >
+											<input type="number" {{ $cotizacion->estado==1 ? '' : 'readonly' }} name="kilometraje" value="{{$cotizacion->kilometraje}}" class="form-control millaje" >
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="" class="control-label">Mi próxima</label>
-											<input type="number" value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control miproxi" step="any" >
+											<input type="number" {{ $cotizacion->estado==1 ? '' : 'readonly' }} value="{{$cotizacion->km_proxima}}" name="km_proxima" class="form-control miproxi" step="any" >
 										</div>
 									</div>
 
