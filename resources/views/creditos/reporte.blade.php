@@ -228,9 +228,9 @@ top:9.67917in;width:1.85417in;height:0.20833in;">         {{number_format($cotiz
 <div class="FRX1_11" style="z-Index:4;left:0.82292in;
 top:8.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><!--div class="FRX1_17" style="z-Index:5;left:5.56667in;
 top:8.57917in;width:1.84375in;height:0.16667in;">         {{number_format($cotizacion->total,2)}}</div-->
-<div class="FRX1_11" style="z-Index:4;left:0.22292in;
-top:7.80083in;width:4.28125in;height:0.44792in;">KM RECEPCIÓN {{($cotizacion->kilometraje)}} </div>
+<div class="FRX1_11" style="z-Index:4;left:0.35292in;
+top:7.80083in;width:4.28125in;height:0.44792in;">KM RECEPCIÓN {{number_format($cotizacion->kilometraje,0)}} </div>
 <div class="FRX1_11" style="z-Index:4;left:2.42292in;
-top:7.80083in;width:4.28125in;height:0.44792in;">KM PRÓXIMA {{($cotizacion->km_proxima)}} </div>
+top:7.80083in;width:4.28125in;height:0.44792in;">KM PRÓXIMA {{number_format($cotizacion->km_proxima,0)}} </div>
 <div class="FRX1_37" style="z-Index:6;left:5.87708in;
 top:9.68333in;width:1.20000in;height:0.19792in;"></div></div></div></body></html>
