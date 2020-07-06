@@ -492,6 +492,63 @@ $(document).ready(function(e){
 	});
 
 	//calcular kilometraje
+	//submit de kilometraje
+	$(document).on("blur",".kimi,.kimiproxi",function(e){
+		e.preventDefault();
+		var kilometraje=0;var km_proxima=0;
+		kilometraje=$(".kimi").val();
+		km_proxima=$(".kimiproxi").val();
+		$.ajax({
+			url:'../cotizaciones/cambiarkm',
+			type:'post',
+			dataType:'json',
+			data:{kilometraje,km_proxima,cotizacion_id:elid},
+			success: function(json){
+				if(json[0]==1){
+					console.log("kilometraje cambiado");
+				}else{
+					console.log("no se cambio el kilometraje");
+				}
+			}
+		});
+	});
+
+	//submit de millaje
+	$(document).on("blur",".millaje,.miproxi",function(e){
+		e.preventDefault();
+		var kilometraje=0;var km_proxima=0;
+		kilometraje=$(".millaje").val();
+		km_proxima=$(".miproxi").val();
+		$.ajax({
+			url:'../cotizaciones/cambiarkm',
+			type:'post',
+			dataType:'json',
+			data:{kilometraje,km_proxima,cotizacion_id:elid},
+			success: function(json){
+				if(json[0]==1){
+					console.log("kilometraje cambiado");
+				}else{
+					console.log("no se cambio el kilometraje");
+				}
+			}
+		});
+	});
+
+	//calcular kilometraje
+	$(document).on("input",".kimi",function(e){
+		e.preventDefault();
+		var actual=parseFloat($(this).val());
+		var proximo=actual+5000;
+		$(".kimiproxi").val(proximo.toFixed(2));
+	});
+
+	//calcular millaje
+	$(document).on("input",".millaje",function(e){
+		e.preventDefault();
+		var actual=parseFloat($(this).val());
+		var proximo=actual+3106.856;
+		$(".miproxi").val(proximo.toFixed(2));
+	});
 
 });
 

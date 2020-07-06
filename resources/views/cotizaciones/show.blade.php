@@ -202,7 +202,7 @@
         		<div class="col-md-12">
         			<div class="form-group">
 		        		<label for="">Fecha</label>
-		        		<input type="text" name="fecha" class="form-control fecha" value="{{$cotizacion->fecha->format('d/m/Y')}}">
+		        		<input type="text" name="fecha" class="form-control fecha" value="{{date('d/m/Y')}}">
 		        		<input type="hidden" name="id" class="form-control" value="{{$cotizacion->id}}">
 		        		<input type="hidden" name="estado" class="convertir_estado">
 		        	</div>
@@ -510,7 +510,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/cotizaciones_show.js?cod='.date('Yidisus'))}}"></script>
+<script src="{{asset('js/cotizaciones_show.js')}}"></script>
 
 <script>
 	var elid='<?php echo $cotizacion->id; ?>';
