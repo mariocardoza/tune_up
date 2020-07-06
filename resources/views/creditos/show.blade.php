@@ -498,7 +498,7 @@
 
 @endsection
 @section('scripts')
-<script src="{{asset('js/creditos_show.js'}}"></script>
+<script src="{{asset('js/creditos_show.js')}}"></script>
 
 <script>
 	var elid='<?php echo $cotizacion->id; ?>';
