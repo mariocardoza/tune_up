@@ -44,7 +44,7 @@ $(document).ready(function(e){
     var placa=$("#laplaquita").val();
     var dominio = window.location.host;
       
-        var url='http://'+dominio+'/'+carpeta()+'/public/vehiculos/porplaca';
+        var url='vehiculos/porplaca';
   
     if(placa!=''){
       $.ajax({
@@ -63,7 +63,7 @@ $(document).ready(function(e){
               );*/
               $("#modal_reporte_carro").modal("hide");
 
-              var url = 'http://'+dominio2+'/'+carpeta()+'/public/vehiculos/historial/'+json[1].id;
+              var url = 'vehiculos/historial/'+json[1].id;
               $('#verpdf').attr('src', url);
               //$('#verpdf').reload();
               $("#modal_pdf").modal("show");
@@ -90,7 +90,7 @@ $(document).ready(function(e){
         '_blank' // <- This is what makes it open in a new window.
       );*/
           $("#modal_reporte_iva").modal("hide");
-          var url = 'http://'+dominio+'/'+carpeta()+'/public/ivaporventas?fecha1='+fecha1+'&fecha2='+fecha2;
+          var url = 'ivaporventas?fecha1='+fecha1+'&fecha2='+fecha2;
           $('#verpdf').attr('src', url);
           //$('#verpdf').reload();
           $("#modal_pdf").modal("show");

@@ -27,10 +27,17 @@ class TallerSeeder extends Seeder
 	    $taller->save();
 
         $user=new User();
-        $user->username='administrador';
+        $user->username='tuneupservice';
         $user->name='Héctor Rivas';
         $user->email='h_rivas47@yahoo.com';
-        $user->password=bcrypt('administrador');
+        $user->password=bcrypt('donmemitoA1');
+        $user->save();
+
+        $user=new User();
+        $user->username='marito';
+        $user->name='Mario Cardoza';
+        $user->email='mario.cardoza.huezo@gmail.com';
+        $user->password=bcrypt('mar1ocard0za');
         $user->save();
     }
 
