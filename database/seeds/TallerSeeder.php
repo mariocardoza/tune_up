@@ -15,11 +15,12 @@ class TallerSeeder extends Seeder
     {
         $this->truncateTables([
             'tallers',
+            'users',
         ]);
 
         $taller= new Taller();
 	    $taller->propietario='Hector Rivas';
-	    $taller->direccion='CALLE SAN CARLOS 1004, FINAL 17 AV. NORTE, SAN SALVADOR';
+	    $taller->direccion='CALLE SAN CARLOS 1004, FINAL 17 AV. NORTE, COL LAYCO, SAN SALVADOR';
 	    $taller->telefono1='2225-4438';
 	    $taller->telefono2='2562-7454';
 	    $taller->celular='7730-3565';
