@@ -44,7 +44,7 @@ $(document).ready(function(e){
     var placa=$("#laplaquita").val();
     var dominio = window.location.host;
       
-        var url='vehiculos/porplaca';
+        var url='/vehiculos/porplaca';
   
     if(placa!=''){
       $.ajax({
