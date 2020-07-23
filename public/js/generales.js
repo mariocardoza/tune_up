@@ -63,7 +63,7 @@ $(document).ready(function(e){
               );*/
               $("#modal_reporte_carro").modal("hide");
 
-              var url = 'vehiculos/historial/'+json[1].id;
+              var url = '/vehiculos/historial/'+json[1].id;
               $('#verpdf').attr('src', url);
               //$('#verpdf').reload();
               $("#modal_pdf").modal("show");
