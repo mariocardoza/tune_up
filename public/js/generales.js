@@ -90,7 +90,7 @@ $(document).ready(function(e){
         '_blank' // <- This is what makes it open in a new window.
       );*/
           $("#modal_reporte_iva").modal("hide");
-          var url = 'ivaporventas?fecha1='+fecha1+'&fecha2='+fecha2;
+          var url = '/ivaporventas?fecha1='+fecha1+'&fecha2='+fecha2;
           $('#verpdf').attr('src', url);
           //$('#verpdf').reload();
           $("#modal_pdf").modal("show");
