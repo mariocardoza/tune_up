@@ -92,7 +92,7 @@ $(document).ready(function(e){
 						$("#modal_edit_v").modal("show");
 						swal.closeModal();
     				}, 1000);
-					
+					swal.closeModal();
 				}else{
 					toastr.error("Ocurrió un error, Intente de nuevo");
 					swal.closeModal();
@@ -136,12 +136,16 @@ $(document).ready(function(e){
 				if(json[0]==1){
 					toastr.success("cliente fue editado con éxito");
 					location.reload();
+				}else{
+					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -150,6 +154,7 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_vehiculo",function(e){
 		e.preventDefault();
 		var datos=$("#form_vehiculo").serialize();
+		modal_cargando();
 		$.ajax({
 			url:'../vehiculos',
 			type:'POST',
@@ -287,6 +292,7 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_marca",function(e){
 		e.preventDefault();
 		var datos=$("#form_marca").serialize();
+		modal_cargando();
 		$.ajax({
 			url:'../marcas',
 			type:'post',
@@ -300,12 +306,17 @@ $(document).ready(function(e){
 					$("#modal_nuevo_v").modal("show");
 					$("#modal_marca").modal("hide");
 					$("#form_marca").trigger("reset");
+					swal.closeModal();
+				}else{
+					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -326,12 +337,16 @@ $(document).ready(function(e){
 					$("#modal_edit_v").modal("show");
 					$("#modal_marcae").modal("hide");
 					$("#form_marcae").trigger("reset");
+				}else{
+					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -353,12 +368,17 @@ $(document).ready(function(e){
 					$("#modal_nuevo_v").modal("show");
 					$("#modal_modelo").modal("hide");
 					$("#form_modelo").trigger("reset");
+					swal.closeModal();
+				}else{
+					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -366,6 +386,7 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_modeloe",function(e){
 		e.preventDefault();
 		var datos=$("#form_modeloe").serialize();
+		modal_cargando();
 		$.ajax({
 			url:'../modelos',
 			type:'post',
@@ -379,12 +400,17 @@ $(document).ready(function(e){
 					$("#modal_edit_v").modal("show");
 					$("#modal_modeloe").modal("hide");
 					$("#form_modeloe").trigger("reset");
+					swal.closeModal();
+				}else{
+					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -414,6 +440,7 @@ $(document).ready(function(e){
 		    		}
 		    	},error: function(error){
 		    		toastr.error("Ocurrió un error");
+		    		swal.closeModal();
 		    	}
 		    });
 		  }
@@ -445,6 +472,7 @@ $(document).ready(function(e){
 		    		}
 		    	},error: function(error){
 		    		toastr.error("Ocurrió un error");
+		    		swal.closeModal();
 		    	}
 		    });
 		  }

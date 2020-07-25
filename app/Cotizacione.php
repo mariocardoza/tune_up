@@ -42,8 +42,9 @@ class Cotizacione extends Model
             $numero2=Cotizacione::where('tipo_documento',$tipo_documento)->count();
             return $numero+$numero2;
         }else{
-            $numero=Cotizacione::where('tipo_documento',$tipo_documento)->count();
-            return $numero+1;  
+            $numero=72;
+            $numero2=Cotizacione::where('tipo_documento',$tipo_documento)->count();
+            return $numero+$numero2;  
         }
         
     }

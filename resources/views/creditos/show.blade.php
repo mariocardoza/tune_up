@@ -12,9 +12,9 @@
 			<div class="card card-primary">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-4"><a id="anterior" data-id="{{$anterior}}" href="{{url('cotizaciones/'.$anterior)}}" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
+						<div class="col-md-4"><a id="anterior" data-id="{{$anterior}}" href="{{url('creditos/'.$anterior)}}" class="btn btn-success"><i class="fas fa-angle-left"></i></a></div>
 						<div class="col-md-4"><h3 class="card-title">Créditos fiscal: <b>{{$cotizacion->correlativo}}</b></h3></div>
-						<div class="col-md-4"><a id="siguiente" data-id="{{$siguiente}}" href="{{url('cotizaciones/'.$siguiente)}}" class="btn btn-success float-right"><i class="fas fa-angle-right"></i></a></div>
+						<div class="col-md-4"><a id="siguiente" data-id="{{$siguiente}}" href="{{url('creditos/'.$siguiente)}}" class="btn btn-success float-right"><i class="fas fa-angle-right"></i></a></div>
 					</div>
 					
 				</div>
