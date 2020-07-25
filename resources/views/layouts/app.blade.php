@@ -78,11 +78,11 @@
             @yield('content')
         </main>
     </div>
-     <footer class="main-footer">
-    <div class="">
-      <b>Version</b> 1.0
+    <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Versión</b> 1.0
     </div>
-    <strong>Copyright &copy; {{date("Y")}} <b>TUNE UP SERVICE</b></strong>, Desarrollado por:<strong> <a href="mailto:mario.cardoza.huezo@gmail.com">Mario Cardoza</a></strong>. Todos los derechos reservados
+    <strong>Copyright &copy; {{date("Y")}} <b><strong> <a href="mailto:mario.cardoza.huezo@gmail.com">Mario Cardoza</a></strong></b></strong>, Desarrollado para: <b>TUNE UP SERVICE</b>. Todos los derechos reservados
   </footer>
 </body>
 </html>
