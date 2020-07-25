@@ -124,6 +124,7 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_repuesto",function(e){
 		e.preventDefault();
 		var datos=$("#form_repuesto").serialize();
+		modal_cargando();
 		$.ajax({
 			url:'../repuestos/guardar',
 			type:'POST',
@@ -135,14 +136,17 @@ $(document).ready(function(e){
 					$("#form_repuesto").trigger("reset");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
 					obtenerguardados(elid);
+					swal.closeModal();
 				}else{
 					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -151,6 +155,7 @@ $(document).ready(function(e){
 	$(document).on("submit","#form_trabajo",function(e){
 		e.preventDefault();
 		var datos=$("#form_trabajo").serialize();
+		modal_cargando();
 		$.ajax({
 			url:'../trabajos/guardar',
 			type:'POST',
@@ -162,14 +167,17 @@ $(document).ready(function(e){
 					$("#form_trabajo").trigger("reset");
 					$( "#btn_volvertrabajos" ).trigger( "click" );
 					obtenerguardados(elid);
+					swal.closeModal();
 				}else{
 					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},
 			error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
@@ -225,6 +233,7 @@ $(document).ready(function(e){
 		var trabajo_id=$("#elselect_t").val();
 		var precio=$("#n_precio_t").val();
 		var cantidad=1;
+		modal_cargando();
 		$.ajax({
 			url:'../trabajodetalles/guardar',
 			type:'POST',
@@ -238,13 +247,17 @@ $(document).ready(function(e){
 					$("#n_precio_t").val("");
 					$(".n_subto_t").val("");
 					obtenerguardados(elid);
+					swal.closeModal();
 				}else{
 					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
+
 			}
 		})
 	});
@@ -254,6 +267,7 @@ $(document).ready(function(e){
 		var repuesto_id=$("#elselect_r").val();
 		var precio=$("#n_precio_r").val();
 		var cantidad=$("#n_cantidad_r").val();
+		modal_cargando();
 		$.ajax({
 			url:'../repuestodetalles/guardar',
 			type:'POST',
@@ -268,13 +282,16 @@ $(document).ready(function(e){
 					$("#n_precio_r").val("");
 					$("#n_precio_r").val("");
 					$(".n_subto_r").val("");
+					swal.closeModal();
 				}else{
 					toastr.error("Ocurrió un error");
+					swal.closeModal();
 				}
 			},error: function(error){
 				$.each(error.responseJSON.errors,function(index,value){
 	      			toastr.error(value);
 	      		});
+	      		swal.closeModal();
 			}
 		});
 	});
