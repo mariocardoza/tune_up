@@ -12,7 +12,7 @@ class Cotizacione extends Model
 
     public function cliente()
     {
-    	return $this->belongsTo('App\Cliente');
+    	return $this->belongsTo('App\Cliente')->withDefault();
     }
 
     public function facturar_aa()
@@ -22,7 +22,7 @@ class Cotizacione extends Model
 
     public function vehiculo()
     {
-    	return $this->belongsTo('App\Vehiculo');
+    	return $this->belongsTo('App\Vehiculo')->withDefault();
     }
 
     public function repuestodetalle()
