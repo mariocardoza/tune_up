@@ -463,7 +463,7 @@ $(document).ready(function(e){
 		    		if(json[0]==1){
 		    			toastr.success("Repuesto eliminado con éxito");
 		    			swal.closeModal();
-		    			location.reload();
+		    			obtenerguardados(elid);
 		    		}else{
 		    			toastr.error("Ocurrió un error");
 		    			swal.closeModal();
@@ -499,7 +499,7 @@ $(document).ready(function(e){
 		    		if(json[0]==1){
 		    			toastr.success("Trabajo eliminado con éxito");
 		    			swal.closeModal();
-		    			location.reload();
+		    			obtenerguardados(elid);
 		    		}else{
 		    			toastr.error("Ocurrió un error");
 		    			swal.closeModal();
