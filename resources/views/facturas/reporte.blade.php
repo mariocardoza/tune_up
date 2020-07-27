@@ -144,11 +144,11 @@
 top:1.62875in;width:4.85208in;height:1.70625in;">{{$cotizacion->cliente->nombre}}</div>
 <div class="FRX1_11" style="z-Index:2;left:0.56125in;
 top:1.81875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
-<div class="FRX1_11" style="z-Index:23;left:0.563125in;
-top:2.96875in;width:4.66083in;height:0.14583in;">{{$cotizacion->cliente->dui}}</div>
+<!--div class="FRX1_11" style="z-Index:23;left:0.563125in;
+top:2.96875in;width:4.66083in;height:0.14583in;">{{$cotizacion->cliente->dui}}</div-->
 <div class="FRX1_11" style="z-Index:3;left:4.62292in;
 top:2.46667in;width:1.38542in;height:0.17708in;">  {{$cotizacion->fecha->format('d/m/Y')}}</div>
-@if($cotizacion->imprimir_veh=='si')
+
 <div class="FRX1_11" style="z-Index:7;left:5.33292in;
 top:2.46667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->marca->marca}}</div>
 <div class="FRX1_11" style="z-Index:9;left:6.12292in;
@@ -157,18 +157,10 @@ top:2.46667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->anio}}
 top:2.46667in;width:1.38542in;height:0.17708in;">@if($cotizacion->vehiculo->modelo_id!=''){{$cotizacion->vehiculo->modelo->nombre}}@endif</div>
 <div class="FRX1_11" style="z-Index:6;left:4.62292in;
 top:2.9367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}</div>
-@endif
 
 
 
-<div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
 
-<div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.67875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
-
-<div class="FRX1_24" style="z-Index:2;left:4.82292in;
-top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
 
 
 <?php $salto=3.6; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
