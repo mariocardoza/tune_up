@@ -485,6 +485,7 @@ $(document).ready(function(e){
 					$("#cotizacion_id").val(json[2]);
 					obtenerprevias();
 					swal.closeModal();
+					$("#n_cantidad_r").val(1);
 				}else{
 					swal.closeModal();
 					if(json[0]==2){

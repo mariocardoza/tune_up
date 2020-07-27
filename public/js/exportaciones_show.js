@@ -273,6 +273,7 @@ $(document).ready(function(e){
 					$("#n_precio_r").val("");
 					$("#n_precio_r").val("");
 					$(".n_subto_r").val("");
+					$("#n_cantidad_r").val(1);
 				}else{
 					toastr.error("Ocurrió un error");
 				}

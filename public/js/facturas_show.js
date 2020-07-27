@@ -66,7 +66,7 @@ $(document).ready(function(e){
 	//modal para registrar o agregar un repuesto
 	$(document).on("click","#md_repuestos",function(e){
 		e.preventDefault();
-		$("#n_cantidad_r").val(1);
+		$(".n_cantidad_r").val(1);
 		$("#modal_repuesto").modal("show");
 	});
 	//modal para registrar o agregar una mano de obra o trabajo
@@ -269,6 +269,7 @@ $(document).ready(function(e){
 					toastr.success("Repuesto aplicado con éxito");
 					$( "#btn_volverrepuestos" ).trigger( "click" );
 					obtenerguardados(elid);
+					$("#n_cantidad_r").val(1);
 					$("#elselect_r").trigger("chosen:updated");
 					$("#n_precio_r").val("");
 					$("#n_precio_r").val("");

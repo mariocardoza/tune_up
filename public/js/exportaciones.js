@@ -477,6 +477,7 @@ $(document).ready(function(e){
 					$( "#btn_volverrepuestos" ).trigger( "click" );
 					$("#cotizacion_id").val(json[2]);
 					obtenerprevias();
+					$("#n_cantidad_r").val(1);
 					swal.closeModal();
 				}else{
 					swal.closeModal();
