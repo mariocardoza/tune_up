@@ -37,14 +37,22 @@ class Cotizacione extends Model
 
     public static function correlativo($tipo_documento)
     {
+        if($tipo_documento==1){
+            $numero=Cotizacione::where('tipo_documento',$tipo_documento)->count();
+            return $numero+1;  
+        }
+        if($tipo_documento==2){
+            $numero=72;
+            $numero2=Cotizacione::where('tipo_documento',$tipo_documento)->count();
+            return $numero+$numero2;  
+        }
         if($tipo_documento==3){
             $numero=377;
             $numero2=Cotizacione::where('tipo_documento',$tipo_documento)->count();
             return $numero+$numero2;
         }else{
-            $numero=72;
             $numero2=Cotizacione::where('tipo_documento',$tipo_documento)->count();
-            return $numero+$numero2;  
+            return $numero2+1;  
         }
         
     }
