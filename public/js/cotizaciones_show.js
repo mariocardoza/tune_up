@@ -63,6 +63,7 @@ $(document).ready(function(e){
 	$(document).on("click","#md_repuestos",function(e){
 		e.preventDefault();
 		$("#modal_repuesto").modal("show");
+		$("#n_cantidad_r").val(1);
 	});
 	//modal para registrar o agregar una mano de obra o trabajo
 	$(document).on("click","#md_trabajos",function(e){
