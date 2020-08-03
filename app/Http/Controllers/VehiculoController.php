@@ -136,7 +136,7 @@ class VehiculoController extends Controller
             $carro->modelo_id=$request->modelo_id;
             $carro->tipomedida=$request->tipomedida;
             $carro->motor = $request->motor == "" ? 'N/A' : $request->motor;
-            $caroo->vin = $request->vin == "" ? 'N/A' : $request->vin;
+            $carro->vin = $request->vin == "" ? 'N/A' : $request->vin;
             $carro->notas=$request->notas;
             $carro->save();
             return array(1);
