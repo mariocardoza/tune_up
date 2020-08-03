@@ -334,6 +334,7 @@ $marcas=\App\Marca::where('estado',1)->get();
                     <div class="form-group">
                       <label for="">N° de placa (*)</label>
                       <input type="text" name="placa" style="text-transform:uppercase;" placeholder="Ingrese número de placa" autocomplete="off" class="form-control placa">
+                      <input type="hidden" value="{{$cliente->id}}" name="cliente_id">
                     </div>
                   </div>
                   <div class="col-md-6">
