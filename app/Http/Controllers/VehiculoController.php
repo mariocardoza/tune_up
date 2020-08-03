@@ -127,7 +127,16 @@ class VehiculoController extends Controller
     {
         try{
             $carro=Vehiculo::find($id);
-            $carro->fill($request->all());
+            //$carro->fill($request->all());
+            $carro->cliente_id=$request->cliente_id;
+            $carro->placa=$request->placa,
+            $carro->anio=$request->anio,
+            $carro->marca_id=$request->marca_id,
+            $carro->modelo_id=$request->modelo_id,
+            $carro->tipomedida=$request->tipomedida,
+            $carro->motor = $request->motor == "" ? 'N/A' : $request->motor,
+            $caroo->vin = $request->vin == "" ? 'N/A' : $request->vin,
+            $carro->notas=$request->notas
             $carro->save();
             return array(1);
         }catch(Exception $e){

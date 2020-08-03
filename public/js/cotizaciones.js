@@ -175,7 +175,7 @@ $(document).ready(function(e){
 			type:'POST',
 			dataType:'json',
 			data:datos+'&cotizacion_id='+cotizacion_id+'&vehiculo_id='+vehiculo_id+'&cliente_id='+cliente_id+'&fecha='+
-			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=1&coniva='+coniva,
+			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=1&imprimir_veh=si',&coniva='+coniva,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
@@ -222,7 +222,7 @@ $(document).ready(function(e){
 			url:'../trabajos',
 			type:'POST',
 			dataType:'json',
-			data:{nombre,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
+			data:{nombre,precio,cantidad,cliente_id,imprimir_veh:'si',vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
 
 			success: function(json){
 				if(json[0]==1){
@@ -433,7 +433,7 @@ $(document).ready(function(e){
 			url:'../trabajodetalles',
 			type:'POST',
 			dataType:'json',
-			data:{trabajo_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
+			data:{trabajo_id,precio,cantidad,cliente_id,imprimir_veh:'si',vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
@@ -477,7 +477,7 @@ $(document).ready(function(e){
 			url:'../repuestodetalles',
 			type:'POST',
 			dataType:'json',
-			data:{repuesto_id,precio,cantidad,cliente_id,vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
+			data:{repuesto_id,precio,cantidad,cliente_id,imprimir_veh:'si',vehiculo_id,fecha,kilometraje,km_proxima,coniva,tipo_documento:1,cotizacion_id},
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Repuesto aplicado con éxito");
