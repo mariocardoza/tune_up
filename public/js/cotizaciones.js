@@ -175,7 +175,7 @@ $(document).ready(function(e){
 			type:'POST',
 			dataType:'json',
 			data:datos+'&cotizacion_id='+cotizacion_id+'&vehiculo_id='+vehiculo_id+'&cliente_id='+cliente_id+'&fecha='+
-			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=1&imprimir_veh=si',&coniva='+coniva,
+			fecha+'&kilometraje='+kilometraje+'&km_proxima='+km_proxima+'&tipo_documento=1&imprimir_veh=si&coniva='+coniva,
 			success: function(json){
 				if(json[0]==1){
 					toastr.success("Trabajo aplicado con éxito");
