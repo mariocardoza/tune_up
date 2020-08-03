@@ -125,7 +125,7 @@ class VehiculoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validar($request->all())->validate();
+        $this->validar2($request->all())->validate();
         try{
             $carro=Vehiculo::find($id);
             //$carro->fill($request->all());
@@ -179,6 +179,24 @@ class VehiculoController extends Controller
           'placa'=>'required|unique:vehiculos',
           'marca_id'=>'required',
           'motor'=>'unique:vehiculos',
+          'cliente_id'=>'required',
+      ],$mensajes);
+    }
+
+    protected function validar2(array $data)
+    {
+        $mensajes=array(
+          'placa.required'=>'La placa es obligatoria',
+          'cliente_id.required'=>'El cliente es obligatorio',
+          'placa.unique'=>'La placa digitada ya existe en la base de datos',
+          'marca_id.required'=>'La marca es obligatoria',
+          'motor.required'=>'El número de motor es obligatorio',
+          'motor.unique'=>'El número de motor ya existe en la base de datos',
+      );
+      return Validator::make($data, [
+          'placa'=>'required',
+          'marca_id'=>'required',
+          //'motor'=>'unique:vehiculos',
           'cliente_id'=>'required',
       ],$mensajes);
     }
