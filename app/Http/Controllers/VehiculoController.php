@@ -125,6 +125,7 @@ class VehiculoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validar($request->all())->validate();
         try{
             $carro=Vehiculo::find($id);
             //$carro->fill($request->all());
