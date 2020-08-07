@@ -13,6 +13,7 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 
+
 Route::get('/', function () {
     return view('auth.login');
 });

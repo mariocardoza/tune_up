@@ -87,7 +87,7 @@ class TrabajodetallesController extends Controller
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*1);
-                    $nuevoiva=$nuevosubto*session('iva');
+                    $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
@@ -119,7 +119,7 @@ class TrabajodetallesController extends Controller
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*1);
-                    $nuevoiva=$nuevosubto*session('iva');
+                    $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
@@ -167,7 +167,7 @@ class TrabajodetallesController extends Controller
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
                 $nuevosubto=$sub+($request->precio*1);
-                $nuevoiva=$nuevosubto*session('iva');
+                $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                 $nuevotot=$nuevoiva+$nuevosubto;
                 $coti->subtotal=$nuevosubto;
                 $coti->iva=$nuevoiva;
@@ -250,7 +250,7 @@ class TrabajodetallesController extends Controller
                 $tot=$request->precio*1;
                 $subto=$coti->subtotal;
                 $n=$subto+$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
@@ -296,7 +296,7 @@ class TrabajodetallesController extends Controller
                 $tot=$request->precio*1;
                 $subto=$coti->subtotal;
                 $n=$subto+$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
@@ -338,7 +338,7 @@ class TrabajodetallesController extends Controller
                 $tot=$previo->precio*$previo->cantidad;
                 $subto=$coti->subtotal;
                 $n=$subto-$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
@@ -380,7 +380,7 @@ class TrabajodetallesController extends Controller
                 $tot=$previo->precio*$previo->cantidad;
                 $subto=$coti->subtotal;
                 $n=$subto-$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;

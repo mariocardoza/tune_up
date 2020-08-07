@@ -9,6 +9,7 @@ use App\RepuestoDetalle;
 use Validator;
 use App\Cotizacione;
 use App\Vehiculo;
+use App\Porcentaje;
 use DB;
 
 class RepuestoController extends Controller
@@ -91,7 +92,7 @@ class RepuestoController extends Controller
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
-                    $nuevoiva=$nuevosubto*session('iva');
+                    $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
@@ -123,7 +124,7 @@ class RepuestoController extends Controller
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
-                    $nuevoiva=$nuevosubto*session('iva');
+                    $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
@@ -175,7 +176,7 @@ class RepuestoController extends Controller
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
                 $nuevosubto=$sub+($request->precio*$request->cantidad);
-                $nuevoiva=$nuevosubto*session('iva');
+                $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                 $nuevotot=$nuevoiva+$nuevosubto;
                 $coti->subtotal=$nuevosubto;
                 $coti->iva=$nuevoiva;

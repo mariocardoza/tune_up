@@ -199,11 +199,12 @@ class Cotizacione extends Model
     public static function carcular_ivar($id)
     {
         $coti=Cotizacione::find($id);
+        $eseiva=Porcentaje::find(3);
         if($coti->cliente->sector=='Gran Contribuyente'):
             $sub=$coti->subtotal;
             $toti=$coti->total;
             if($sub>=100):
-                $nuevoivar=$sub*session('ivar');
+                $nuevoivar=$sub*($eseiva->porcentaje/100);
                 $nuevotot=$toti-$nuevoivar;
                 $coti->iva_r=$nuevoivar;
                 $coti->total=$nuevotot;
@@ -220,8 +221,9 @@ class Cotizacione extends Model
     public static function aplicar_iva($id)
     {
         $coti=Cotizacione::find($id);
+        $eseiva=Porcentaje::find(2);
         $subto=$coti->subtotal;
-        $iva=session('iva')*$subto;
+        $iva=Porcentaje::retornar_porcentaje('iva')*$subto;
         $total=$coti->total;
         $nt=$total+$iva;
         $coti->iva=$iva;

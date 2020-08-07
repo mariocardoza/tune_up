@@ -65,7 +65,7 @@
               <i class="fas fa-user"></i>
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                   Cerrar sesión
+                    <span>&nbsp;</span>Cerrar sesión
                 </h3>
               </div>
             </div>
@@ -88,7 +88,7 @@
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">TuneUp</span>
+      <span class="brand-text font-weight-light">TuneUp </span>
     </a>
 
     <!-- Sidebar -->

@@ -7,6 +7,7 @@ use App\Cliente;
 use App\Vehiculo;
 use App\Marca;
 use Validator;
+use Session;
 
 class ClienteController extends Controller
 {
@@ -14,6 +15,12 @@ class ClienteController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        session()->forget('pruebita');
+        $porcentajes=\App\Porcentaje::all();
+        foreach($porcentajes as $p){
+            session([$p->nombre_simple => $p->porcentaje/100]);
+        }
+        session(['pruebita'=>date("H:i:s")]);
     }
     /**
      * Display a listing of the resource.

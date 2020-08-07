@@ -87,7 +87,7 @@ class RepuestodetallesController extends Controller
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
-                    $nuevoiva=$nuevosubto*session('iva');
+                    $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
@@ -119,7 +119,7 @@ class RepuestodetallesController extends Controller
                     $sub=$coti->subtotal;
                     $toti=$coti->total;
                     $nuevosubto=$sub+($request->precio*$request->cantidad);
-                    $nuevoiva=$nuevosubto*session('iva');
+                    $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                     $nuevotot=$nuevoiva+$nuevosubto;
                     $coti->subtotal=$nuevosubto;
                     $coti->iva=$nuevoiva;
@@ -173,7 +173,7 @@ class RepuestodetallesController extends Controller
                 $sub=$coti->subtotal;
                 $toti=$coti->total;
                 $nuevosubto=$sub+($request->precio*$request->cantidad);
-                $nuevoiva=$nuevosubto*session('iva');
+                $nuevoiva=$nuevosubto*\App\Porcentaje::retornar_porcentaje('iva');
                 $nuevotot=$nuevoiva+$nuevosubto;
                 $coti->subtotal=$nuevosubto;
                 $coti->iva=$nuevoiva;
@@ -257,7 +257,7 @@ class RepuestodetallesController extends Controller
                 $tot=$request->precio*$request->cantidad;
                 $subto=$coti->subtotal;
                 $n=$subto+$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
@@ -304,7 +304,7 @@ class RepuestodetallesController extends Controller
                 $tot=$request->precio*$request->cantidad;
                 $subto=$coti->subtotal;
                 $n=$subto+$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
@@ -346,7 +346,7 @@ class RepuestodetallesController extends Controller
                 $tot=$deta->precio*$deta->cantidad;
                 $subto=$coti->subtotal;
                 $n=$subto-$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
@@ -389,7 +389,7 @@ class RepuestodetallesController extends Controller
                 $tot=$deta->precio*$deta->cantidad;
                 $subto=$coti->subtotal;
                 $n=$subto-$tot;
-                $iva=$n*session('iva');
+                $iva=$n*\App\Porcentaje::retornar_porcentaje('iva');
                 $nt=$n+$iva;
                 $coti->subtotal=$n;
                 $coti->iva=$iva;
