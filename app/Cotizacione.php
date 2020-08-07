@@ -277,6 +277,7 @@ class Cotizacione extends Model
                 'correlativo_cotizacion'=>$coti->correlativo,
                 'kilometraje'=>$coti->kilometraje,
                 'km_proxima'=>$coti->km_proxima,
+                'imprimir_veh'=>'si',
             ]);
             foreach($coti->trabajodetalle as $t):
                 $t_detalle=TrabajoDetalle::create([
