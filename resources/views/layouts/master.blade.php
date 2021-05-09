@@ -129,7 +129,7 @@
           </li>
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link {{ Route::currentRouteName() == 'cotizaciones.show' ? 'active': Route::currentRouteName() == 'cotizaciones.create' ? 'active': null}} ">
+            <a href="javascript:void(0)" class="nav-link {{ Request::routeIs('cotizaciones.*') ? 'active': null}} ">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Cotizaciones
@@ -153,7 +153,7 @@
           </li>
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link {{ Route::currentRouteName() == 'facturas.show' ? 'active': Route::currentRouteName() == 'facturas.create' ? 'active': null}} ">
+            <a href="#" class="nav-link {{ Request::routeIs('facturas.*') ? 'active': null}} ">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Consumidor Final
@@ -177,7 +177,7 @@
           </li>
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link {{ Route::currentRouteName() == 'creditos.show' ? 'active': Route::currentRouteName() == 'creditos.create' ? 'active': null}} ">
+            <a href="#" class="nav-link {{ Request::routeIs('creditos.*') ? 'active': null}} ">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Crédito fiscal
@@ -201,7 +201,7 @@
           </li>
 
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link {{ Route::currentRouteName() == 'exportaciones.show' ? 'active': Route::currentRouteName() == 'exportaciones.create' ? 'active': null}} ">
+            <a href="#" class="nav-link {{ Request::routeIs('exportaciones.*') ? 'active': null}} ">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Exportación
