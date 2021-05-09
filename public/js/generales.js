@@ -38,6 +38,45 @@ $(document).ready(function(e){
     $("#modal_reporte_carro").modal("show");
   });
 
+  //busqueda de documento
+  $(document).on("click",".busqueda_modal",function(e){
+    e.preventDefault();
+    let type=$(this).attr('data-type');
+    let text=$(this).attr('data-text');
+    $("#eltype").val(type);
+    $("#exampleModalLabel2").text(text);
+    $("#modal_buscar").modal("show");
+  });
+
+  //buscar tipo documento
+  $(document).on("submit","#form_buscadoc",function(e){
+    e.preventDefault();
+    var numero=$("#numerodoc").val();
+    var dominio = window.location.host;  
+    let formulario=$("#form_buscadoc").serialize();
+    if(numero!=''){
+      $.ajax({
+        url:'/busqueda',
+        type:'get',
+        dataType:'json',
+        data:formulario,
+        success: function(json){
+          if(json[0]==1){
+            if(json[1]!=null){
+              toastr.success("Documento encontrado");
+              location.href=json[2];
+               
+            }else{
+              toastr.error("Documento no encontrado");
+            }
+          }
+        }
+      });
+    }else{
+      toastr.error("Digite el número para buscar");
+    }
+  });
+
   //buscar la placa
   $(document).on("submit","#form_buscaplaca",function(e){
     e.preventDefault();

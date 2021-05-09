@@ -26,7 +26,7 @@ host('52.252.0.82')
 	->stage('master')
 	->user('tuneup')
 	->set('branch', 'master')
-    ->set('deploy_path', '/home/tune_up/html');    
+    ->set('deploy_path', '/var/www/html/');    
     
 // Tasks
 

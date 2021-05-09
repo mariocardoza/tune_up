@@ -84,3 +84,5 @@ Route::put('repuestodetalles2/{id}','RepuestodetallesController@update2');
 Route::delete('repuestodetalles/destroy2/{id}','RepuestodetallesController@destroy2');
 Route::post('repuestodetalles/guardar','RepuestodetallesController@guardar');
 Route::Resource('repuestodetalles','RepuestodetallesController');
+
+Route::get('busqueda','HomeController@buscar');
