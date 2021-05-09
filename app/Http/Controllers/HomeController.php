@@ -36,7 +36,7 @@ class HomeController extends Controller
     {
         $ruta='';
         $retorno = Cotizacione::where('tipo_documento',$request->tipo_documento)->where('correlativo',$request->correlativo)->first();
-        if($retorno->count() > 0){
+        if(!is_null($retorno)){
             if($retorno->tipo_documento==1){
                 $ruta='/cotizaciones/'.$retorno->id;
             }
