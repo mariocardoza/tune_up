@@ -27,9 +27,7 @@
     </tr>
   </thead>
   <tbody>
-   @foreach($cotizacion->repuestodetalle)
 
-   @endforeach
   </tbody>
 </table>
 </body>
