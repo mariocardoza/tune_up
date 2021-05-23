@@ -216,15 +216,15 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->gir
 @endforeach
 
 <div class="FRX1_8" style="z-Index:1;left:5.16667in;
-top:8.09917.06875in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div>
+top:8.08917.06875in;width:1.84375in;height:0.16667in;">        {{number_format($cotizacion->subtotal,2)}}</div>
 <div class="FRX1_9" style="z-Index:2;left:5.16667in;
-top:8.35000in;width:1.85417in;height:0.16667in;">       {{number_format($cotizacion->iva,2)}}</div>
+top:8.30000in;width:1.85417in;height:0.16667in;">       {{number_format($cotizacion->iva,2)}}</div>
 <div class="FRX1_8" style="z-Index:3;left:5.16667in;
-top:8.62917in;width:1.85417in;height:0.20833in;">        {{number_format($cotizacion->subtotal+$cotizacion->iva,2)}}</div>
+top:8.61917in;width:1.85417in;height:0.20833in;">        {{number_format($cotizacion->subtotal+$cotizacion->iva,2)}}</div>
 <div class="FRX1_8" style="z-Index:3;left:5.1667in;
-top:8.89917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->iva_r,2)}}</div>
+top:8.85917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->iva_r,2)}}</div>
 <div class="FRX1_8" style="z-Index:3;left:5.16667in;
-top:9.67917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
+top:9.64917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
 <div class="FRX1_11" style="z-Index:4;left:0.82292in;
 top:8.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><!--div class="FRX1_17" style="z-Index:5;left:5.56667in;
 top:8.57917in;width:1.84375in;height:0.16667in;">         {{number_format($cotizacion->total,2)}}</div-->
