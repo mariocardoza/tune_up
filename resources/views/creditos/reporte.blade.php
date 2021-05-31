@@ -144,7 +144,7 @@
 <div class="FRX1_11" style="z-Index:2;left:0.533125in;
 top:1.12875in;width:3.85208in;height:1.70625in;">{{$cotizacion->cliente->nombre}}</div>
 <div class="FRX1_11" style="z-Index:2;left:0.63125in;
-top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
+top:1.81875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
 <div class="FRX1_11" style="z-Index:23;left:2.73125in;
 top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->cliente->dui}}</div>
 @else
@@ -156,25 +156,25 @@ top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->facturar_aa->dir
 top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->facturar_aa->dui}}</div>
 @endif
 <div class="FRX1_11" style="z-Index:3;left:4.62292in;
-top:2.46667in;width:1.38542in;height:0.17708in;">  {{$cotizacion->fecha->format('d/m/Y')}}</div>
+top:2.06667in;width:1.38542in;height:0.17708in;">  {{$cotizacion->fecha->format('d/m/Y')}}</div>
 @if($cotizacion->imprimir_veh=='si')
 <div class="FRX1_11" style="z-Index:7;left:5.34292in;
-top:2.46667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->marca->marca}}</div>
+top:2.06667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->marca->marca}}</div>
 <div class="FRX1_11" style="z-Index:9;left:6.12292in;
-top:2.46667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->anio}}</div>
+top:2.06667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->anio}}</div>
 <div class="FRX1_11" style="z-Index:8;left:6.42292in;
-top:2.46667in;width:1.38542in;height:0.17708in;">@if($cotizacion->vehiculo->modelo_id!=''){{$cotizacion->vehiculo->modelo->nombre}}@endif</div>
+top:2.06667in;width:1.38542in;height:0.17708in;">@if($cotizacion->vehiculo->modelo_id!=''){{$cotizacion->vehiculo->modelo->nombre}}@endif</div>
 <div class="FRX1_11" style="z-Index:6;left:4.62292in;
-top:2.9367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}</div>
+top:2.2367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}</div>
 @endif
 
 
 @if($cotizacion->facturar_a=='')
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.17875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
+top:0.97875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
 
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.27875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
+top:1.17875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
 
 <div class="FRX1_24" style="z-Index:2;left:4.82292in;
 top:1.37875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
@@ -189,7 +189,7 @@ top:1.67875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->nit
 top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->giro}}</div>
 @endif
 
-<?php $salto=3.6; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
+<?php $salto=3.2; $correlativo=1;$total=0; $iva=$cotizacion->iva;?>
 <div class="FRX1_24" style="z-Index:3;left:0.91250in;top:{{$salto}}in;width:1.92708in;height:0.15625in;"><b>--- MANO DE OBRA ---</b></div>
 <?php $salto=3.8; ?>
 
@@ -224,7 +224,7 @@ top:8.61917in;width:1.85417in;height:0.20833in;">        {{number_format($cotiza
 <div class="FRX1_8" style="z-Index:3;left:5.1667in;
 top:8.85917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->iva_r,2)}}</div>
 <div class="FRX1_8" style="z-Index:3;left:5.16667in;
-top:9.64917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
+top:9.74917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
 <div class="FRX1_11" style="z-Index:4;left:0.82292in;
 top:8.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><!--div class="FRX1_17" style="z-Index:5;left:5.56667in;
 top:8.57917in;width:1.84375in;height:0.16667in;">         {{number_format($cotizacion->total,2)}}</div-->
