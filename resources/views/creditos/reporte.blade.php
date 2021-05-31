@@ -207,10 +207,10 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->gir
 <?php $salto=$salto+0.2; ?>
 
 @foreach($cotizacion->repuestodetalle as $r)
-<div class="FRX1_24" style="z-Index:3;left:0.11250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$r->cantidad}}</div>
-<div class="FRX1_18" style="z-Index:1;left:0.41667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;">{{$r->nombre}}</div>
+<div class="FRX1_24" style="z-Index:3;left:0.01250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$r->cantidad}}</div>
+<div class="FRX1_18" style="z-Index:1;left:0.11667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;">{{$r->nombre}}</div>
 
-<div class="FRX1_19" style="z-Index:2;left:3.46667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($r->precio,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:3.49667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($r->precio,2)}}</div>
 <div class="FRX1_19" style="z-Index:2;left:5.16667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($r->precio*$r->cantidad,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($r->cantidad*$r->precio); ?>
 @endforeach
