@@ -142,7 +142,7 @@
 
 @if($cotizacion->facturar_a=='')
 <div class="FRX1_11" style="z-Index:2;left:0.533125in;
-top:1.62875in;width:3.85208in;height:1.70625in;">{{$cotizacion->cliente->nombre}}</div>
+top:1.12875in;width:3.85208in;height:1.70625in;">{{$cotizacion->cliente->nombre}}</div>
 <div class="FRX1_11" style="z-Index:2;left:0.63125in;
 top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->cliente->direccion}}</div>
 <div class="FRX1_11" style="z-Index:23;left:2.73125in;
@@ -171,13 +171,13 @@ top:2.9367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}
 
 @if($cotizacion->facturar_a=='')
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
+top:1.17875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
 
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
-top:1.67875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
+top:1.27875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->nit}}</div>
 
 <div class="FRX1_24" style="z-Index:2;left:4.82292in;
-top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
+top:1.37875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->giro}}</div>
 @else
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
 top:1.47875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->reg_iva}}</div>
