@@ -170,7 +170,7 @@ top:2.4367in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->placa}}
 
 
 @if($cotizacion->facturar_a=='')
-<div class="FRX1_11" style="z-Index:2;left:5.32292in;
+<div class="FRX1_11" style="z-Index:2;left:5.72292in;
 top:0.97875in;width:5.05208in;height:1.40625in;">{{$cotizacion->cliente->reg_iva}}</div>
 
 <div class="FRX1_11" style="z-Index:2;left:5.32292in;
