@@ -155,10 +155,10 @@ top:2.21875in;width:4.05208in;height:0.40625in;">{{$cotizacion->facturar_aa->dir
 <div class="FRX1_11" style="z-Index:23;left:2.73125in;
 top:3.16875in;width:4.66083in;height:0.14583in;">{{$cotizacion->facturar_aa->dui}}</div>
 @endif
-<div class="FRX1_11" style="z-Index:3;left:4.62292in;
+<div class="FRX1_11" style="z-Index:3;left:4.64292in;
 top:2.06667in;width:1.38542in;height:0.17708in;">  {{$cotizacion->fecha->format('d/m/Y')}}</div>
 @if($cotizacion->imprimir_veh=='si')
-<div class="FRX1_11" style="z-Index:7;left:5.34292in;
+<div class="FRX1_11" style="z-Index:7;left:5.44292in;
 top:2.06667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->marca->marca}}</div>
 <div class="FRX1_11" style="z-Index:9;left:6.12292in;
 top:2.06667in;width:1.38542in;height:0.17708in;">{{$cotizacion->vehiculo->anio}}</div>
@@ -197,8 +197,8 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->gir
 <div class="FRX1_24" style="z-Index:3;left:0.01250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$t->cantidad}}</div>
 <div class="FRX1_18" style="z-Index:1;left:0.21667in;top:{{$salto}}in;width:5.64583in;height:0.15625in;">{{$t->nombre}}</div>
 
-<div class="FRX1_19" style="z-Index:2;left:3.46667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($t->precio,2)}}</div>
-<div class="FRX1_19" style="z-Index:2;left:5.27667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($t->precio*$t->cantidad,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:3.79667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($t->precio,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:5.47667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($t->precio*$t->cantidad,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($t->cantidad*$t->precio);?>
 @endforeach
 
@@ -210,8 +210,8 @@ top:1.87875in;width:5.05208in;height:1.40625in;">{{$cotizacion->facturar_aa->gir
 <div class="FRX1_24" style="z-Index:3;left:0.01250in;top:{{$salto}}in;width:0.42708in;height:0.15625in;">    {{$r->cantidad}}</div>
 <div class="FRX1_18" style="z-Index:1;left:0.21667in;top:{{$salto}}in;width:4.64583in;height:0.15625in;">{{$r->nombre}}</div>
 
-<div class="FRX1_19" style="z-Index:2;left:3.49667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($r->precio,2)}}</div>
-<div class="FRX1_19" style="z-Index:2;left:5.27667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($r->precio*$r->cantidad,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:3.79667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">$       {{number_format($r->precio,2)}}</div>
+<div class="FRX1_19" style="z-Index:2;left:5.47667in;top:{{$salto}}in;width:1.86458in;height:0.15625in;">       $ {{number_format($r->precio*$r->cantidad,2)}}</div>
 <?php $salto=$salto+0.2; $correlativo++; $total=$total+($r->cantidad*$r->precio); ?>
 @endforeach
 
