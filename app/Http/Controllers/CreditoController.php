@@ -20,9 +20,9 @@ class CreditoController extends Controller
         $cotizacion=Cotizacione::find($id);
         $taller=Taller::find(1);
         $pdf = \PDF::loadView('creditos.reporte',compact('cotizacion','taller'));
-        $customPaper = array(0,0,360,360);
+        $customPaper = array(0,0,595.276,793.701);
         //$pdf->setPaper($customPaper);
-        $pdf->setPaper('letter', 'portrait');
+        $pdf->setPaper($customPaper);
         return $pdf->stream('factura.pdf');
     }
     /**
