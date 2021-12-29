@@ -30,20 +30,18 @@
     <div style="">
       <div style="height: 6.5em;"></div>
           
-      <div style="height: 3.7em;"></div>
+      <div style="height: 2.2em;"></div>
       @if($cotizacion->facturar_a=='')
-      
-
       <div class="credito" style="left:6.56em;margin-top:0.3em;width:25em;">{{$cotizacion->cliente->nombre}}</div>
       <div class="credito" style="left:6.85em;margin-top:3.5em;width:25em;">{{$cotizacion->cliente->direccion}}</div>
-      <div class="credito" style="">{{$cotizacion->cliente->dui}}</div>
+      {{-- <div class="credito" style="">{{$cotizacion->cliente->dui}}</div> --}}
       <div class="credito" style="left:36em; margin-top:-1em;">{{$cotizacion->cliente->reg_iva}}</div>
       <div class="credito" style="left:33em;margin-top:0.3em;">{{$cotizacion->cliente->nit}}</div>
       <div class="credito" style="left:33em;margin-top:1.7em;">{{$cotizacion->cliente->giro}}</div>
       @else
-      <div class="credito" style="left:6.5em;">{{$cotizacion->facturar_aa->nombre}}</div>
-      <div class="credito" style="left:6.8em;margin-top:3.5em;">{{$cotizacion->facturar_aa->direccion}}</div>
-      <div class="" style="">{{$cotizacion->facturar_aa->dui}}</div>
+      <div class="credito" style="left:6.56em;margin-top:0.3em;width:25em;">{{$cotizacion->facturar_aa->nombre}}</div>
+      <div class="credito" style="left:6.85em;margin-top:3.5em;width:22em;">{{$cotizacion->facturar_aa->direccion}}</div>
+     {{-- <divclass=""style="">$cotizacion->facturar_aa->dui}}</div> --}}
       <div class="credito" style="left:36em; margin-top:-1em;">{{$cotizacion->facturar_aa->reg_iva}}</div>
       <div class="credito" style="left:33em;margin-top:0.3em;">{{$cotizacion->facturar_aa->nit}}</div>
       <div class="credito" style="left:33em;margin-top:1.7em;">{{$cotizacion->facturar_aa->giro}}</div>
