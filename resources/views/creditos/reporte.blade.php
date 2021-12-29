@@ -25,12 +25,12 @@
     }
   </style>
 </head>
-<body style="/* background: url({{ public_path('/images/credito.jpg')}}) no-repeat center center fixed;*/">
+<body style="/*background: url({{ public_path('/images/credito.jpg')}}) no-repeat center center fixed;*/">
   <div style="padding: 1.5em;">
     <div style="">
       <div style="height: 6.5em;"></div>
           
-      <div style="height: 4.7em;"></div>
+      <div style="height: 3.7em;"></div>
       @if($cotizacion->facturar_a=='')
       
 
