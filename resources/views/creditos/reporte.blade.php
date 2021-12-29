@@ -30,7 +30,7 @@
     <div style="">
       <div style="height: 6.5em;"></div>
           
-      <div style="height: 2.2em;"></div>
+      <div style="height: 1.9em;"></div>
       @if($cotizacion->facturar_a=='')
       <div class="credito" style="left:6.56em;margin-top:0.3em;width:25em;">{{$cotizacion->cliente->nombre}}</div>
       <div class="credito" style="left:6.85em;margin-top:3.5em;width:25em;">{{$cotizacion->cliente->direccion}}</div>
