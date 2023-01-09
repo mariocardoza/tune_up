@@ -14,6 +14,25 @@ function invertir_fecha($fecha)
   	}
 }
 
+function nombre_comprobante($tipo){
+    switch ($tipo) {
+        case 1:
+            return "COTIZACIÓN";
+            break;
+        case 2:
+            return "CONSUMIDOR FINAL";
+            break;
+        case 3:
+            return "CRÉDITO FISCAL";
+            break;
+        case 4:
+            return "EXPORTACIÓN";
+            break;
+        default:
+            return "";
+    }
+}
+
 function tamaniohumano($size, $precision = 2)
     {
         if ($size > 0) {
