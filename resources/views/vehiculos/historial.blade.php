@@ -88,7 +88,7 @@ padding-right : 5px;
 	<?php $eltotal=$eltotal+$c->subtotal; ?>
 	<table class="tablita">
 		<tr>
-			<td>COMPROBANTE N°: {{$c->correlativo}}</td><td>FECHA: {{$c->fecha->format("d/m/Y")}}</td>
+			<td>COMPROBANTE {{nombre_comprobante($c->tipo_documento)}} N°: {{$c->correlativo}}</td><td>FECHA: {{$c->fecha->format("d/m/Y")}}</td>
 		</tr>
 	</table>
 	<table class="tablita" width="100%" style="background: #F0E9EA">
