@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::get('cotizaciones/email/{id}','CotizacionController@email');
 Route::post('cotizaciones/enviar','CotizacionController@enviar');
+Route::post('cotizaciones/updateDate','CotizacionController@updateDate');
 
 Auth::routes();
 Route::post('authenticate','Auth\LoginController@authenticate')->name('authenticate');

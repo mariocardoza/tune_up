@@ -59,6 +59,22 @@ class CotizacionController extends Controller
         return $retorno;
     }
 
+    public function updateDate(Request $request)
+    {
+      try{
+        $cotizacion = Cotizacione::find($request->id);
+        if(!is_null($cotizacion)){
+          $cotizacion->fecha = invertir_fecha($request->fecha);
+          $cotizacion->save();
+          return array(1,$cotizacion);
+        }else{
+          return array(-1,"no se encontro la cotizacion");
+        }
+      }catch(Exception $e){
+        return array(-1,"error",$e->getMessage());
+      }
+    }
+
     public function convertir(Request $request)
     {
       try{
