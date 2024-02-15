@@ -543,8 +543,8 @@
             	
 				success: function(response, status, xhr){
 					
-                	if(response){
-                		toastr.success("Cotización enviada con éxito");
+                	if(response[0] == 1){
+                		toastr.success("Fecha actualizada");
                 		swal.closeModal();
                 	}else{
                 		swal.closeModal();
