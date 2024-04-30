@@ -138,7 +138,7 @@
    }   
     </style></head><body><div>
 
-<div style=" width:100%;top:0.2in;position:absolute; ">
+<div style=" width:100%;top:0in;position:absolute; ">
 
 @if($cotizacion->facturar_a=='')
 <div class="FRX1_11" style="z-Index:2;left:0.533125in;
@@ -224,7 +224,7 @@ top:8.61917in;width:1.85417in;height:0.20833in;">        {{number_format($cotiza
 <div class="FRX1_8" style="z-Index:3;left:5.2767in;
 top:8.85917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->iva_r,2)}}</div>
 <div class="FRX1_8" style="z-Index:3;left:5.27667in;
-top:9.67517in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
+top:9.74917in;width:1.85417in;height:0.20833in;">         {{number_format($cotizacion->total,2)}}</div>
 <div class="FRX1_11" style="z-Index:4;left:0.82292in;
 top:8.12083in;width:4.28125in;height:0.44792in;">{{numaletras($cotizacion->total)}} </div><!--div class="FRX1_17" style="z-Index:5;left:5.56667in;
 top:8.57917in;width:1.84375in;height:0.16667in;">         {{number_format($cotizacion->total,2)}}</div-->
