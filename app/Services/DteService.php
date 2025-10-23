@@ -5,8 +5,9 @@ namespace App\Services;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Carbon\Carbon;
-use App\Models\Compra; // Asume que tienes un modelo llamado Compra
-use App\Models\CompraDetalle; // Y un modelo llamado CompraDetalle
+use App\Cotizacione; // Asume que tienes un modelo llamado Compra
+use App\TrabajoDetalle; // Y un modelo llamado CompraDetalle
+use App\RepuestoDetalle; // Y un modelo llamado CompraDetalle
 
 class DteService
 {
@@ -27,7 +28,7 @@ class DteService
      * @param Compra $compra
      * @return string JSON del DTE
      */
-    public function generarDteJson(Compra $compra)
+    public function generarDteJson(Cotizacione $compra)
     {
         // Mapea los datos de la tabla 'compra' a la sección 'identificacion' del DTE
         $dte = [
@@ -57,32 +58,43 @@ class DteService
         // Mapea los datos de la tabla 'compradetalle' a 'cuerpoDocumento'
         $items = [];
         $totalGravado = 0;
-        foreach ($compra->detalles as $detalle) { // 'detalles' es la relación en el modelo Compra
+        foreach ($compra->repuestodetalle as $detalle) { // 'detalles' es la relación en el modelo Compra
             $items[] = [
-                "numItem" => $detalle->numero_item,
-                "codProducto" => $detalle->producto->codigo,
-                "desProducto" => $detalle->producto->descripcion,
+                "numItem" => $detalle->repuesto->id,
+                "codProducto" => $detalle->repuesto->codigo,
+                "desProducto" => $detalle->repuesto->nombre,
                 "cantidad" => $detalle->cantidad,
-                "precioUni" => $detalle->precio_unitario,
-                "montoItem" => $detalle->subtotal,
+                "precioUni" => $detalle->precio,
+                "montoItem" => $detalle->precio*$detalle->cantidad,
             ];
-            $totalGravado += $detalle->subtotal;
+            $totalGravado += $detalle->precio*$detalle->cantidad;
+        }
+        foreach ($compra->trabajodetalle as $detalle) { // 'detalles' es la relación en el modelo Compra
+            $items[] = [
+                "numItem" => $detalle->trabajo->id,
+                "codProducto" => $detalle->trabajo->codigo,
+                "desProducto" => $detalle->trabajo->nombre,
+                "cantidad" => 1,
+                "precioUni" => $detalle->precio,
+                "montoItem" => $detalle->precio,
+            ];
+            $totalGravado += $detalle->precio;
         }
 
         $dte["cuerpoDocumento"] = $items;
 
         // Mapea los totales a la sección 'resumen'
         $dte["resumen"] = [
-            "totalIva" => $compra->total_iva,
-            "totalDescuento" => $compra->total_descuento,
+            "totalIva" => $compra->iva,
+            "totalDescuento" => 0,
             "totalGravada" => $totalGravado,
             "subTotal" => $totalGravado,
             "montoTotal" => $compra->total,
         ];
         
         $dte["extension"] = [
-                "nombreResponsable" => $compra->cliente->nombre_responsable,
-                "docResponsable" => $compra->cliente->documento_responsable
+                "nombreResponsable" => $compra->cliente->nombre,
+                "docResponsable" => $compra->cliente->nit
         ];
 
         return json_encode($dte);

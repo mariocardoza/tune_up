@@ -87,3 +87,5 @@ Route::post('repuestodetalles/guardar','RepuestodetallesController@guardar');
 Route::Resource('repuestodetalles','RepuestodetallesController');
 
 Route::get('busqueda','HomeController@buscar');
+
+Route::post('facturacion','FacturacionController@generarFactura');

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\DteService;
-use App\Models\Compra; // Importa el modelo de Compra
+use App\Cotizacione; // Importa el modelo de Compra
 
 class FacturacionController extends Controller
 {
@@ -21,11 +21,11 @@ class FacturacionController extends Controller
      * @param int $compraId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function generarFactura($compraId)
+    public function generarFactura(Request $request)
     {
         // 1. Busca la compra y sus detalles en la base de datos
         // Usa `with` para cargar la relación 'detalles' y evitar consultas N+1
-        $compra = Compra::with('detalles', 'cliente')->find($compraId);
+        $compra = Cotizacione::find($request->id);
 
         if (!$compra) {
             return response()->json([
@@ -36,6 +36,7 @@ class FacturacionController extends Controller
 
         // 2. Genera el JSON del DTE usando el modelo de compra
         $jsonDte = $this->dteService->generarDteJson($compra);
+        //return $jsonDte;
 
         // 3. Envía el DTE a la API del MH
         $respuestaApi = $this->dteService->enviarDte($jsonDte);

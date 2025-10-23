@@ -135,6 +135,31 @@ $(document).ready(function(e){
           $("#modal_pdf").modal("show");
     }
   });
+
+
+  /* GENERAR EL DTE */
+  $(document).on("click",".dte", function(e){
+    e.preventDefault();
+    var id =$(this).attr("data-id");
+    var tipo =$(this).attr("data-tipo");
+    $.ajax({
+        url:'/facturacion',
+        type:'post',
+        dataType:'json',
+        data:{id,tipo},
+        success: function(json){
+          if(json[0]==1){
+            if(json[1]!=null){
+              toastr.success("Documento encontrado");
+              location.href=json[2];
+               
+            }else{
+              toastr.error("Documento no encontrado");
+            }
+          }
+        }
+      });
+  });
 });
 
 function modal_cargando(){
