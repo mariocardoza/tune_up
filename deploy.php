@@ -22,7 +22,7 @@ add('writable_dirs', []);
 
 // Hosts
 
-host('52.252.0.82')
+host('52.247.118.244')
 	->stage('master')
 	->user('tuneup')
 	->set('branch', 'master')

@@ -40,10 +40,16 @@
 									</select>
 								</div>
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<div class="form-group">
 											<label for="" class="control-label">Fecha</label>
-											<input type="text" name="fecha" readonly class="form-control" value="{{$cotizacion->fecha->format('d/m/Y')}}">
+											<input type="text" name="fecha" id="lafecha" class="form-control fecha" value="{{$cotizacion->fecha->format('d/m/Y')}}">
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label for="" class="control-label">&nbsp;</label>
+											<button type="button" id="updateDate" class="btn btn-primary"><i class="fas fa-calendar"></i></button>
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -520,6 +526,40 @@
 		swal.closeModal();
 		obtenerguardados(elid);
 		info_carro(v_id);
+
+		//actualizarfecha
+		$(document).on("click","#updateDate",function(e){
+			e.preventDefault();
+			var fecha = $("#lafecha").val();
+			if(fecha != null || fecha != ''){
+				$.ajax({
+				url:'updateDate',
+				type:'post',
+				data:{id:elid,fecha:fecha},
+				dataType:'json',
+				
+            	processData: true,
+             //xhrFields is what did the trick to read the blob to pdf
+            	
+				success: function(response, status, xhr){
+					
+                	if(response[0] == 1){
+                		toastr.success("Fecha actualizada");
+                		swal.closeModal();
+                	}else{
+                		swal.closeModal();
+                		toastr.error("Ocurrió un error");
+                	}
+				},
+				error: function(error){
+					$.each(error.responseJSON.errors,function(index,value){
+	      				toastr.error(value);
+	      			});
+	      			swal.closeModal();
+				}
+			});
+			}
+		});
 
 		//modal convertir cotizacion
 		$(document).on("click",".convertir",function(e){
