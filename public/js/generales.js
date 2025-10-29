@@ -147,20 +147,51 @@ $(document).ready(function(e){
         type:'post',
         dataType:'json',
         data:{id,tipo},
-        success: function(json){
-          if(json[0]==1){
-            if(json[1]!=null){
-              toastr.success("Documento encontrado");
-              location.href=json[2];
-               
-            }else{
-              toastr.error("Documento no encontrado");
-            }
+        success: function(response){
+          if (response.success) {
+              const base64Data = response.pdf_base64;
+              const filename = response.filename;
+
+              // 1. Decodificar la cadena Base64 a un Blob binario
+              const pdfBlob = base64ToBlob(base64Data, 'application/pdf');
+
+              // 2. Crear un objeto URL para el Blob
+              const blobUrl = URL.createObjectURL(pdfBlob);
+
+              // 3. Crear un enlace (<a>) en la memoria
+              const link = document.createElement('a');
+              link.href = blobUrl;
+              link.download = filename;
+
+              // 4. Simular un clic para forzar la descarga
+              document.body.appendChild(link);
+              link.click();
+              
+              // 5. Limpiar
+              document.body.removeChild(link);
+              URL.revokeObjectURL(blobUrl);
           }
         }
       });
   });
 });
+
+function base64ToBlob(base64, mimeType) {
+    const byteCharacters = atob(base64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+        const slice = byteCharacters.slice(offset, offset + 512);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, {type: mimeType});
+}
 
 function modal_cargando(){
         swal.fire({

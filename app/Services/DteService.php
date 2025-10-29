@@ -37,21 +37,42 @@ class DteService
                 "ambiente" => env('MH_AMBIENTE', '01'), // Usa una variable de entorno
                 "tipoDte" => "01",
                 "numeroControl" => $compra->numero_control, // Usa el campo de tu tabla
-                "codigoGeneracion" => $compra->codigo_generacion,
+                "codigoGeneracion" => "codigoGeneracion",//$compra->codigo_generacion,
                 "fecEmi" => $compra->fecha->format('Y-m-d'),
                 "horEmi" => $compra->fecha->format('H:i:s'),
                 "tipoModelo" => 1,
-                "tipoOperacion" => 1
+                "tipoOperacion" => 1,
+                "tipoMoneda" => "USD"
             ],
-            // Mapea los datos del emisor
             "emisor" => [
                 "nit" => env('MH_NIT'),
+                "nombre" => "TUNE-UP SERVICE",
+                "nombreComercial" => "TUNE-UP SERVICE",
+                "nrc" => "131438-2",
+                "codActividad" => "",
+                "descActividad" => "Reparación de Vehiculos y Maquinaria",
+                "tipoEstablecimiento" => "01",
+                "sucursal" => "Central",
+                "correo" => "tuneup@gmail.com",
+                "direccion" => "Calle San Carlos, Colonia laico #1004, final 17 av norte",
+                "codEstableMH" => "",
+                "codEstable" => "",
+                "codPuntoVentaMH" => "",
+                "codPuntoVenta" => "",
                 // ...otros datos del emisor
             ],
             // Mapea los datos del receptor (tu cliente)
             "receptor" => [
                 "nit" => $compra->cliente->nit, // Asumiendo una relación con un modelo Cliente
-                // ...otros datos del receptor
+                "nrc" => $compra->cliente->reg_iva, // Asumiendo una relación con un modelo Cliente
+                "nombre" => $compra->cliente->nombre, // Asumiendo una relación con un modelo Cliente
+                "direccion" => $compra->cliente->direccion, // Asumiendo una relación con un modelo Cliente
+                "correo" => $compra->cliente->correo, // Asumiendo una relación con un modelo Cliente
+                "telefono" => $compra->cliente->telefono, // Asumiendo una relación con un modelo Cliente
+                "tipo_documento" => "13",
+                "nombreComercial" => "",
+                "descActividad" => "",
+                "codActividad" => ""
             ],
         ];
 
@@ -77,6 +98,7 @@ class DteService
                 "cantidad" => 1,
                 "precioUni" => $detalle->precio,
                 "montoItem" => $detalle->precio,
+                "uniMedida"=> 99
             ];
             $totalGravado += $detalle->precio;
         }
@@ -98,6 +120,62 @@ class DteService
         ];
 
         return json_encode($dte);
+    }
+
+    public function enviarDte($jsonDte)
+    {
+        dd($jsonDte);
+    }
+
+    public function crearArray($facturaJson){
+        $datosFactura = [
+        // --- Mapeo de Identificación y Emisor ---
+        'codigoGeneracion' => $facturaJson['identificacion']['codigoGeneracion'],
+        'numeroControl' => $facturaJson['identificacion']['numeroControl'],
+        'fecEmi' => $facturaJson['identificacion']['fecEmi'] . ' ' . $facturaJson['identificacion']['horEmi'],
+        'emisor' => [
+            'nombre' => $facturaJson['emisor']['nombre'],
+            'nit' => $facturaJson['emisor']['nit'],
+            'nrc' => $facturaJson['emisor']['nrc'],
+            'sucursal' => $facturaJson['emisor']['sucursal'],
+            'actividad' => $facturaJson['emisor']['descActividad'], // Revisar si este campo no está vacío en el JSON real
+            'direccion' => $facturaJson['emisor']['direccion'],
+        ],
+        
+        // --- Mapeo de Receptor ---
+        'receptor' => [
+            'nombre' => $facturaJson['receptor']['nombre'],
+            'tipo_doc' => 'NIT/NRC', // Asume un valor basado en el tipo de documento 614...
+            'num_doc' => $facturaJson['receptor']['nit'],
+            // El JSON no incluye explícitamente la dirección completa del receptor, usa lo disponible
+            'direccion' => $facturaJson['receptor']['direccion'], 
+            'correo' => $facturaJson['receptor']['correo'],
+        ],
+
+        // --- Mapeo de Items (Cuerpo del Documento) ---
+        'cuerpoDocumento' => collect($facturaJson['cuerpoDocumento'])->map(function ($item) {
+            return [
+                'cantidad' => $item['cantidad'],
+                'desProducto' => $item['desProducto'],
+                'precioUni' => $item['precioUni'],
+                'montoItem' => $item['montoItem'],
+            ];
+        })->all(),
+
+        // --- Mapeo de Totales ---
+        'resumen' => [
+            'totalGravada' => $facturaJson['resumen']['totalGravada'],
+            'subTotal' => $facturaJson['resumen']['subTotal'],
+            'totalGravada' => $facturaJson['resumen']['totalGravada'], // En este caso, son iguales
+            'totalGravada' => $facturaJson['resumen']['totalGravada'], // Total a pagar
+            'total_en_letras' => numaletras($facturaJson['resumen']['totalGravada']), // Debes usar la función helper aquí
+        ],
+        
+        // --- Mapeo de Información Adicional ---
+        'forma_pago' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
+        'codigo_vendedor' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
+    ];
+        return $datosFactura;
     }
     
     // El método enviarDte() y obtenerTokenAutenticacion() no cambian.

@@ -17,7 +17,7 @@ class AddFieldsToCotizacionsTable extends Migration
             $table->string("numero_control")->nullable();
             $table->string("codigo_generacion")->nullable();
             $table->string("sello_generacion")->nullable();
-            $table->date("fecha_generacion")->nullable();
+            $table->datetime("fecha_generacion")->nullable();
         });
     }
 

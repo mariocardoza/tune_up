@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\DteService;
 use App\Cotizacione; // Importa el modelo de Compra
+use PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FacturaAdjunta;
 
 class FacturacionController extends Controller
 {
@@ -37,6 +40,24 @@ class FacturacionController extends Controller
         // 2. Genera el JSON del DTE usando el modelo de compra
         $jsonDte = $this->dteService->generarDteJson($compra);
         //return $jsonDte;
+        $array = json_decode($jsonDte, true);
+        $datosFactura = $this->dteService->crearArray($array);
+        //dd($datosFactura);
+        $pdf = PDF::loadView('facturacion.dte', compact('datosFactura'))->setPaper('letter', 'portrait');
+        $pdfData = $pdf->output();
+        // 3. Obtener el email del destinatario (ejemplo)
+        //$destinatarioEmail = $datosFactura['receptor']['correo']; 
+        $destinatarioEmail = "h_rivas47@yahoo.com"; 
+        
+        // 4. Enviar el correo usando la clase Mailable
+        Mail::to($destinatarioEmail)->send(new FacturaAdjunta($pdfData, $jsonDte));
+        return response()->json(['message' => 'Factura enviada por correo con éxito!']);
+        return response()->json([
+        'success' => true,
+        // Codifica el contenido binario para que sea seguro pasarlo por JSON
+        'pdf_base64' => base64_encode($pdf->output()), 
+        'filename' => 'Factura.pdf',
+    ]);
 
         // 3. Envía el DTE a la API del MH
         $respuestaApi = $this->dteService->enviarDte($jsonDte);
