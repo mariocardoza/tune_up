@@ -147,8 +147,8 @@ top:3.43958in;width:1.53125in;height:0.19792in;">{{$cotizacion->vehiculo->marca-
 top:3.43958in;width:1.19792in;height:0.19792in;">@if($cotizacion->vehiculo->modelo_id!=''){{$cotizacion->vehiculo->modelo->nombre}}@endif</div><div class="FRX1_23" style="z-Index:9;left:3.29375in;
 top:3.43958in;width:0.44792in;height:0.19792in;">{{$cotizacion->vehiculo->anio}}</div><div class="FRX1_25" style="z-Index:10;left:0.73125in;
 top:2.25208in;width:3.50000in;height:0.16667in;">NOMBRE DEL CLIENTE</div><div class="FRX1_26" style="z-Index:11;left:5.32500in;
-top:0.85625in;width:1.37500in;height:0.22917in;">COTIZACION #</div><div class="FRX1_27" style="z-Index:12;left:6.25208in;
-top:0.88750in;width:1.22917in;height:0.19792in;">      {{$cotizacion->correlativo}}</div><div class="FRX1_28" style="z-Index:13;left:3.82500in;
+top:0.85625in;width:1.37500in;height:0.22917in;">COTIZACION # </div><div class="FRX1_27" style="z-Index:12;left:6.25208in;
+top:0.88750in;width:1.22917in;height:0.19792in;">      @if($imprimir == 1 ){{$cotizacion->correlativo}} @endif</div><div class="FRX1_28" style="z-Index:13;left:3.82500in;
 top:3.46042in;width:0.62500in;height:0.16667in;">MODELO:</div><div class="FRX1_29" style="z-Index:14;left:0.75208in;
 top:3.46042in;width:0.53125in;height:0.16667in;">MARCA:</div><div class="FRX1_30" style="z-Index:15;left:2.92917in;
 top:3.46042in;width:0.33333in;height:0.16667in;">AÑO:</div><div class="FRX1_31" style="z-Index:16;left:5.76250in;

@@ -42,15 +42,18 @@ class FacturacionController extends Controller
         //return $jsonDte;
         $array = json_decode($jsonDte, true);
         $datosFactura = $this->dteService->crearArray($array);
-        //dd($datosFactura);
+
+        $dteFirmado = $this->dteService->firmarDTE($datosFactura);
+        dd($dteFirmado);
         $pdf = PDF::loadView('facturacion.dte', compact('datosFactura'))->setPaper('letter', 'portrait');
         $pdfData = $pdf->output();
         // 3. Obtener el email del destinatario (ejemplo)
         //$destinatarioEmail = $datosFactura['receptor']['correo']; 
         $destinatarioEmail = "h_rivas47@yahoo.com"; 
+        $destinatarioCC = "h_rivas47@yahoo.com"; 
         
         // 4. Enviar el correo usando la clase Mailable
-        Mail::to($destinatarioEmail)->send(new FacturaAdjunta($pdfData, $jsonDte));
+        Mail::to($destinatarioEmail)->cc($destinatarioCC)->send(new FacturaAdjunta($pdfData, $jsonDte));
         return response()->json(['message' => 'Factura enviada por correo con éxito!']);
         return response()->json([
         'success' => true,

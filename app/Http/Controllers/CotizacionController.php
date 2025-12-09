@@ -279,12 +279,13 @@ class CotizacionController extends Controller
         return $pdf->stream('iva.pdf');
     }
 
-    public function pdf($id)
+    public function pdf($id, Request $request)
     {
+        $imprimir = $request->i;
         $cotizacion=Cotizacione::find($id);
         $taller=Taller::find(1);
         //dd($cotizacion->repuestodetalle);
-        $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller'));
+        $pdf = \PDF::loadView('cotizaciones.prueba',compact('cotizacion','taller','imprimir'));
         $pdf->setPaper('letter', 'portrait');
         return $pdf->stream('cotizacion.pdf');
     }

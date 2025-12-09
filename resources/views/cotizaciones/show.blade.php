@@ -168,7 +168,8 @@
 							<div class="col-md-12">
 								<div class="text-center">
 									@if($cotizacion->estado==1)
-									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
+									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}?i=1" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
+									<a href="{{url('cotizaciones/pdfcotizacion/'.$cotizacion->id)}}?i=0" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir sin número</a>
 									<button type="button" title="Eliminar cotizacion" data-id="{{$cotizacion->id}}" class="btn btn-danger eliminar_lacoti"><i class="fas fa-trash"></i> Eliminar</button>
 									<button type="button" title="Enviar cotizacion por correo" data-id="{{$cotizacion->id}}" class="btn btn-success enviar_correo"><i class="fas fa-envelope"></i> Enviar</button>
 									@if($cotizacion->coniva=='no')

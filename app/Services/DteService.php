@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Cotizacione; // Asume que tienes un modelo llamado Compra
 use App\TrabajoDetalle; // Y un modelo llamado CompraDetalle
@@ -13,13 +14,9 @@ class DteService
 {
     protected $client;
 
-    public function __construct()
+    public function __construct(Client $guzzleClient)
     {
-        // ... (el constructor permanece igual)
-        $this->client = new Client([
-            'base_uri' => env('MH_API_URL'),
-            'verify'   => false,
-        ]);
+       $this->client = $guzzleClient;
     }
 
     /**
@@ -34,7 +31,7 @@ class DteService
         $dte = [
             "identificacion" => [
                 "version" => 1,
-                "ambiente" => env('MH_AMBIENTE', '01'), // Usa una variable de entorno
+                "ambiente" => env('MH_AMBIENTE', '00'), // Usa una variable de entorno
                 "tipoDte" => "01",
                 "numeroControl" => $compra->numero_control, // Usa el campo de tu tabla
                 "codigoGeneracion" => "codigoGeneracion",//$compra->codigo_generacion,
@@ -125,6 +122,69 @@ class DteService
     public function enviarDte($jsonDte)
     {
         dd($jsonDte);
+    }
+
+    public function firmarDTE($jsonDte) : array
+    {
+        $url = env('URL_FIRMADOR');
+        $nit = env('MH_NIT');
+        $password = env('PW_PRIVATE');
+
+        $payload = [
+            'nit'           => $nit,
+            'dteJson'       => $jsonDte, // Aquí va el DTE completo
+            'passwordPri' => $password,
+        ];
+
+        if (!$url || !$nit || !$password) {
+             Log::error('DTE Signer Configuration Missing', [
+                'url' => (bool)$url,
+                'nit' => (bool)$nit,
+                'pass' => (bool)$password
+             ]);
+             return [
+                 'status' => 'ERROR',
+                 'mensaje' => 'Configuración de credenciales del firmador DTE incompleta (.env).',
+                 'code' => '500'
+             ];
+        }
+
+        try {
+            // 4. Enviar la petición POST
+            $response = $this->client->request('POST', $url, [
+                // 'json' convierte el array PHP a JSON y lo establece como cuerpo de la petición.
+                'json' => $payload, 
+                // Opcional: Configuración de timeout si el firmador tarda mucho
+                // 'timeout' => 10.0, 
+            ]);
+
+            // Guzzle devuelve la respuesta como un objeto PSR-7.
+            // Obtenemos el cuerpo y lo decodificamos.
+            $body = (string) $response->getBody();
+            return json_decode($body, true);
+
+        } catch (ConnectException $e) {
+            // Manejo de errores de conexión (ej. Docker no está corriendo, puerto equivocado)
+            Log::error('DTE Signer Connection Error', ['error' => $e->getMessage(), 'url' => $url]);
+            return [
+                'status' => 'ERROR',
+                'mensaje' => 'Error de conexión con el firmador DTE (Docker Down, Timeout, etc.): ' . $e->getMessage(),
+                'code' => '503'
+            ];
+        } catch (RequestException $e) {
+            // Manejo de errores HTTP (ej. 404, 500 del servidor del firmador)
+            $response = $e->getResponse();
+            $body = $response ? (string) $response->getBody() : 'Respuesta vacía';
+            
+            Log::error('DTE Signer HTTP Error', ['status' => $response ? $response->getStatusCode() : 'N/A', 'body' => $body]);
+
+            return [
+                'status' => 'ERROR',
+                'mensaje' => 'Error HTTP del firmador. Código: ' . ($response ? $response->getStatusCode() : 'Desconocido'),
+                'code' => $response ? $response->getStatusCode() : '500'
+            ];
+        }
+
     }
 
     public function crearArray($facturaJson){
