@@ -34,42 +34,48 @@ class DteService
                 "ambiente" => env('MH_AMBIENTE', '00'), // Usa una variable de entorno
                 "tipoDte" => "01",
                 "numeroControl" => $compra->numero_control, // Usa el campo de tu tabla
-                "codigoGeneracion" => "codigoGeneracion",//$compra->codigo_generacion,
+                "codigoGeneracion" => $compra->codigo_generacion,//$compra->codigo_generacion,
                 "fecEmi" => $compra->fecha->format('Y-m-d'),
                 "horEmi" => $compra->fecha->format('H:i:s'),
                 "tipoModelo" => 1,
                 "tipoOperacion" => 1,
-                "tipoMoneda" => "USD"
+                "tipoMoneda" => "USD",
+                "motivoContin" => null,
+                'ventaTercero' => null,
+                'tipoContingencia' => null
             ],
             "emisor" => [
                 "nit" => env('MH_NIT'),
-                "nombre" => "TUNE-UP SERVICE",
-                "nombreComercial" => "TUNE-UP SERVICE",
-                "nrc" => "131438-2",
-                "codActividad" => "",
-                "descActividad" => "Reparación de Vehiculos y Maquinaria",
+                "nombre" => "TUNEUP SERVICE",
+                "nombreComercial" => "TUNEUP SERVICE",
+                "nrc" => "1314382",
+                "codActividad" => "45201",
+                "descActividad" => "Reparación mecánica de vehículos automotores",
                 "tipoEstablecimiento" => "01",
                 "sucursal" => "Central",
                 "correo" => "tuneup@gmail.com",
-                "direccion" => "Calle San Carlos, Colonia laico #1004, final 17 av norte",
-                "codEstableMH" => "",
-                "codEstable" => "",
-                "codPuntoVentaMH" => "",
-                "codPuntoVenta" => "",
-                // ...otros datos del emisor
+                "direccion" => [
+                    "departamento" => "06",
+                    "municipio" => "14",
+                    "complemento" =>"Calle San Carlos, Colonia laico 1004, final 17 av norte"
+                ],
+                "telefono" => "77303565",
+                "codEstableMH" => null,
+                "codEstable" => null,
+                "codPuntoVentaMH" => null,
+                "codPuntoVenta" => null,
             ],
             // Mapea los datos del receptor (tu cliente)
             "receptor" => [
-                "nit" => $compra->cliente->nit, // Asumiendo una relación con un modelo Cliente
-                "nrc" => $compra->cliente->reg_iva, // Asumiendo una relación con un modelo Cliente
+                "numDocumento" => $compra->cliente->tipo_documento == '13' ? $compra->cliente->dui : $compra->cliente->nit, // Asumiendo una relación con un modelo Cliente
+                "nrc" => $compra->cliente->reg_iva == '' ? null : preg_replace('/[^0-9]/', '', $compra->cliente->reg_iva), // Asumiendo una relación con un modelo Cliente
                 "nombre" => $compra->cliente->nombre, // Asumiendo una relación con un modelo Cliente
-                "direccion" => $compra->cliente->direccion, // Asumiendo una relación con un modelo Cliente
-                "correo" => $compra->cliente->correo, // Asumiendo una relación con un modelo Cliente
-                "telefono" => $compra->cliente->telefono, // Asumiendo una relación con un modelo Cliente
-                "tipo_documento" => "13",
-                "nombreComercial" => "",
-                "descActividad" => "",
-                "codActividad" => ""
+                "direccion" => $compra->cliente->direccion == '' ? null : $compra->cliente->direccion, 
+                "correo" => $compra->cliente->correo ?? null, // Asumiendo una relación con un modelo Cliente
+                "telefono" => $compra->cliente->telefono == '' ? '00000000' : $compra->cliente->telefono, // Asumiendo una relación con un modelo Cliente
+                "tipo_documento" => $compra->cliente->tipo_documento,
+                "descActividad" => null,
+                "codActividad" => null
             ],
         ];
 
@@ -84,6 +90,8 @@ class DteService
                 "cantidad" => $detalle->cantidad,
                 "precioUni" => $detalle->precio,
                 "montoItem" => $detalle->precio*$detalle->cantidad,
+                "uniMedida" => 99,
+                "ivaItem" => $this->obtenerIvaItem($detalle->precio*$detalle->cantidad)
             ];
             $totalGravado += $detalle->precio*$detalle->cantidad;
         }
@@ -95,7 +103,8 @@ class DteService
                 "cantidad" => 1,
                 "precioUni" => $detalle->precio,
                 "montoItem" => $detalle->precio,
-                "uniMedida"=> 99
+                "uniMedida"=> 99,
+                "ivaItem" => $this->obtenerIvaItem($detalle->precio)
             ];
             $totalGravado += $detalle->precio;
         }
@@ -108,20 +117,41 @@ class DteService
             "totalDescuento" => 0,
             "totalGravada" => $totalGravado,
             "subTotal" => $totalGravado,
-            "montoTotal" => $compra->total,
+            "montoTotal" => $totalGravado,
+            "totalIva" => $this->obtenerIvaItem($totalGravado),
+            "pagos" => [
+                [
+                "codigo" => "02",
+                "montoPago" => round($totalGravado,2),
+                "referencia" => null,
+                "plazo" => "01",
+                "periodo" => null,
+                ]
+            ]
         ];
         
-        $dte["extension"] = [
-                "nombreResponsable" => $compra->cliente->nombre,
-                "docResponsable" => $compra->cliente->nit
-        ];
-
         return json_encode($dte);
     }
 
     public function enviarDte($jsonDte)
     {
         dd($jsonDte);
+    }
+
+    public function obtenerIvaItem(float $montoTotal): float {
+        // Tasa de IVA en El Salvador (13%)
+        $tasaIva = 0.13;
+        // Factor para desglosar (1 + 0.13 = 1.13)
+        $factorDesglose = 1 + $tasaIva;
+
+        // 1. Calcular la Base Imponible (Monto SIN IVA)
+        $baseImponible = $montoTotal / $factorDesglose;
+
+        // 2. Calcular el Monto del IVA (Diferencia entre Total y Base Imponible)
+        $ivaItem = $montoTotal - $baseImponible;
+
+        // Retorna solo el valor del IVA, redondeado
+        return round($ivaItem, 2);
     }
 
     public function firmarDTE($jsonDte) : array
@@ -190,52 +220,124 @@ class DteService
     public function crearArray($facturaJson){
         $datosFactura = [
         // --- Mapeo de Identificación y Emisor ---
-        'codigoGeneracion' => $facturaJson['identificacion']['codigoGeneracion'],
-        'numeroControl' => $facturaJson['identificacion']['numeroControl'],
-        'fecEmi' => $facturaJson['identificacion']['fecEmi'] . ' ' . $facturaJson['identificacion']['horEmi'],
+        'documentoRelacionado' => null,
+        'extension' => null,
+        'ventaTercero' => $facturaJson['identificacion']['ventaTercero'],
+        'identificacion' => [
+            'ambiente' => $facturaJson['identificacion']['ambiente'],
+            'numeroControl' => $facturaJson['identificacion']['numeroControl'],
+            'codigoGeneracion' => $facturaJson['identificacion']['codigoGeneracion'],
+            'tipoModelo' => $facturaJson['identificacion']['tipoModelo'],
+            'tipoOperacion' => $facturaJson['identificacion']['tipoOperacion'],
+            'tipoMoneda' => $facturaJson['identificacion']['tipoMoneda'],
+            'version' => $facturaJson['identificacion']['version'],
+            'tipoDte' => $facturaJson['identificacion']['tipoDte'],
+            'fecEmi' => $facturaJson['identificacion']['fecEmi'],
+            'horEmi' => $facturaJson['identificacion']['horEmi'],
+            'motivoContin' => $facturaJson['identificacion']['motivoContin'],
+            'tipoContingencia' => $facturaJson['identificacion']['tipoContingencia'],
+        ],
         'emisor' => [
             'nombre' => $facturaJson['emisor']['nombre'],
+            'nombreComercial' => $facturaJson['emisor']['nombre'],
             'nit' => $facturaJson['emisor']['nit'],
             'nrc' => $facturaJson['emisor']['nrc'],
-            'sucursal' => $facturaJson['emisor']['sucursal'],
-            'actividad' => $facturaJson['emisor']['descActividad'], // Revisar si este campo no está vacío en el JSON real
+            'codActividad' => $facturaJson['emisor']['codActividad'],
+            'descActividad' => $facturaJson['emisor']['descActividad'], // Revisar si este campo no está vacío en el JSON real
             'direccion' => $facturaJson['emisor']['direccion'],
+            'telefono' => $facturaJson['emisor']['telefono'],
+            'correo' => $facturaJson['emisor']['correo'],
+            'tipoEstablecimiento' => '02',
+            'codEstableMH' => $facturaJson['emisor']['codEstableMH'],
+            'codEstable' => $facturaJson['emisor']['codEstable'],
+            'codPuntoVentaMH' => $facturaJson['emisor']['codPuntoVentaMH'],
+            'codPuntoVenta' => $facturaJson['emisor']['codPuntoVenta'],
         ],
         
         // --- Mapeo de Receptor ---
         'receptor' => [
             'nombre' => $facturaJson['receptor']['nombre'],
-            'tipo_doc' => 'NIT/NRC', // Asume un valor basado en el tipo de documento 614...
-            'num_doc' => $facturaJson['receptor']['nit'],
+            'tipoDocumento' => $facturaJson['receptor']['tipo_documento'], // Asume un valor basado en el tipo de documento 614...
+            'numDocumento' => $facturaJson['receptor']['numDocumento'],
             // El JSON no incluye explícitamente la dirección completa del receptor, usa lo disponible
             'direccion' => $facturaJson['receptor']['direccion'], 
             'correo' => $facturaJson['receptor']['correo'],
+            'telefono' => $facturaJson['receptor']['telefono'],
+            'nrc' => $facturaJson['receptor']['nrc'],
+            'codActividad' => $facturaJson['receptor']['codActividad'],
+            'descActividad' => $facturaJson['receptor']['descActividad'],
         ],
 
         // --- Mapeo de Items (Cuerpo del Documento) ---
-        'cuerpoDocumento' => collect($facturaJson['cuerpoDocumento'])->map(function ($item) {
+        'cuerpoDocumento' => collect($facturaJson['cuerpoDocumento'])->map(function ($item, $key) {
             return [
+                'numItem' => $key + 1,
+                'tipoItem' => 1,
+                'numeroDocumento' => null,
+                'codigo' => $item['codProducto'],
                 'cantidad' => $item['cantidad'],
-                'desProducto' => $item['desProducto'],
+                'uniMedida' => $item['uniMedida'],
+                'descripcion' => $item['desProducto'],
                 'precioUni' => $item['precioUni'],
-                'montoItem' => $item['montoItem'],
+                'ventaGravada' => $item['montoItem'],
+                'psv' => $item['montoItem'],
+                'montoDescu' => 0.0,
+                'ventaNoSuj' => 0.0,
+                'ventaExenta' => 0.0,
+                'tributos' => null,
+                'codTributo' => null,
+                'noGravado' => 0.0,
+                'ivaItem' => $item['ivaItem']
             ];
         })->all(),
 
         // --- Mapeo de Totales ---
         'resumen' => [
+            'totalNoSuj' => 0.0,
+            'totalExenta' => 0.0,
+            'descuNoSuj' => 0.0,
+            'descuExenta' => 0.0,
+            'descuGravada' => 0.0,
+            'porcentajeDescuento' => 0.0,
+            'totalDescu' => 0.0,
+            'tributos' => null,
+            'totalNoGravado' => 0.0,
+            'reteRenta' => 0.0,
+            'ivaRete1' => 0.0,
+            'condicionOperacion' => 1,
+            'numPagoElectronico' => null,
+            'saldoFavor' => 0.0,
+            'pagos' => $facturaJson['resumen']['pagos'],
+            'totalIva' => $facturaJson['resumen']['totalIva'],
             'totalGravada' => $facturaJson['resumen']['totalGravada'],
+            'subTotalVentas' => $facturaJson['resumen']['totalGravada'],
+            'totalPagar' => $facturaJson['resumen']['totalGravada'],
+            'montoTotalOperacion' => $facturaJson['resumen']['totalGravada'],
             'subTotal' => $facturaJson['resumen']['subTotal'],
             'totalGravada' => $facturaJson['resumen']['totalGravada'], // En este caso, son iguales
             'totalGravada' => $facturaJson['resumen']['totalGravada'], // Total a pagar
-            'total_en_letras' => numaletras($facturaJson['resumen']['totalGravada']), // Debes usar la función helper aquí
+            'totalLetras' => numaletras($facturaJson['resumen']['totalGravada']), // Debes usar la función helper aquí
         ],
+        'apendice' => null,
+        'otrosDocumentos' => null
         
         // --- Mapeo de Información Adicional ---
-        'forma_pago' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
-        'codigo_vendedor' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
+        //'forma_pago' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
+        //'codigo_vendedor' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
     ];
         return $datosFactura;
+    }
+
+    public function generarNumeroControl(string $tipoDte, string $codigoSucursal, int $ultimoCorrelativo): string 
+    {
+        // El correlativo debe ser de 15 dígitos con ceros a la izquierda.
+        $nuevoCorrelativo = $ultimoCorrelativo + 1;
+        $correlativo15Digitos = str_pad((string)$nuevoCorrelativo, 15, '0', STR_PAD_LEFT);
+        
+        // Concatenación para formar el número de control
+        $numeroControl = "DTE-". $tipoDte . '-'.$codigoSucursal.'-' . $correlativo15Digitos;
+        
+        return $numeroControl;
     }
     
     // El método enviarDte() y obtenerTokenAutenticacion() no cambian.

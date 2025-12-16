@@ -8,6 +8,7 @@ use App\Cotizacione; // Importa el modelo de Compra
 use PDF;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FacturaAdjunta;
+use Ramsey\Uuid\Uuid;
 
 class FacturacionController extends Controller
 {
@@ -37,6 +38,17 @@ class FacturacionController extends Controller
             ], 404);
         }
 
+        if($compra->codigo_generacion == null){
+            $compra->codigo_generacion = strtoupper(Uuid::uuid4()->toString());
+            $compra->save();
+        }
+        if($compra->numero_control == null){
+            $dte = $this->dteService->generarNumeroControl("01","12345678",0);
+            $compra->numero_control = $dte;
+            $compra->save();
+        }
+        //dd($compra);
+
         // 2. Genera el JSON del DTE usando el modelo de compra
         $jsonDte = $this->dteService->generarDteJson($compra);
         //return $jsonDte;
@@ -44,7 +56,7 @@ class FacturacionController extends Controller
         $datosFactura = $this->dteService->crearArray($array);
 
         $dteFirmado = $this->dteService->firmarDTE($datosFactura);
-        dd($dteFirmado);
+        dd(json_encode($dteFirmado));
         $pdf = PDF::loadView('facturacion.dte', compact('datosFactura'))->setPaper('letter', 'portrait');
         $pdfData = $pdf->output();
         // 3. Obtener el email del destinatario (ejemplo)
@@ -71,7 +83,7 @@ class FacturacionController extends Controller
         }
 
         // 5. La factura fue aceptada. Guarda los datos de la respuesta en la compra.
-        $compra->codigo_control = $respuestaApi['codigoControl'];
+        //$compra->codigo_control = $respuestaApi['codigoControl'];
         $compra->sello_recepcion = $respuestaApi['selloRecepcion'];
         $compra->estado_dte = 'aceptado';
         $compra->save();
