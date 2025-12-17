@@ -8,22 +8,92 @@
     <title>FACTURA | </title>
     
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 10pt;
-            margin: 20px;
-        }
-        .container {
-            width: 100%;
-            margin: 0 auto;
-            border: 1px solid #ccc;
+        body { font-family: sans-serif; font-size: 11px; color: #333; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .uppercase { text-transform: uppercase; }
+        .font-bold { font-weight: bold; }
+        
+        /* Contenedor principal */
+        .header-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .header-table td { vertical-align: top; }
+
+        /* Cuadros Emisor/Receptor con bordes redondeados */
+        .box-container { width: 100%; margin-top: 20px; }
+        .box {
+            border: 1px solid #000;
+            border-radius: 15px; /* DomPDF requiere versiones recientes para esto */
             padding: 15px;
+            position: relative;
+            width: 45%;
+            float: left;
+            min-height: 180px;
         }
-        .header, .section {
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 1px dashed #ccc;
+        .box-receptor { float: right; }
+        
+        /* El título que "rompe" el borde */
+        .box-title {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            margin-left: -35px; /* Ajuste manual para centrar */
+            background-color: white;
+            padding: 0 10px;
+            font-weight: bold;
+            font-size: 12px;
         }
+
+        /* Estilos para la tabla de productos */
+        .tabla-detalle {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 1px solid #000;
+        }
+        .tabla-detalle th {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: center;
+            background-color: #f8f9fa;
+            text-transform: uppercase;
+        }
+        .tabla-detalle td {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            padding: 5px;
+        }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        /* Estilos para el cuadro de totales */
+        .totales-container {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .cuadro-totales {
+            width: 35%; /* Ajusta el ancho según necesites */
+            float: left;
+            border: 1px solid #000;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .totales-row {
+            display: block;
+            width: 100%;
+            margin-bottom: 3px;
+        }
+        .total-label { display: inline-block; width: 65%; }
+        .total-value { display: inline-block; width: 30%; text-align: right; }
+
+        .letras-monto {
+            margin-top: 10px;
+            font-weight: bold;
+            clear: both;
+        }
+
+        .clear { clear: both; }
+        .bg-highlight { background-color: #e0f2ff; padding: 2px; }
+        .mt-2 { margin-top: 10px; }
         .text-center { text-align: center; }
         .text-right { text-align: right; }
         .details-grid {
@@ -85,48 +155,70 @@
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            <div class="qr-code">
-                {{-- Asumiendo que usas un paquete como simplesoftwareio/simple-qrcode --}}
-                <img src="data:image/png;base64,{{ base64_encode(QrCode::format('png')->size(80)->generate($datosFactura['codigoGeneracion'])) }}" 
+    <div class="">
+    
+        <div class="text-center uppercase font-bold">
+            <h6 class="mb-0 font-weight-bold">DOCUMENTO TRIBUTARIO ELECTRÓNICO</h6>
+            <h5 class="font-weight-bold mt-2">FACTURA</h5>
+        </div>
+
+        <table class="header-table">
+            <tr>
+                <td width="40%">
+                    <strong>Código de Generación:</strong> {{ $compra->codigo_generacion }}<br>
+                    <strong>Número de Control:</strong> {{ $compra->numero_control }}<br>
+                    <strong>Sello de Recepción:</strong> {{ $compra->sello_generacion }}
+                </td>
+                <td width="20%" class="text-center">
+                    <div style="border: 1px solid #ccc; width: 80px; height: 80px; margin: 0 auto;">
+                        <img src="data:image/png;base64,{{ base64_encode(QrCode::format('png')->size(80)->generate($compra->codigo_generacion)) }}" 
      alt="QR Code Factura" 
      style="width: 80px; height: 80px;">
-                
+                    </div>
+                </td>
+                <td width="40%" class="text-right">
+                    <strong>Modelo de Facturación:</strong> Previo<br>
+                    <strong>Tipo de Transmisión:</strong> Normal<br>
+                    <strong>Fecha y Hora de Generación:</strong> {{ $compra->fecha_procesamiento }}
+                </td>
+            </tr>
+        </table>
+
+        <div class="box-container">
+            <div class="box">
+                <span class="box-title">EMISOR</span>
+                <strong>Nombre o razón social:</strong> {{$taller->nombre}}<br>
+                <strong>NIT:</strong> {{$taller->nit}}<br>
+                <strong>NRC:</strong> {{$taller->nrc}}<br>
+                <strong>Actividad económica:</strong> {{$taller->actividad_economica}} <br>
+                <strong>Dirección:</strong> {{ $taller->direccion }}<br>
+                <strong>Teléfono:</strong> {{$taller->celular}}<br>
+                <strong>Email:</strong> {{$taller->email}}
             </div>
-            <div style="overflow: hidden;">
-                <p class="text-center">DOCUMENTO TRIBUTARIO ELECTRÓNICO</p>
-                <h2 class="text-center" style="margin-top: 0;">FACTURA </h2>
+
+            <div class="box box-receptor">
+                <span class="box-title">RECEPTOR</span>
+                <strong>Nombre o razón social:</strong> {{ $compra->cliente->nombre }}<br>
+                <strong>Tipo de Documento:</strong> {{$compra->cliente->documento->nombre_documento}}<br>
+                <strong>Número de Documento:</strong> {{$compra->cliente->numero_documento}}<br>
+                <strong>Correo electrónico:</strong> {{ $cliente->email ?? '-' }}<br>
+                <div class="mt-2" style="margin-top: 50px;">
+                    <strong>Número de teléfono:</strong> {{ $cliente->telefono ?? '00000000' }}
+                </div>
             </div>
-        </div>
-        
-        <div class="section">
-            <h3 style="margin-bottom: 5px;">DATOS DEL EMISOR </h3>
-            <p style="margin: 0;"><strong>{{ $datosFactura['emisor']['nombre'] }}</strong> </p>
-            <p style="margin: 0;">NIT: {{ $datosFactura['emisor']['nit'] }} | NRC: {{ $datosFactura['emisor']['nrc'] }} </p>
-            <p style="margin: 0;">Sucursal: {{ $datosFactura['emisor']['sucursal'] }}</p>
-            <p style="margin: 0;">Actividad Económica: {{ $datosFactura['emisor']['actividad'] }} </p>
-            <p style="margin: 0;">Dirección: {{ $datosFactura['emisor']['direccion'] }} </p>
+            <div class="clear"></div>
         </div>
 
-        <div class="section">
-            <h3 style="margin-bottom: 5px;">DATOS DE FACTURA </h3>
-            <p style="margin: 0;">Código de Generación: {{ $datosFactura['codigoGeneracion'] }} </p>
-            <p style="margin: 0;">Número de control: {{ $datosFactura['numeroControl'] }} </p>
-            <p style="margin: 0;">Fecha y hora de Generación: {{ $datosFactura['fecEmi'] }} </p>
+    </div>
+
+    <div class="container">
+
+        <div class="text-center font-bold mt-2" style="width: 100%; text-decoration: underline;">
+            DETALLE DE FACTURA
         </div>
 
-        <div class="section">
-            <h3 style="margin-bottom: 5px;">DATOS DEL RECEPTOR </h3>
-            <p style="margin: 0;">Nombre: <strong>{{ $datosFactura['receptor']['nombre'] }}</strong> </p>
-            <p style="margin: 0;">Tipo de Doc. de Identificación: {{ $datosFactura['receptor']['tipo_doc'] }} </p>
-            <p style="margin: 0;">Número de Documento: {{ $datosFactura['receptor']['num_doc'] }} </p>
-            <p style="margin: 0;">Dirección: {{ $datosFactura['receptor']['direccion'] }} </p>
-            <p style="margin: 0;">Correo: {{ $datosFactura['receptor']['correo'] }} </p>
-        </div>
 
-        <h3 class="text-center">DETALLE DE FACTURA </h3>
-        <table class="table-items">
+        <table class="tabla-detalle">
             <thead>
                 <tr>
                     <th style="width: 10%;">CANT.</th>
@@ -136,43 +228,56 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($datosFactura['cuerpoDocumento'] as $item)
+                @foreach ($compra->repuestodetalle as $detalle)
                     <tr>
-                        <td class="text-center">{{ number_format($item['cantidad'], 2) }} </td>
+                        <td class="text-center">{{ number_format($detalle->cantidad, 2) }} </td>
                         <td>
-                          {{ $item['desProducto'] }} 
+                          {{ $detalle->repuesto->nombre }} 
                         </td>
-                        <td class="text-right">{{ number_format($item['precioUni'], 2) }}</td>
-                        <td class="text-right">{{ number_format($item['montoItem'], 2) }} </td>
+                        <td class="text-right">{{ number_format($detalle->precio, 2) }}</td>
+                        <td class="text-right">{{ number_format($detalle->precio*$detalle->cantidad, 2) }} </td>
+                    </tr>
+                @endforeach
+                @foreach ($compra->trabajodetalle as $detalle)
+                    <tr>
+                        <td class="text-center">{{ number_format(1, 2) }} </td>
+                        <td>
+                          {{ $detalle->trabajo->nombre }} 
+                        </td>
+                        <td class="text-right">{{ number_format($detalle->precio, 2) }}</td>
+                        <td class="text-right">{{ number_format($detalle->precio, 2) }} </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <table class="total-summary">
-            <tr>
-                <td>Suma Ventas Gravadas:</td>
-                <td class="text-right">{{ number_format($datosFactura['resumen']['totalGravada'], 2) }} </td>
-            </tr>
-            <tr>
-                <td>Sub-Total:</td>
-                <td class="text-right">{{ number_format($datosFactura['resumen']['subTotal'], 2) }} </td>
-            </tr>
-            <tr>
-                <td>Monto Total de la Operación:</td>
-                <td class="text-right">{{ number_format($datosFactura['resumen']['totalGravada'], 2) }} </td>
-            </tr>
-            <tr>
-                <td>Total a pagar:</td>
-                <td class="text-right">{{ number_format($datosFactura['resumen']['totalGravada'], 2) }} </td>
-            </tr>
-        </table>
-        
-        <p>TOTAL EN LETRAS: **{{ $datosFactura['resumen']['total_en_letras'] }} </p>
-        
-        <div class="section" style="border-bottom: none; border-top: 1px dashed #000; padding-top: 10px;">
-            <p style="margin: 0;">Forma pago: **{{ $datosFactura['forma_pago'] }}** </p>
+        <div class="totales-container">
+            <div class="cuadro-totales">
+                <div class="totales-row">
+                    <span class="total-label">Suma Ventas Gravadas:</span>
+                    <span class="total-value">{{ number_format($compra->total, 2) }}</span>
+                </div>
+                <div class="totales-row">
+                    <span class="total-label">Sub-Total:</span>
+                    <span class="total-value">{{ number_format($compra->total, 2) }}</span>
+                </div>
+                <div class="totales-row">
+                    <span class="total-label">Monto Total de la Operación:</span>
+                    <span class="total-value">{{ number_format($compra->total, 2) }}</span>
+                </div>
+                <div class="totales-row font-bold">
+                    <span class="total-label">Total a pagar:</span>
+                    <span class="total-value">{{ number_format($compra->total, 2) }}</span>
+                </div>
+            </div>
         </div>
+        <div class="clear"></div>
+        <div class="letras-monto">
+            TOTAL EN LETRAS: **{{ numaletras($compra->total) }}**
+        </div>
+        
+        <hr style="border-top: 1px dashed #000; margin-top: 10px;">
+        <div class="font-bold">Forma pago: ** Contado **</div>
     </div>
     <script type="text/php">
     if (isset($pdf)) {

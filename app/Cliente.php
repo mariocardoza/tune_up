@@ -18,9 +18,15 @@ class Cliente extends Model
     	return $this->hasMany('App\Cotizacione')->orderBy('tipo_documento','asc')->orderBy('created_at','desc');
     }
 
+		public function documento()
+    {
+    	return $this->belongsTo('App\Documento','tipo_documento','tipo_documento')->withDefault();
+    }
+
     public static function modal_editar($id)
     {
     	$html='';
+			$tipos = Documento::all();
     	$cliente=Cliente::find($id);
     	$html.='
 		        	<div class="card-body">
@@ -41,10 +47,25 @@ class Cliente extends Model
 				        					<input type="text" name="nombre" value="'.$cliente->nombre.'" autocomplete="off" class="form-control">
 				        					<input type="hidden" id="idcl" value="'.$cliente->id.'">
 				        				</div>
-				        				<div class="form-group">
-				        					<label for="">NIT</label>
-				        					<input type="text" name="nit" value="'.$cliente->nit.'" autocomplete="off" class="form-control nit">
-				        				</div>
+												
+												<div class="form-group">
+													<label for="">Tipo de documento</label>
+													<select name="tipo_documento" id="tipo_documento" class="form-control">
+														<option value="">Seleccione el tipo de documento</option>';
+														foreach($tipos as $tipo ):
+															if($tipo->tipo_documento == $cliente->tipo_documento):
+																$html.='<option selected value="'.$tipo->tipo_documento.'">'.$tipo->nombre_documento.'</option>';
+															else:
+																$html.='<option value="'.$tipo->tipo_documento.'">'.$tipo->nombre_documento.'</option>';
+															endif;
+														endforeach;
+														$html.='</select>
+												</div>
+												<div class="form-group">
+													<label for="">Numero de documento</label>
+													<input type="text" name="numero_documento" value="'.$cliente->numero_documento.'" autocomplete="off" class="form-control">
+												</div>
+				        				
 				        				<div class="form-group">
 				        					<label for="">E-mail</label>
 				        					<input type="email" value="'.$cliente->correo.'" name="correo" autocomplete="off" class="form-control">

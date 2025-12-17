@@ -171,6 +171,9 @@ $(document).ready(function(e){
               document.body.removeChild(link);
               URL.revokeObjectURL(blobUrl);
           }
+        },
+        error:function(error){
+          toastr.error(error.responseJSON.message);
         }
       });
   });

@@ -109,10 +109,23 @@
 		        					<label for="">Nombre</label>
 		        					<input type="text" name="nombre" autocomplete="off" class="form-control">
 		        				</div>
-		        				<div class="form-group">
+										<div class="form-group">
+											<label for="">Tipo de documento</label>
+											<select name="tipo_documento" id="tipo_documento" class="form-control">
+												<option value="">Seleccione el tipo de documento</option>
+												@foreach($tipos as $tipo )
+													<option value="{{$tipo->tipo_documento}}">{{$tipo->nombre_documento}}</option>
+												@endforeach
+												</select>
+										</div>
+										<div class="form-group">
+		        					<label for="">Numero de documento</label>
+		        					<input type="text" name="numero_documento" autocomplete="off" class="form-control">
+		        				</div>
+		        				<!--div class="form-group">
 		        					<label for="">NIT</label>
 		        					<input type="text" name="nit" autocomplete="off" class="form-control nit">
-		        				</div>
+		        				</div-->
 		        				<div class="form-group">
 		        					<label for="">E-mail</label>
 		        					<input type="email" name="correo" autocomplete="off" class="form-control">
@@ -147,18 +160,18 @@
 
         			<div class="col-md-6">
         				<div class="row nocontri">
-        					<div class="col-md-6">
+        					<div class="col-md-12">
         						<div class="from-group">
         							<label for="fecha_nacimiento">Fecha de nacimiento</label>
         							<input type="date" name="fecha_nacimiento" class="form-control">
         						</div>
         					</div>
-        					<div class="col-md-6">
+        					<!--div class="col-md-6">
         						<div class="form-group">
         							<label for="dui">DUI</label>
         							<input type="text" name="dui" class="form-control dui">
         						</div>
-        					</div>
+        					</div-->
         				</div>
         				<div class="row">
         					<div class="col-md-4">

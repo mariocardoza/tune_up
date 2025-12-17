@@ -15,6 +15,7 @@ class AddCamposDteToClientes extends Migration
     {
         Schema::table('clientes', function (Blueprint $table) {
             $table->string("tipo_documento")->nullable();
+            $table->string("numero_documento")->nullable();
             $table->string("codActividad")->nullable();
             $table->string("descActividad")->nullable();
         });
@@ -31,6 +32,7 @@ class AddCamposDteToClientes extends Migration
             $table->dropColumn('tipo_documento');
             $table->dropColumn('codActividad');
             $table->dropColumn('descActividad');
+            $table->dropColumn('numero_documento');
         });
     }
 }

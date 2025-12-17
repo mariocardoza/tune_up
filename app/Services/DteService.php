@@ -6,17 +6,26 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
-use App\Cotizacione; // Asume que tienes un modelo llamado Compra
-use App\TrabajoDetalle; // Y un modelo llamado CompraDetalle
-use App\RepuestoDetalle; // Y un modelo llamado CompraDetalle
+use App\Cotizacione;
+use App\TrabajoDetalle; 
+use App\RepuestoDetalle; 
+use Cache;
+use Log;
 
 class DteService
 {
     protected $client;
+    private $authUrl;
+    private $nit;
+    private $claveApi;
 
     public function __construct(Client $guzzleClient)
     {
-       $this->client = $guzzleClient;
+        $this->client = $guzzleClient;
+
+        $this->authUrl = env('MH_API_AUTH');
+        $this->nit = env('MH_USUARIO');
+        $this->claveApi = env('MH_PASSWORD');
     }
 
     /**
@@ -25,18 +34,18 @@ class DteService
      * @param Compra $compra
      * @return string JSON del DTE
      */
-    public function generarDteJson(Cotizacione $compra)
+    public function generarDteGeneralJson(Cotizacione $compra, $tipoDte)
     {
         // Mapea los datos de la tabla 'compra' a la sección 'identificacion' del DTE
         $dte = [
             "identificacion" => [
                 "version" => 1,
                 "ambiente" => env('MH_AMBIENTE', '00'), // Usa una variable de entorno
-                "tipoDte" => "01",
+                "tipoDte" => str_pad($tipoDte, 2, "0", STR_PAD_LEFT),
                 "numeroControl" => $compra->numero_control, // Usa el campo de tu tabla
                 "codigoGeneracion" => $compra->codigo_generacion,//$compra->codigo_generacion,
-                "fecEmi" => $compra->fecha->format('Y-m-d'),
-                "horEmi" => $compra->fecha->format('H:i:s'),
+                "fecEmi" => date("Y-m-d"),
+                "horEmi" => date('H:i:s'),
                 "tipoModelo" => 1,
                 "tipoOperacion" => 1,
                 "tipoMoneda" => "USD",
@@ -60,17 +69,17 @@ class DteService
                     "complemento" =>"Calle San Carlos, Colonia laico 1004, final 17 av norte"
                 ],
                 "telefono" => "77303565",
-                "codEstableMH" => null,
-                "codEstable" => null,
-                "codPuntoVentaMH" => null,
-                "codPuntoVenta" => null,
+                "codEstableMH" => "M001",
+                "codEstable" => "M001",
+                "codPuntoVentaMH" => "P001",
+                "codPuntoVenta" => "P001",
             ],
             // Mapea los datos del receptor (tu cliente)
             "receptor" => [
-                "numDocumento" => $compra->cliente->tipo_documento == '13' ? $compra->cliente->dui : $compra->cliente->nit, // Asumiendo una relación con un modelo Cliente
+                "numDocumento" => $compra->cliente->tipo_documento == '13' ? $compra->cliente->numero_documento : preg_replace('/[^0-9]/', '', $compra->cliente->numero_documento), 
                 "nrc" => $compra->cliente->reg_iva == '' ? null : preg_replace('/[^0-9]/', '', $compra->cliente->reg_iva), // Asumiendo una relación con un modelo Cliente
                 "nombre" => $compra->cliente->nombre, // Asumiendo una relación con un modelo Cliente
-                "direccion" => $compra->cliente->direccion == '' ? null : $compra->cliente->direccion, 
+                "direccion" => null, 
                 "correo" => $compra->cliente->correo ?? null, // Asumiendo una relación con un modelo Cliente
                 "telefono" => $compra->cliente->telefono == '' ? '00000000' : $compra->cliente->telefono, // Asumiendo una relación con un modelo Cliente
                 "tipo_documento" => $compra->cliente->tipo_documento,
@@ -79,7 +88,6 @@ class DteService
             ],
         ];
 
-        // Mapea los datos de la tabla 'compradetalle' a 'cuerpoDocumento'
         $items = [];
         $totalGravado = 0;
         foreach ($compra->repuestodetalle as $detalle) { // 'detalles' es la relación en el modelo Compra
@@ -133,9 +141,52 @@ class DteService
         return json_encode($dte);
     }
 
-    public function enviarDte($jsonDte)
+    public function enviarDte($dteFirmado,$tipoDte,$generacion)
     {
-        dd($jsonDte);
+        $token = $this->obtenerToken();
+        if (!$token) {
+            Log::error('DTE Envío: No se pudo obtener el token de autenticación.');
+            return ['error' => 'Autenticación fallida o token nulo.'];
+        }
+        $sendUrl = env('MH_API_URL');
+        $ambiente = env('MH_AMBIENTE', '00'); // PRUEBA o PRODUCCION
+        $idEnvio = (int) (microtime(true) * 1000);
+        // 2. Construir el Payload de Envío
+        // La API de recepción espera que el DTE firmado esté anidado dentro de esta estructura
+        $payload = [
+            'ambiente' => $ambiente,
+            'idEnvio' => $idEnvio, // Un ID único generado por tu sistema para esta transacción
+            'version' => "01",        // Versión de la API de recepción (usualmente 1)
+            'tipoDte' => str_pad($tipoDte, 2, "0", STR_PAD_LEFT), // El tipo de DTE (ej: '01')
+            'documento' => $dteFirmado,
+            'codigoGeneracion' => $generacion
+        ];
+        try {
+            // 3. Realizar la Petición POST con Guzzle
+            $response = $this->client->post($sendUrl, [
+                // Incluir el token en el encabezado 'Authorization'
+                'headers' => [
+                    'Authorization' => $token, 
+                    'Content-Type' => 'application/json', // El payload de envío es JSON
+                ],
+                // 4. Enviar el Payload como JSON
+                'json' => $payload
+            ]);
+            
+            // 5. Decodificar y devolver la respuesta del MH
+            return json_decode($response->getBody()->getContents(), true);
+
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            Log::error("DTE Envío Guzzle (Cliente 4xx): Error en el envío. Respuesta MH: " . $responseBody);
+            return ['error' => 'Error 4xx de la API del MH', 'response_body' => json_decode($responseBody, true)];
+        } catch (\Throwable $e) {
+            Log::error("DTE Envío Guzzle (Conexión/Sistema): " . $e->getMessage());
+            return ['error' => 'Error de conexión o sistema.'];
+        }
+
+
+        dd($dteFirmado);
     }
 
     public function obtenerIvaItem(float $montoTotal): float {
@@ -217,7 +268,7 @@ class DteService
 
     }
 
-    public function crearArray($facturaJson){
+    public function crearDteFactura($facturaJson){
         $datosFactura = [
         // --- Mapeo de Identificación y Emisor ---
         'documentoRelacionado' => null,
@@ -259,7 +310,6 @@ class DteService
             'nombre' => $facturaJson['receptor']['nombre'],
             'tipoDocumento' => $facturaJson['receptor']['tipo_documento'], // Asume un valor basado en el tipo de documento 614...
             'numDocumento' => $facturaJson['receptor']['numDocumento'],
-            // El JSON no incluye explícitamente la dirección completa del receptor, usa lo disponible
             'direccion' => $facturaJson['receptor']['direccion'], 
             'correo' => $facturaJson['receptor']['correo'],
             'telefono' => $facturaJson['receptor']['telefono'],
@@ -268,7 +318,6 @@ class DteService
             'descActividad' => $facturaJson['receptor']['descActividad'],
         ],
 
-        // --- Mapeo de Items (Cuerpo del Documento) ---
         'cuerpoDocumento' => collect($facturaJson['cuerpoDocumento'])->map(function ($item, $key) {
             return [
                 'numItem' => $key + 1,
@@ -320,18 +369,18 @@ class DteService
         ],
         'apendice' => null,
         'otrosDocumentos' => null
-        
-        // --- Mapeo de Información Adicional ---
-        //'forma_pago' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
-        //'codigo_vendedor' => 'POR DEFINIR', // Este dato no está en el JSON de ejemplo
-    ];
+        ];
         return $datosFactura;
+    }
+
+    public function crearJsonEmail($facturaJson,$firmado){
+
     }
 
     public function generarNumeroControl(string $tipoDte, string $codigoSucursal, int $ultimoCorrelativo): string 
     {
         // El correlativo debe ser de 15 dígitos con ceros a la izquierda.
-        $nuevoCorrelativo = $ultimoCorrelativo + 1;
+        $nuevoCorrelativo = $ultimoCorrelativo;
         $correlativo15Digitos = str_pad((string)$nuevoCorrelativo, 15, '0', STR_PAD_LEFT);
         
         // Concatenación para formar el número de control
@@ -339,6 +388,46 @@ class DteService
         
         return $numeroControl;
     }
-    
-    // El método enviarDte() y obtenerTokenAutenticacion() no cambian.
+
+    public function obtenerToken()
+    {
+        $cacheKey = 'dte_access_token'; 
+        $ttl = Carbon::now()->addMinutes(29); 
+        
+        $token = Cache::remember($cacheKey, $ttl, function () {
+            
+            $bodyParams = [
+                'user' => $this->nit, 
+                'pwd' => $this->claveApi,
+            ];
+
+            try {
+                $response = $this->client->post($this->authUrl, [
+                    'form_params' => $bodyParams, 
+                ]);
+
+                $data = json_decode($response->getBody()->getContents(), true);
+                if ($response->getStatusCode() === 200 && isset($data['status']) && $data['status'] === 'OK') {
+                    
+                    // 3. Devolver el valor exacto del campo 'body.token'
+                    if (isset($data['body']['token'])) {
+                        return $data['body']['token'];
+                    }
+                }
+
+                Log::error("DTE Auth Guzzle: Fallo al obtener token. Respuesta: " . json_encode($data));
+                return null;
+
+            } catch (\Throwable $e) {
+                // Captura errores de Guzzle (conexión, 4xx, 5xx)
+                $errorMessage = $e instanceof \GuzzleHttp\Exception\RequestException ? $e->getResponse()->getBody()->getContents() : $e->getMessage();
+                Log::error("DTE Auth Guzzle (Excepción): " . $errorMessage);
+                return null;
+            }
+
+            
+        });
+
+        return $token;
+    }
 }

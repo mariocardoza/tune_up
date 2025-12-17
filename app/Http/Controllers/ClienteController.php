@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Cliente;
 use App\Vehiculo;
 use App\Marca;
+use App\Documento;
 use Validator;
 use Session;
 
@@ -41,7 +42,8 @@ class ClienteController extends Controller
     public function index()
     {
         $clientes=Cliente::whereEstado(1)->orderBy('id','ASC')->get();
-        return view('clientes.index',compact('clientes'));
+        $tipos = Documento::all();
+        return view('clientes.index',compact('clientes','tipos'));
     }
 
     /**
@@ -137,11 +139,15 @@ class ClienteController extends Controller
         $mensajes=array(
           'tipo.required'=>'El tipo de cliente es obligatorio',
           'nombre.required'=>'El nombre del cliente es obligatorio',
+          'tipo_documento.required'=>'El tipo de documento es obligatorio',
+          'numero_documento.required'=>'El número de documento es obligatorio',
 
       );
       return Validator::make($data, [
           'tipo'=>'required',
           'nombre'=>'required',
+          'tipo_documento'=>'required',
+          'numero_documento'=>'required',
       ],$mensajes);
     }
 }

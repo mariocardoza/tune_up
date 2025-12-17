@@ -18,6 +18,7 @@ class AddFieldsToCotizacionsTable extends Migration
             $table->string("codigo_generacion")->nullable();
             $table->string("sello_generacion")->nullable();
             $table->datetime("fecha_generacion")->nullable();
+            $table->string("fecha_procesamiento")->nullable();
         });
     }
 
@@ -33,6 +34,7 @@ class AddFieldsToCotizacionsTable extends Migration
             $table->dropColumn("codigo_generacion");
             $table->dropColumn("sello_generacion");
             $table->dropColumn("fecha_generacion");
+            $table->dropColumn("fecha_procesamiento");
         });
     }
 }
