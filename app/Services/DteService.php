@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use App\Cotizacione;
 use App\TrabajoDetalle; 
 use App\RepuestoDetalle; 
+use App\Municipio; 
+use App\ActividadEconomica;
 use Cache;
 use Log;
 
@@ -37,6 +39,22 @@ class DteService
     public function generarDteGeneralJson(Cotizacione $compra, $tipoDte)
     {
         // Mapea los datos de la tabla 'compra' a la sección 'identificacion' del DTE
+        $direccion = null;
+        $descActividad = null;
+        $codActividad = null;
+        $muni = Municipio::with('departamento')->find($compra->cliente->municipio_id);
+        $desc = ActividadEconomica::where('codigo',$compra->cliente->codActividad)->first();
+        if($muni != null){
+            $direccion = [
+                "departamento" => $muni->departamento_codigo,
+                "municipio"    => substr($muni->codigo, 2, 2),  
+                "complemento"  => $compra->cliente->direccion
+            ];
+        }
+        if($desc != null){
+            $descActividad = $desc->nombre;
+            $codActividad = $desc->codigo;
+        }
         $dte = [
             "identificacion" => [
                 "version" => 1,
@@ -79,12 +97,12 @@ class DteService
                 "numDocumento" => $compra->cliente->tipo_documento == '13' ? $compra->cliente->numero_documento : preg_replace('/[^0-9]/', '', $compra->cliente->numero_documento), 
                 "nrc" => $compra->cliente->reg_iva == '' ? null : preg_replace('/[^0-9]/', '', $compra->cliente->reg_iva), // Asumiendo una relación con un modelo Cliente
                 "nombre" => $compra->cliente->nombre, // Asumiendo una relación con un modelo Cliente
-                "direccion" => null, 
+                "direccion" => $direccion, 
                 "correo" => $compra->cliente->correo ?? null, // Asumiendo una relación con un modelo Cliente
                 "telefono" => $compra->cliente->telefono == '' ? '00000000' : $compra->cliente->telefono, // Asumiendo una relación con un modelo Cliente
                 "tipo_documento" => $compra->cliente->tipo_documento,
-                "descActividad" => null,
-                "codActividad" => null
+                "descActividad" => $descActividad,
+                "codActividad" => $codActividad
             ],
         ];
 
@@ -121,16 +139,17 @@ class DteService
 
         // Mapea los totales a la sección 'resumen'
         $dte["resumen"] = [
-            "totalIva" => $compra->iva,
+            "totalIvaCompra" => $compra->iva,
+            "ivaRete1" => $compra->iva_r,
             "totalDescuento" => 0,
-            "totalGravada" => $totalGravado,
-            "subTotal" => $totalGravado,
-            "montoTotal" => $totalGravado,
+            "totalGravada" => round($totalGravado,2),
+            "subTotal" => $compra->subtotal,
+            "montoTotal" => $compra->total,
             "totalIva" => $this->obtenerIvaItem($totalGravado),
             "pagos" => [
                 [
                 "codigo" => "02",
-                "montoPago" => round($totalGravado,2),
+                "montoPago" => round($compra->total,2),
                 "referencia" => null,
                 "plazo" => "01",
                 "periodo" => null,
@@ -156,7 +175,7 @@ class DteService
         $payload = [
             'ambiente' => $ambiente,
             'idEnvio' => $idEnvio, // Un ID único generado por tu sistema para esta transacción
-            'version' => "01",        // Versión de la API de recepción (usualmente 1)
+            'version' => str_pad($tipoDte, 2, "0", STR_PAD_LEFT),        // Versión de la API de recepción (usualmente 1)
             'tipoDte' => str_pad($tipoDte, 2, "0", STR_PAD_LEFT), // El tipo de DTE (ej: '01')
             'documento' => $dteFirmado,
             'codigoGeneracion' => $generacion
@@ -366,6 +385,115 @@ class DteService
             'totalGravada' => $facturaJson['resumen']['totalGravada'], // En este caso, son iguales
             'totalGravada' => $facturaJson['resumen']['totalGravada'], // Total a pagar
             'totalLetras' => numaletras($facturaJson['resumen']['totalGravada']), // Debes usar la función helper aquí
+        ],
+        'apendice' => null,
+        'otrosDocumentos' => null
+        ];
+        return $datosFactura;
+    }
+
+    public function crearDteCredito($facturaJson){
+        $datosFactura = [
+        // --- Mapeo de Identificación y Emisor ---
+        'documentoRelacionado' => null,
+        'extension' => null,
+        'ventaTercero' => $facturaJson['identificacion']['ventaTercero'],
+        'identificacion' => [
+            'ambiente' => $facturaJson['identificacion']['ambiente'],
+            'numeroControl' => $facturaJson['identificacion']['numeroControl'],
+            'codigoGeneracion' => $facturaJson['identificacion']['codigoGeneracion'],
+            'tipoModelo' => $facturaJson['identificacion']['tipoModelo'],
+            'tipoOperacion' => $facturaJson['identificacion']['tipoOperacion'],
+            'tipoMoneda' => $facturaJson['identificacion']['tipoMoneda'],
+            'version' => 3,
+            'tipoDte' => $facturaJson['identificacion']['tipoDte'],
+            'fecEmi' => $facturaJson['identificacion']['fecEmi'],
+            'horEmi' => $facturaJson['identificacion']['horEmi'],
+            'motivoContin' => $facturaJson['identificacion']['motivoContin'],
+            'tipoContingencia' => $facturaJson['identificacion']['tipoContingencia'],
+        ],
+        'emisor' => [
+            'nombre' => $facturaJson['emisor']['nombre'],
+            'nombreComercial' => $facturaJson['emisor']['nombre'],
+            'nit' => $facturaJson['emisor']['nit'],
+            'nrc' => $facturaJson['emisor']['nrc'],
+            'codActividad' => $facturaJson['emisor']['codActividad'],
+            'descActividad' => $facturaJson['emisor']['descActividad'], // Revisar si este campo no está vacío en el JSON real
+            'direccion' => $facturaJson['emisor']['direccion'],
+            'telefono' => $facturaJson['emisor']['telefono'],
+            'correo' => $facturaJson['emisor']['correo'],
+            'tipoEstablecimiento' => '02',
+            'codEstableMH' => $facturaJson['emisor']['codEstableMH'],
+            'codEstable' => $facturaJson['emisor']['codEstable'],
+            'codPuntoVentaMH' => $facturaJson['emisor']['codPuntoVentaMH'],
+            'codPuntoVenta' => $facturaJson['emisor']['codPuntoVenta'],
+        ],
+        
+        // --- Mapeo de Receptor ---
+        'receptor' => [
+            'nombre' => $facturaJson['receptor']['nombre'],
+            'nombreComercial' => $facturaJson['receptor']['nombre'],
+            'nit' => $facturaJson['receptor']['numDocumento'],
+            'direccion' => $facturaJson['receptor']['direccion'], 
+            'correo' => $facturaJson['receptor']['correo'],
+            'telefono' => $facturaJson['receptor']['telefono'],
+            'nrc' => $facturaJson['receptor']['nrc'],
+            'codActividad' => $facturaJson['receptor']['codActividad'],
+            'descActividad' => $facturaJson['receptor']['descActividad'],
+        ],
+
+        'cuerpoDocumento' => collect($facturaJson['cuerpoDocumento'])->map(function ($item, $key) {
+            return [
+                'numItem' => $key + 1,
+                'tipoItem' => 1,
+                'numeroDocumento' => null,
+                'codigo' => $item['codProducto'],
+                'cantidad' => $item['cantidad'],
+                'uniMedida' => $item['uniMedida'],
+                'descripcion' => $item['desProducto'],
+                'precioUni' => $item['precioUni'],
+                'ventaGravada' => $item['montoItem'],
+                'psv' => $item['montoItem'],
+                'montoDescu' => 0.0,
+                'ventaNoSuj' => 0.0,
+                'ventaExenta' => 0.0,
+                'tributos' => null,
+                'codTributo' => null,
+                'noGravado' => 0.0,
+                'tributos'=> ["20"],
+            ];
+        })->all(),
+
+        // --- Mapeo de Totales ---
+        'resumen' => [
+            'totalNoSuj' => 0.0,
+            'totalExenta' => 0.0,
+            'descuNoSuj' => 0.0,
+            'descuExenta' => 0.0,
+            'descuGravada' => 0.0,
+            'porcentajeDescuento' => 0.0,
+            'totalDescu' => 0.0,
+            'ivaPerci1' => 0.0,
+            'tributos' => [
+                [
+                "codigo" => "20",
+                "descripcion" => "IVA",
+                "valor" => $facturaJson['resumen']['totalIvaCompra']
+                ]
+            ],
+            'totalNoGravado' => 0.0,
+            'reteRenta' => 0.0,
+            'ivaRete1' => $facturaJson['resumen']['ivaRete1'],
+            'condicionOperacion' => 1,
+            'numPagoElectronico' => null,
+            'saldoFavor' => 0.0,
+            'pagos' => $facturaJson['resumen']['pagos'],
+            'subTotalVentas' => $facturaJson['resumen']['totalGravada'],
+            'totalPagar' => $facturaJson['resumen']['montoTotal'],
+            'montoTotalOperacion' => round($facturaJson['resumen']['montoTotal']+$facturaJson['resumen']['ivaRete1'],2),
+            'subTotal' => $facturaJson['resumen']['subTotal'],
+            'totalGravada' => $facturaJson['resumen']['totalGravada'], // En este caso, son iguales
+            'totalLetras' => numaletras($facturaJson['resumen']['montoTotal']), // Debes usar la función helper aquí
         ],
         'apendice' => null,
         'otrosDocumentos' => null

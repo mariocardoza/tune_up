@@ -18,6 +18,7 @@ class AddCamposDteToClientes extends Migration
             $table->string("numero_documento")->nullable();
             $table->string("codActividad")->nullable();
             $table->string("descActividad")->nullable();
+            $table->string('municipio_id')->nullable();
         });
     }
 
@@ -33,6 +34,7 @@ class AddCamposDteToClientes extends Migration
             $table->dropColumn('codActividad');
             $table->dropColumn('descActividad');
             $table->dropColumn('numero_documento');
+            $table->dropColumn('municipio_id');
         });
     }
 }

@@ -27,6 +27,8 @@ class Cliente extends Model
     {
     	$html='';
 			$tipos = Documento::all();
+			$municipios = Municipio::with('departamento')->get();
+			$actividades = ActividadEconomica::get();
     	$cliente=Cliente::find($id);
     	$html.='
 		        	<div class="card-body">
@@ -100,9 +102,18 @@ class Cliente extends Model
 				        						<input type="text" value="'.$cliente->reg_iva.'" name="reg_iva" class="form-control">
 				        					</div>
 				        					<div class="form-group">
-				        						<label for="">Giro</label>
-				        						<input type="text" name="giro" value="'.$cliente->giro.'" class="form-control">
-				        					</div>
+													<label for="">Actividad económica</label>
+													<select name="codActividad" id="codActividad" class="form-control chosen-select">
+														<option value="">Seleccione la actividad económica</option>';
+														foreach($actividades as $actividad ):
+															if($actividad->codigo == $cliente->codActividad):
+																$html.='<option selected value="'.$actividad->codigo.'">'. $actividad->nombre.'</option>';
+															else:
+																$html.='<option value="'.$actividad->codigo.'">'.$actividad->nombre.'</option>';
+															endif;
+														endforeach;
+														$html.='</select>
+												</div>
 				        					<div class="form-group">
 				        						<label for="">Contacto</label>
 				        						<input type="text" name="nombre_contacto" value="'.$cliente->nombre_contacto.'" class="form-control">
@@ -152,6 +163,21 @@ class Cliente extends Model
 		        					</div>
 		        				</div>
 		        				<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="">Municipio</label>
+													<select name="municipio_id" id="municipio_id" class="form-control elselect">
+														<option value="">Seleccione el municipio</option>';
+														foreach($municipios as $municipio ):
+															if($municipio->id == $cliente->municipio_id):
+																$html.='<option selected value="'.$municipio->id.'">'. $municipio->nombre.' - '.$municipio->departamento->nombre.'</option>';
+															else:
+																$html.='<option value="'.$municipio->id.'">'.$municipio->nombre.' - '.$municipio->departamento->nombre.'</option>';
+															endif;
+														endforeach;
+														$html.='</select>
+												</div>
+											</div>
 		        					<div class="col-md-12">
 		        						<div class="form-group">
 		        							<label for="direccion">Dirección</label>

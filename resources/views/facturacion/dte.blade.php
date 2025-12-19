@@ -158,8 +158,13 @@
     <div class="">
     
         <div class="text-center uppercase font-bold">
-            <h6 class="mb-0 font-weight-bold">DOCUMENTO TRIBUTARIO ELECTRÓNICO</h6>
-            <h5 class="font-weight-bold mt-2">FACTURA</h5>
+            <h6 class="mb-0 font-weight-bold">DOCUMENTO TRIBUTARIO ELECTRÓNICO </h6>
+            <p><b style="text-align: right;">Ver. {{$version}}</b></p>
+            @if($compra->tipo_documento == 2)
+                <h5 class="font-weight-bold mt-2">FACTURA</h5>
+            @elseif($compra->tipo_documento == 3)
+                <h5 class="font-weight-bold mt-2">COMPROBANTE DE CRÉDITO FISCAL</h5>
+            @endif
         </div>
 
         <table class="header-table">
@@ -201,10 +206,10 @@
                 <strong>Nombre o razón social:</strong> {{ $compra->cliente->nombre }}<br>
                 <strong>Tipo de Documento:</strong> {{$compra->cliente->documento->nombre_documento}}<br>
                 <strong>Número de Documento:</strong> {{$compra->cliente->numero_documento}}<br>
+                <strong>NRC:</strong> {{$compra->cliente->reg_iva}}<br>
+                <strong>Dirección:</strong> {{ $cliente->direccion ?? '-' }}<br>
                 <strong>Correo electrónico:</strong> {{ $cliente->email ?? '-' }}<br>
-                <div class="mt-2" style="margin-top: 50px;">
-                    <strong>Número de teléfono:</strong> {{ $cliente->telefono ?? '00000000' }}
-                </div>
+                <strong>Número de teléfono:</strong> {{ $cliente->telefono ?? '00000000' }}
             </div>
             <div class="clear"></div>
         </div>
@@ -255,14 +260,30 @@
             <div class="cuadro-totales">
                 <div class="totales-row">
                     <span class="total-label">Suma Ventas Gravadas:</span>
-                    <span class="total-value">{{ number_format($compra->total, 2) }}</span>
+                    <span class="total-value">{{ number_format($compra->subtotal, 2) }}</span>
                 </div>
                 <div class="totales-row">
                     <span class="total-label">Sub-Total:</span>
-                    <span class="total-value">{{ number_format($compra->total, 2) }}</span>
+                    <span class="total-value">{{ number_format($compra->subtotal, 2) }}</span>
                 </div>
+                @if($compra->tipo_documento == 3)
+                    <div class="totales-row">
+                        <span class="total-label">IVA:</span>
+                        <span class="total-value">{{ number_format($compra->iva, 2) }}</span>
+                    </div>
+                @endif
                 <div class="totales-row">
-                    <span class="total-label">Monto Total de la Operación:</span>
+                    <span class="total-label">SubTotal:</span>
+                    <span class="total-value">{{ number_format($compra->subtotal, 2) }}</span>
+                </div>
+                @if($compra->tipo_documento == 3)
+                    <div class="totales-row">
+                        <span class="total-label">IVA Retenido:</span>
+                        <span class="total-value">{{ number_format($compra->iva_r, 2) }}</span>
+                    </div>
+                @endif
+                <div class="totales-row font-bold">
+                    <span class="total-label">Monto total de la Operación: </span>
                     <span class="total-value">{{ number_format($compra->total, 2) }}</span>
                 </div>
                 <div class="totales-row font-bold">
@@ -272,12 +293,14 @@
             </div>
         </div>
         <div class="clear"></div>
+        @if($compra->tipo_documento == 2)
         <div class="letras-monto">
             TOTAL EN LETRAS: **{{ numaletras($compra->total) }}**
         </div>
         
         <hr style="border-top: 1px dashed #000; margin-top: 10px;">
         <div class="font-bold">Forma pago: ** Contado **</div>
+        @endif
     </div>
     <script type="text/php">
     if (isset($pdf)) {

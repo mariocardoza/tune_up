@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cliente;
+use App\Municipio;
+use App\ActividadEconomica;
 use App\Vehiculo;
 use App\Marca;
 use App\Documento;
@@ -43,7 +45,9 @@ class ClienteController extends Controller
     {
         $clientes=Cliente::whereEstado(1)->orderBy('id','ASC')->get();
         $tipos = Documento::all();
-        return view('clientes.index',compact('clientes','tipos'));
+        $municipios = Municipio::with('departamento')->get();
+        $actividades = ActividadEconomica::all();
+        return view('clientes.index',compact('clientes','tipos','municipios','actividades'));
     }
 
     /**
@@ -108,6 +112,7 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         try{
+            $this->validar($request->all())->validate();
             $cliente->fill($request->all());
             $cliente->save();
             return array(1,"exito");

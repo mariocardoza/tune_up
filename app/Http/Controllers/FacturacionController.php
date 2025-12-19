@@ -69,6 +69,10 @@ class FacturacionController extends Controller
         if($request->tipo == 1){//Es un DTE Normal (consumidor final)
             $datosFactura = $this->dteService->crearDteFactura($arrayDteGeneral);
         }
+        if($request->tipo== 3){
+            $datosFactura = $this->dteService->crearDteCredito($arrayDteGeneral);
+        }
+        //dd($datosFactura);
         $dteFirmado = $this->dteService->firmarDTE($datosFactura);
         if(!$dteFirmado['status'] == 'OK'){
             return response()->json([
@@ -76,7 +80,6 @@ class FacturacionController extends Controller
                 'message' => 'No se pudo obtener el documento firmado.'
             ], 404);
         }
-
         $datosFactura['firmaElectronica'] = $dteFirmado['body'];
         
         // 3. Envía el DTE a la API del MH
@@ -112,9 +115,9 @@ class FacturacionController extends Controller
 
         $json_email = json_encode($datosFactura);
         // 5. La factura fue aceptada. Guarda los datos de la respuesta en la compra.
-
+        $version = $request->tipo;
         $taller = Taller::first();
-        $pdf = PDF::loadView('facturacion.dte', compact('compra','taller'))->setPaper('letter', 'portrait');
+        $pdf = PDF::loadView('facturacion.dte', compact('compra','taller','version'))->setPaper('letter', 'portrait');
         $pdfData = $pdf->output();
 
         // 3. Obtener el email del destinatario (ejemplo)

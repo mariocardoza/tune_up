@@ -146,9 +146,14 @@
 		        						<input type="text" name="reg_iva" class="form-control">
 		        					</div>
 		        					<div class="form-group">
-		        						<label for="">Giro</label>
-		        						<input type="text" name="giro" class="form-control">
-		        					</div>
+												<label for="">Actividad económica</label>
+												<select name="codActividad" id="codActividad" class="form-control chosen-select">
+													<option value="">Seleccione una actividad</option>
+													@foreach($actividades as $actividad )
+														<option value="{{$actividad->codigo}}">{{$actividad->nombre}}</option>
+													@endforeach
+													</select>
+											</div>
 		        					<div class="form-group">
 		        						<label for="">Contacto</label>
 		        						<input type="text" name="nombre_contacto" class="form-control">
@@ -194,6 +199,17 @@
         					</div>
         				</div>
         				<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="">Municipios</label>
+											<select name="municipio_id" id="municipio_id" class="form-control chosen-select">
+												<option value="">Seleccione el municipio</option>
+												@foreach($municipios as $municipio )
+													<option value="{{$municipio->id}}">{{$municipio->departamento->nombre .' '.$municipio->nombre}}</option>
+												@endforeach
+												</select>
+										</div>
+									</div>
         					<div class="col-md-12">
         						<div class="form-group">
         							<label for="direccion">Dirección</label>

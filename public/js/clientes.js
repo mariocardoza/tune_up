@@ -116,6 +116,8 @@ $(document).ready(function(e){
 				if(json[0]==1){
 					$("#cuerpoaqui").empty();
 					$("#cuerpoaqui").html(json[2]);
+					$(".chosen-select").trigger("chosen:updated");
+					$("#municipio_id").trigger("chosen:updated");
 					$("#modal_editar").modal("show");
 				}
 			}
