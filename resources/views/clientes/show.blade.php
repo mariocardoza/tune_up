@@ -46,7 +46,13 @@ $marcas=\App\Marca::where('estado',1)->get();
                     <b>Sector</b> <a class="float-right">{{$cliente->sector}}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>NIT</b> <a class="float-right">{{$cliente->nit}}</a>
+                    <b>Tipo de documento</b> <a class="float-right">{{$cliente->documento->nombre_documento}}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Número de documento</b> <a class="float-right">{{$cliente->numero_documento}}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>NRC</b> <a class="float-right">{{$cliente->reg_iva}}</a>
                   </li>
                   <li class="list-group-item">
                     <b>E-mail</b> <a class="float-right">{{$cliente->correo}}</a>

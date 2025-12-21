@@ -68,11 +68,16 @@ class FacturacionController extends Controller
         $arrayDteGeneral = json_decode($jsonDteGeneral, true);//Lo convertimos en array
         if($request->tipo == 1){//Es un DTE Normal (consumidor final)
             $datosFactura = $this->dteService->crearDteFactura($arrayDteGeneral);
+            $version = 1;
         }
         if($request->tipo== 3){
             $datosFactura = $this->dteService->crearDteCredito($arrayDteGeneral);
+            $version = 3;
         }
-        //dd($datosFactura);
+        if($request->tipo== 11){
+            $datosFactura = $this->dteService->crearDteExportacion($arrayDteGeneral);
+            $version = 1;
+        }
         $dteFirmado = $this->dteService->firmarDTE($datosFactura);
         if(!$dteFirmado['status'] == 'OK'){
             return response()->json([
@@ -80,10 +85,34 @@ class FacturacionController extends Controller
                 'message' => 'No se pudo obtener el documento firmado.'
             ], 404);
         }
+        //dd($dteFirmado);
         $datosFactura['firmaElectronica'] = $dteFirmado['body'];
+
+
+        /*if($compra->sello_generacion != null){//Ya fue generado un DTE
+            $datosFactura['selloRecibido'] = $compra->sello_generacion;
+            $json_email = json_encode($datosFactura);
+            $version = $request->tipo;
+            $taller = Taller::first();
+            $pdf = PDF::loadView('facturacion.dte', compact('compra','taller','version'))->setPaper('letter', 'portrait');
+            $pdfData = $pdf->output();
+
+            // 4. Enviar el correo usando la clase Mailable
+            if ($compra->cliente->correo != null &&  filter_var($compra->cliente->correo, FILTER_VALIDATE_EMAIL)) {
+            //Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
+            }
+
+            return response()->json([
+                'success' => true,
+                // Codifica el contenido binario para que sea seguro pasarlo por JSON
+                'pdf_base64' => base64_encode($pdf->output()), 
+                'filename' => $compra->codigo_generacion.'.pdf',
+            ]);
+        }*/
+
         
         // 3. Envía el DTE a la API del MH
-        $respuestaApi = $this->dteService->enviarDte($dteFirmado['body'],$request->tipo,$compra->codigo_generacion);
+        $respuestaApi = $this->dteService->enviarDte($dteFirmado['body'],$request->tipo,$compra->codigo_generacion,$version);
         // 4. Maneja la respuesta de la API
         if (isset($respuestaApi['error'])) {
             return response()->json([
@@ -121,27 +150,15 @@ class FacturacionController extends Controller
         $pdfData = $pdf->output();
 
         // 3. Obtener el email del destinatario (ejemplo)
-        //$destinatarioEmail = $datosFactura['receptor']['correo']; 
-        //$destinatarioEmail = "h_rivas47@yahoo.com"; 
-        $destinatarioEmail = "mariokr.rocker@gmail.com"; 
-        //$destinatarioCC = "h_rivas47@yahoo.com"; 
-        
-        // 4. Enviar el correo usando la clase Mailable
-        Mail::to($destinatarioEmail)->send(new FacturaAdjunta($pdfData, $json_email));
-            
-        //return response()->json(['message' => 'Factura enviada por correo con éxito!']);
+        if ($compra->cliente->correo != null &&  filter_var($compra->cliente->correo, FILTER_VALIDATE_EMAIL)) {
+            //Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
+        }
         
         return response()->json([
             'success' => true,
             // Codifica el contenido binario para que sea seguro pasarlo por JSON
             'pdf_base64' => base64_encode($pdf->output()), 
-            'filename' => 'Factura.pdf',
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Factura electrónica enviada y aceptada.',
-            'data' => $respuestaApi
+            'filename' => $compra->codigo_generacion.'.pdf',
         ]);
     }
 }

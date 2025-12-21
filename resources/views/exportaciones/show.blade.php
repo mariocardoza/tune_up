@@ -153,7 +153,8 @@
 								<div class="text-center">
 									
 									<a href="{{url('exportaciones/reporte/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
-									
+									<button class="btn btn-success dte" data-tipo="11" data-id="{{$cotizacion->id}}"><i class="fas fa-print"></i> Generar DTE</button>
+
 								</div>
 							</div>
 						</div>

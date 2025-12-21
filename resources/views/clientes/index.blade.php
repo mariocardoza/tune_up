@@ -40,8 +40,8 @@
               			<th>Sector</th>
               			<th>Nombres</th>
               			<th>Teléfono</th>
-              			<th>DUI</th>
-              			<th>NIT</th>
+              			<th>Tipo documento</th>
+              			<th>Número de documento</th>
               			<th></th>
               		</tr>
               	</thead>
@@ -52,8 +52,8 @@
               				<th>{{$c->sector}}</th>
               				<td>{{$c->nombre}}</td>
               				<td>{{$c->telefono}}</td>
-              				<td>{{$c->dui}}</td>
-              				<td>{{$c->nit}}</td>
+              				<td>{{$c->documento->nombre_documento}}</td>
+              				<td>{{$c->numero_documento}}</td>
               				<th>
               					<a href="{{ url('clientes/'.$c->id)}}" class="btn btn-info"><i class="fas fa-eye"></i></a>
               				</th>
@@ -199,6 +199,17 @@
         					</div>
         				</div>
         				<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label for="">País</label>
+											<select name="codigoPais" id="codigoPais" class="form-control chosen-select">
+												<option value="">Seleccione el país</option>
+												@foreach($paises as $pais )
+													<option value="{{$pais->codigo}}">{{$pais->nombre}}</option>
+												@endforeach
+												</select>
+										</div>
+									</div>
 									<div class="col-md-12">
 										<div class="form-group">
 											<label for="">Municipios</label>

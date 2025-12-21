@@ -10,6 +10,7 @@ use App\Cotizacione;
 use App\TrabajoDetalle; 
 use App\RepuestoDetalle; 
 use App\Municipio; 
+use App\Pais; 
 use App\ActividadEconomica;
 use Cache;
 use Log;
@@ -40,10 +41,13 @@ class DteService
     {
         // Mapea los datos de la tabla 'compra' a la sección 'identificacion' del DTE
         $direccion = null;
-        $descActividad = null;
-        $codActividad = null;
+        $descActividad = "Otros";
+        $codActividad = "10005";
+        $codigoPais = null;
+        $nombrePais = null;
         $muni = Municipio::with('departamento')->find($compra->cliente->municipio_id);
         $desc = ActividadEconomica::where('codigo',$compra->cliente->codActividad)->first();
+        $pais = Pais::where('codigo',$compra->cliente->codigoPais)->first();
         if($muni != null){
             $direccion = [
                 "departamento" => $muni->departamento_codigo,
@@ -54,6 +58,10 @@ class DteService
         if($desc != null){
             $descActividad = $desc->nombre;
             $codActividad = $desc->codigo;
+        }
+        if($pais != null){
+            $codigoPais = $pais->codigo;
+            $nombrePais = $pais->nombre;
         }
         $dte = [
             "identificacion" => [
@@ -102,7 +110,11 @@ class DteService
                 "telefono" => $compra->cliente->telefono == '' ? '00000000' : $compra->cliente->telefono, // Asumiendo una relación con un modelo Cliente
                 "tipo_documento" => $compra->cliente->tipo_documento,
                 "descActividad" => $descActividad,
-                "codActividad" => $codActividad
+                "codActividad" => $codActividad,
+                "codPais" => $codigoPais,
+                "nombrePais" => $nombrePais,
+                "complemento" => $compra->cliente->direccion,
+                "tipoPersona" => (int)$compra->cliente->tipo
             ],
         ];
 
@@ -115,7 +127,7 @@ class DteService
                 "desProducto" => $detalle->repuesto->nombre,
                 "cantidad" => $detalle->cantidad,
                 "precioUni" => $detalle->precio,
-                "montoItem" => $detalle->precio*$detalle->cantidad,
+                "montoItem" => round($detalle->precio*$detalle->cantidad,2),
                 "uniMedida" => 99,
                 "ivaItem" => $this->obtenerIvaItem($detalle->precio*$detalle->cantidad)
             ];
@@ -160,7 +172,7 @@ class DteService
         return json_encode($dte);
     }
 
-    public function enviarDte($dteFirmado,$tipoDte,$generacion)
+    public function enviarDte($dteFirmado,$tipoDte,$generacion,$version)
     {
         $token = $this->obtenerToken();
         if (!$token) {
@@ -175,7 +187,7 @@ class DteService
         $payload = [
             'ambiente' => $ambiente,
             'idEnvio' => $idEnvio, // Un ID único generado por tu sistema para esta transacción
-            'version' => str_pad($tipoDte, 2, "0", STR_PAD_LEFT),        // Versión de la API de recepción (usualmente 1)
+            'version' => str_pad($version, 2, "0", STR_PAD_LEFT),        // Versión de la API de recepción (usualmente 1)
             'tipoDte' => str_pad($tipoDte, 2, "0", STR_PAD_LEFT), // El tipo de DTE (ej: '01')
             'documento' => $dteFirmado,
             'codigoGeneracion' => $generacion
@@ -501,8 +513,139 @@ class DteService
         return $datosFactura;
     }
 
-    public function crearJsonEmail($facturaJson,$firmado){
+    public function crearDteExportacion($facturaJson){
+        $datosFactura = [
+        // --- Mapeo de Identificación y Emisor ---
+        'ventaTercero' => $facturaJson['identificacion']['ventaTercero'],
+        'identificacion' => [
+            'ambiente' => $facturaJson['identificacion']['ambiente'],
+            'numeroControl' => $facturaJson['identificacion']['numeroControl'],
+            'codigoGeneracion' => $facturaJson['identificacion']['codigoGeneracion'],
+            'tipoModelo' => $facturaJson['identificacion']['tipoModelo'],
+            'tipoOperacion' => $facturaJson['identificacion']['tipoOperacion'],
+            'tipoMoneda' => $facturaJson['identificacion']['tipoMoneda'],
+            'version' => 1,
+            'tipoDte' => $facturaJson['identificacion']['tipoDte'],
+            'fecEmi' => $facturaJson['identificacion']['fecEmi'],
+            'horEmi' => $facturaJson['identificacion']['horEmi'],
+            'motivoContigencia' => $facturaJson['identificacion']['motivoContin'],
+            'tipoContingencia' => $facturaJson['identificacion']['tipoContingencia'],
+        ],
+        'emisor' => [
+            'nombre' => $facturaJson['emisor']['nombre'],
+            'nombreComercial' => $facturaJson['emisor']['nombre'],
+            'nit' => $facturaJson['emisor']['nit'],
+            'nrc' => $facturaJson['emisor']['nrc'],
+            'codActividad' => $facturaJson['emisor']['codActividad'],
+            'descActividad' => $facturaJson['emisor']['descActividad'], // Revisar si este campo no está vacío en el JSON real
+            'direccion' => $facturaJson['emisor']['direccion'],
+            'telefono' => $facturaJson['emisor']['telefono'],
+            'correo' => $facturaJson['emisor']['correo'],
+            'tipoEstablecimiento' => '02',
+            'codEstableMH' => $facturaJson['emisor']['codEstableMH'],
+            'codEstable' => $facturaJson['emisor']['codEstable'],
+            'codPuntoVentaMH' => $facturaJson['emisor']['codPuntoVentaMH'],
+            'codPuntoVenta' => $facturaJson['emisor']['codPuntoVenta'],
+            'regimen' => 'EX-1.1000.000',
+            'tipoItemExpor' => 3,
+            'recintoFiscal' => '01',
+        ],
+        
+        // --- Mapeo de Receptor ---
+        'receptor' => [
+            'tipoPersona' => $facturaJson['receptor']['tipoPersona'],
+            'nombre' => $facturaJson['receptor']['nombre'],
+            'nombreComercial' => $facturaJson['receptor']['nombre'],
+            'tipoDocumento' => $facturaJson['receptor']['tipo_documento'], // Asume un valor basado en el tipo de documento 614...
+            'numDocumento' => $facturaJson['receptor']['numDocumento'],
+            'complemento' => $facturaJson['receptor']['complemento'], 
+            'codPais' => $facturaJson['receptor']['codPais'], 
+            'nombrePais' => $facturaJson['receptor']['nombrePais'], 
+            'correo' => $facturaJson['receptor']['correo'],
+            'telefono' => $facturaJson['receptor']['telefono'],
+            'descActividad' => $facturaJson['receptor']['descActividad'],
+        ],
 
+        'cuerpoDocumento' => collect($facturaJson['cuerpoDocumento'])->map(function ($item, $key) {
+            return [
+                'numItem' => $key + 1,
+                'codigo' => $item['codProducto'],
+                'cantidad' => $item['cantidad'],
+                'uniMedida' => $item['uniMedida'],
+                'descripcion' => $item['desProducto'],
+                'precioUni' => $item['precioUni'],
+                'ventaGravada' => $item['montoItem'],
+                'montoDescu' => 0.0,
+                'tributos' => null,
+                'noGravado' => 0.0,
+            ];
+        })->all(),
+
+        // --- Mapeo de Totales ---
+        'resumen' => [
+            'porcentajeDescuento' => 0.0,
+            'totalDescu' => 0.0,
+            'totalNoGravado' => 0.0,
+            'condicionOperacion' => 1,
+            'numPagoElectronico' => null,
+            'descuento' => 0.0,
+            'flete' => 0.0,
+            'seguro' => 0.0,
+            'observaciones' => null,
+            'descIncoterms' => 'DDP-Entrega con impuestos pagados',
+            'codIncoterms' => '07',
+            'pagos' => $facturaJson['resumen']['pagos'],
+            'totalGravada' => $facturaJson['resumen']['totalGravada'],
+            'totalPagar' => $facturaJson['resumen']['totalGravada'],
+            'montoTotalOperacion' => $facturaJson['resumen']['totalGravada'],
+            'totalGravada' => $facturaJson['resumen']['totalGravada'], // En este caso, son iguales
+            'totalGravada' => $facturaJson['resumen']['totalGravada'], // Total a pagar
+            'totalLetras' => numaletras($facturaJson['resumen']['totalGravada']), // Debes usar la función helper aquí
+        ],
+        'apendice' => null,
+        'otrosDocumentos' => null
+        ];
+        return $datosFactura;
+    }
+
+    public function invalidarDte($idFactura, $motivo, $responsable, $tipoDte) {
+        $factura = Cotizacion::findOrFail($idFactura);
+
+        // 1. Validar plazo de 24 horas
+        if ($factura->fecha_generacion->diffInHours(now()) > 24) {
+            return "Error: Han pasado más de 24 horas. Use Nota de Crédito.";
+        }
+
+        // 2. Construir el JSON (Evento 22)
+        $payload = [
+            "identificacion" => [
+                "version" => 2,
+                "tipoDte" => "22",
+                "codigoGeneracion" => Str::uuid()->getHex(),
+                "numeroControl" => $this->generarNumeroControlAnulacion(), // DTE-22-...
+                "fecEmi" => date('Y-m-d'),
+                "horEmi" => date('H:i:s'),
+            ],
+            "documento" => [
+                "tipoDte" => $tipoDte, 
+                "codigoGeneracion" => $factura->codigo_generacion,
+                "numeroControl" => $factura->numero_control,
+                "fecEmi" => $factura->fecha_generacion,
+                "montoIva" => $factura->iva, 
+                "codigoGeneracionSello" => $factura->sello_generacion,
+                "nombreResponsable" => $responsable['nombre'],
+                "tipoDocResponsable" => $responsable['tipo_doc'], // 13 para DUI
+                "numDocResponsable" => $responsable['num_doc'],
+                "motivoInvalida" => $motivo, // 01, 02 o 03
+                "descInvalida" => $responsable['notas']
+            ]
+            // ... emisor
+        ];
+
+        // 3. Firmar y Enviar (Aquí usas tu lógica de Guzzle y JWS)
+        $respuesta = $this->clienteHacienda->enviarEvento($payload);
+
+        return $respuesta;
     }
 
     public function generarNumeroControl(string $tipoDte, string $codigoSucursal, int $ultimoCorrelativo): string 

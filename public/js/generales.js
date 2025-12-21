@@ -149,7 +149,8 @@ $(document).ready(function(e){
         data:{id,tipo},
         success: function(response){
           if (response.success) {
-              const base64Data = response.pdf_base64;
+            toastr.success("DTE Generado con éxito");
+              /*const base64Data = response.pdf_base64;
               const filename = response.filename;
 
               // 1. Decodificar la cadena Base64 a un Blob binario
@@ -169,7 +170,7 @@ $(document).ready(function(e){
               
               // 5. Limpiar
               document.body.removeChild(link);
-              URL.revokeObjectURL(blobUrl);
+              URL.revokeObjectURL(blobUrl);*/
           }
         },
         error:function(error){

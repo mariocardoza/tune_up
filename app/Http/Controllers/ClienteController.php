@@ -9,6 +9,7 @@ use App\ActividadEconomica;
 use App\Vehiculo;
 use App\Marca;
 use App\Documento;
+use App\Pais;
 use Validator;
 use Session;
 
@@ -47,7 +48,8 @@ class ClienteController extends Controller
         $tipos = Documento::all();
         $municipios = Municipio::with('departamento')->get();
         $actividades = ActividadEconomica::all();
-        return view('clientes.index',compact('clientes','tipos','municipios','actividades'));
+        $paises = Pais::all();
+        return view('clientes.index',compact('clientes','tipos','municipios','actividades','paises'));
     }
 
     /**

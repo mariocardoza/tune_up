@@ -23,12 +23,18 @@ class Cliente extends Model
     	return $this->belongsTo('App\Documento','tipo_documento','tipo_documento')->withDefault();
     }
 
+		public function pais()
+    {
+    	return $this->belongsTo('App\Pais','codigoPais','codigo')->withDefault();
+    }
+
     public static function modal_editar($id)
     {
     	$html='';
 			$tipos = Documento::all();
 			$municipios = Municipio::with('departamento')->get();
 			$actividades = ActividadEconomica::get();
+			$paises = Pais::get();
     	$cliente=Cliente::find($id);
     	$html.='
 		        	<div class="card-body">
@@ -40,8 +46,8 @@ class Cliente extends Model
 				        					<label for="">Tipo de persona</label>
 				        					<select name="tipo" id="" class="form-control">
 				        						<option selected value="">Seleccione..</option>
-				        						<option value="1">Natural</option>
-				        						<option value="2">Jurídica</option>
+				        						<option ' . ($cliente->tipo == 1 ? 'selected' : '') . ' value="1">Natural</option>
+				        						<option ' . ($cliente->tipo == 2 ? 'selected' : '') . ' value="2">Jurídica</option>
 				        					</select>
 				        				</div>
 				        				<div class="form-group">
@@ -163,6 +169,21 @@ class Cliente extends Model
 		        					</div>
 		        				</div>
 		        				<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="">País</label>
+													<select name="codigoPais" id="codigoPais" class="form-control">
+														<option value="">Seleccione el país</option>';
+														foreach($paises as $pais ):
+															if($pais->codigo == $cliente->codigoPais):
+																$html.='<option selected value="'.$pais->codigo.'">'.$pais->nombre.'</option>';
+															else:
+																$html.='<option value="'.$pais->codigo.'">'.$pais->nombre.'</option>';
+															endif;
+														endforeach;
+														$html.='</select>
+												</div>
+											</div>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="">Municipio</label>

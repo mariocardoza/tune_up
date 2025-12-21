@@ -164,6 +164,8 @@
                 <h5 class="font-weight-bold mt-2">FACTURA</h5>
             @elseif($compra->tipo_documento == 3)
                 <h5 class="font-weight-bold mt-2">COMPROBANTE DE CRÉDITO FISCAL</h5>
+            @else
+                <h5 class="font-weight-bold mt-2">FACTURA DE EXPORTACIÓN</h5>
             @endif
         </div>
 
@@ -191,14 +193,18 @@
 
         <div class="box-container">
             <div class="box">
-                <span class="box-title">EMISOR</span>
+                <span class="box-title">{{$compra->tipo_documento == 4 ? "(Exportador)":null }}  EMISOR</span>
                 <strong>Nombre o razón social:</strong> {{$taller->nombre}}<br>
                 <strong>NIT:</strong> {{$taller->nit}}<br>
                 <strong>NRC:</strong> {{$taller->nrc}}<br>
                 <strong>Actividad económica:</strong> {{$taller->actividad_economica}} <br>
                 <strong>Dirección:</strong> {{ $taller->direccion }}<br>
                 <strong>Teléfono:</strong> {{$taller->celular}}<br>
-                <strong>Email:</strong> {{$taller->email}}
+                <strong>Email:</strong> {{$taller->email}}<br>
+                @if($compra->tipo_documento == 4)
+                    <strong>Recinto Fiscal:</strong> 01<br>
+                    <strong>Régimen de exportación:</strong> EX-1.1000.000
+                @endif
             </div>
 
             <div class="box box-receptor">
@@ -207,9 +213,12 @@
                 <strong>Tipo de Documento:</strong> {{$compra->cliente->documento->nombre_documento}}<br>
                 <strong>Número de Documento:</strong> {{$compra->cliente->numero_documento}}<br>
                 <strong>NRC:</strong> {{$compra->cliente->reg_iva}}<br>
-                <strong>Dirección:</strong> {{ $cliente->direccion ?? '-' }}<br>
-                <strong>Correo electrónico:</strong> {{ $cliente->email ?? '-' }}<br>
-                <strong>Número de teléfono:</strong> {{ $cliente->telefono ?? '00000000' }}
+                <strong>Dirección:</strong> {{ $compra->cliente->direccion ?? '-' }}<br>
+                <strong>Correo electrónico:</strong> {{ $compra->cliente->email ?? '-' }}<br>
+                <strong>Número de teléfono:</strong> {{ $compra->cliente->telefono ?? '00000000' }}<br>
+                @if($compra->tipo_documento == 4)
+                    <strong>Pais destino:</strong> {{ $compra->cliente->pais->nombre }}
+                @endif
             </div>
             <div class="clear"></div>
         </div>
@@ -293,6 +302,26 @@
             </div>
         </div>
         <div class="clear"></div>
+        @if($compra->tipo_documento == 4)
+        <div class="totales-container" style="width: 100%">
+            <div class="cuadro-totales" style="width: 100%">
+                <div class="totales-row">
+                    <span class="total-label">Valor en letras:</span>
+                    <span class="total-value">{{ numaletras($compra->total) }}</span>
+                </div>
+                <div class="totales-row">
+                    <span class="total-label">Condición Operación:</span>
+                    <span class="total-value">CONTADO</span>
+                </div>
+            
+                <div class="totales-row">
+                    <span class="total-label">Descripción Incoterms::</span>
+                    <span class="total-value">DDP-Entrega con impuestos pagados</span>
+                </div>
+                
+            </div>
+        </div>
+        @endif
         @if($compra->tipo_documento == 2)
         <div class="letras-monto">
             TOTAL EN LETRAS: **{{ numaletras($compra->total) }}**
