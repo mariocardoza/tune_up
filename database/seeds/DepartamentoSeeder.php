@@ -13,20 +13,21 @@ class DepartamentoSeeder extends Seeder
     public function run()
     {
         $departamentos = [
-            ['codigo' => '01', 'nombre' => 'Ahuachapán'],
-            ['codigo' => '02', 'nombre' => 'Santa Ana'],
-            ['codigo' => '03', 'nombre' => 'Sonsonate'],
-            ['codigo' => '04', 'nombre' => 'Chalatenango'],
-            ['codigo' => '05', 'nombre' => 'La Libertad'],
-            ['codigo' => '06', 'nombre' => 'San Salvador'],
-            ['codigo' => '07', 'nombre' => 'Cuscatlán'],
-            ['codigo' => '08', 'nombre' => 'La Paz'],
-            ['codigo' => '09', 'nombre' => 'Cabañas'],
-            ['codigo' => '10', 'nombre' => 'San Vicente'],
-            ['codigo' => '11', 'nombre' => 'Usulután'],
-            ['codigo' => '12', 'nombre' => 'San Miguel'],
-            ['codigo' => '13', 'nombre' => 'Morazán'],
-            ['codigo' => '14', 'nombre' => 'La Unión'],
+            ['codigo' => '00', 'nombre' => 'OTRO'],
+            ['codigo' => '01', 'nombre' => 'AHUACHAPÁN'],
+            ['codigo' => '02', 'nombre' => 'SANTA ANA'],
+            ['codigo' => '03', 'nombre' => 'SONSONATE'],
+            ['codigo' => '04', 'nombre' => 'CHALATENANGO'],
+            ['codigo' => '05', 'nombre' => 'LA LIBERTAD'],
+            ['codigo' => '06', 'nombre' => 'SAN SALVADOR'],
+            ['codigo' => '07', 'nombre' => 'CUSCATLÁN'],
+            ['codigo' => '08', 'nombre' => 'LA PAZ'],
+            ['codigo' => '09', 'nombre' => 'CABAÑAS'],
+            ['codigo' => '10', 'nombre' => 'SAN VICENTE'],
+            ['codigo' => '11', 'nombre' => 'USULUTÁN'],
+            ['codigo' => '12', 'nombre' => 'SAN MIGUEL'],
+            ['codigo' => '13', 'nombre' => 'MORAZÁN'],
+            ['codigo' => '14', 'nombre' => 'LA UNIÓN'],
         ];
 
         foreach ($departamentos as $depto) {

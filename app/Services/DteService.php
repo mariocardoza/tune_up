@@ -610,7 +610,15 @@ class DteService
 
     public function invalidarDte($idFactura, $motivo, $responsable, $tipoDte) {
         $factura = Cotizacion::findOrFail($idFactura);
+        $anioActual = date('Y');
 
+            $siguienteCorrelativoAnioActual = DB::table('dtes')
+                ->selectRaw('MAX(correlativo) + 1 AS siguiente_correlativo')
+                ->where('anio', $anioActual)
+                ->where('tipoDte', 22)
+                ->value('siguiente_correlativo'); // Obtiene directamente el valor
+
+            $siguienteCorrelativo = $siguienteCorrelativoAnioActual ?? 1;
         // 1. Validar plazo de 24 horas
         if ($factura->fecha_generacion->diffInHours(now()) > 24) {
             return "Error: Han pasado más de 24 horas. Use Nota de Crédito.";
@@ -622,7 +630,7 @@ class DteService
                 "version" => 2,
                 "tipoDte" => "22",
                 "codigoGeneracion" => Str::uuid()->getHex(),
-                "numeroControl" => $this->generarNumeroControlAnulacion(), // DTE-22-...
+                "numeroControl" => $this->generarNumeroControl("22","M001P001",$siguienteCorrelativo), // DTE-22-...
                 "fecEmi" => date('Y-m-d'),
                 "horEmi" => date('H:i:s'),
             ],

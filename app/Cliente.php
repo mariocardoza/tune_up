@@ -28,6 +28,11 @@ class Cliente extends Model
     	return $this->belongsTo('App\Pais','codigoPais','codigo')->withDefault();
     }
 
+		public function municipio()
+    {
+    	return $this->belongsTo('App\Municipio')->withDefault();
+    }
+
     public static function modal_editar($id)
     {
     	$html='';

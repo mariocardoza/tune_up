@@ -67,14 +67,20 @@ class FacturacionController extends Controller
         $jsonDteGeneral = $this->dteService->generarDteGeneralJson($compra,$request->tipo);
         $arrayDteGeneral = json_decode($jsonDteGeneral, true);//Lo convertimos en array
         if($request->tipo == 1){//Es un DTE Normal (consumidor final)
+            $compra->tipo_dte = '01';
+            $compra->save();
             $datosFactura = $this->dteService->crearDteFactura($arrayDteGeneral);
             $version = 1;
         }
         if($request->tipo== 3){
+            $compra->tipo_dte = '03';
+            $compra->save();
             $datosFactura = $this->dteService->crearDteCredito($arrayDteGeneral);
             $version = 3;
         }
         if($request->tipo== 11){
+            $compra->tipo_dte = '11';
+            $compra->save();
             $datosFactura = $this->dteService->crearDteExportacion($arrayDteGeneral);
             $version = 1;
         }
@@ -161,4 +167,50 @@ class FacturacionController extends Controller
             'filename' => $compra->codigo_generacion.'.pdf',
         ]);
     }
+
+    public function generarEventoContingencia($dtesPendientes) {
+        $evento = [
+            'identificacion' => [
+                'version' => 1,
+                'ambiente' => config('facturacion.ambiente'),
+                'codigoGeneracion' => strtoupper(Str::uuid()),
+                'fTransmision' => date('Y-m-d'),
+                'hTransmision' => date('H:i:s'),
+            ],
+            'emisor' => [
+                "nit" => env('MH_NIT'),
+                "nombre" => "TUNEUP SERVICE",
+                "nombreComercial" => "TUNEUP SERVICE",
+                "nrc" => "1314382",
+                "codActividad" => "45201",
+                "descActividad" => "Reparación mecánica de vehículos automotores",
+                "tipoEstablecimiento" => "01",
+                "sucursal" => "Central",
+                "correo" => "tuneup@gmail.com",
+                "direccion" => [
+                    "departamento" => "06",
+                    "municipio" => "14",
+                    "complemento" =>"Calle San Carlos, Colonia laico 1004, final 17 av norte"
+                ],
+                "telefono" => "77303565",
+                "codEstableMH" => "M001",
+                "codEstable" => "M001",
+                "codPuntoVentaMH" => "P001",
+                "codPuntoVenta" => "P001",
+            ],
+            'detalleDTE' => []
+        ];
+
+        foreach ($dtesPendientes as $index => $dte) {
+            $evento['detalleDTE'][] = [
+                'noItem' => $index + 1,
+                'codigoGeneracion' => $dte->codigo_generacion,
+                'tipoDoc' => $dte->tipo_dte,
+            ];
+        }
+
+        return json_encode($evento);
+    }
+
+
 }

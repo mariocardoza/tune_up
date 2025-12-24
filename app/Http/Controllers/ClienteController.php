@@ -148,6 +148,7 @@ class ClienteController extends Controller
           'nombre.required'=>'El nombre del cliente es obligatorio',
           'tipo_documento.required'=>'El tipo de documento es obligatorio',
           'numero_documento.required'=>'El número de documento es obligatorio',
+          'municipio_id.required'=>'seleccione un municipio',
 
       );
       return Validator::make($data, [
@@ -155,6 +156,7 @@ class ClienteController extends Controller
           'nombre'=>'required',
           'tipo_documento'=>'required',
           'numero_documento'=>'required',
+          'municipio_id'=>'required',
       ],$mensajes);
     }
 }

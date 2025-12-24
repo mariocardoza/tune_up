@@ -9,6 +9,6 @@ class Municipio extends Model
     public function departamento()
     {
         // Un municipio pertenece a un departamento
-        return $this->belongsTo('App\Departamento', 'departamento_codigo', 'codigo');
+        return $this->belongsTo('App\Departamento', 'departamento_codigo', 'codigo')->withDefault();
     }
 }

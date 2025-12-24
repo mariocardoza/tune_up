@@ -213,7 +213,7 @@
                 <strong>Tipo de Documento:</strong> {{$compra->cliente->documento->nombre_documento}}<br>
                 <strong>Número de Documento:</strong> {{$compra->cliente->numero_documento}}<br>
                 <strong>NRC:</strong> {{$compra->cliente->reg_iva}}<br>
-                <strong>Dirección:</strong> {{ $compra->cliente->direccion ?? '-' }}<br>
+                <strong>Dirección:</strong> {{ $compra->cliente->direccion ?? '-' }} , {{$compra->cliente->municipio->nombre.', '.$compra->cliente->municipio->departamento->nombre}}<br>
                 <strong>Correo electrónico:</strong> {{ $compra->cliente->email ?? '-' }}<br>
                 <strong>Número de teléfono:</strong> {{ $compra->cliente->telefono ?? '00000000' }}<br>
                 @if($compra->tipo_documento == 4)
