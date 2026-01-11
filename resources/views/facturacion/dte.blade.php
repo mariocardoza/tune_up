@@ -151,12 +151,31 @@
             font-size: 8pt;
             color: #000;
         }
+    .watermark {
+        position: absolute;
+        top: 30%;
+        left: 10%;
+        font-size: 80px;
+        color: rgba(255, 0, 0, 0.3);
+        transform: rotate(-45deg);
+        z-index: -1; /* O 1000 si quieres que tape el texto */
+        text-align: center;
+        border: 10px solid rgba(255, 0, 0, 0.3);
+        padding: 20px;
+        width: 80%;
+    }
+
     </style>
 </head>
 <body>
 
     <div class="">
-    
+    @if($anulacion)
+        <div class="watermark">
+            DOCUMENTO INVALIDADO <br>
+            <small style="font-size: 30px;">Anulado el: {{ date("d/m/Y") }}</small>
+        </div>
+    @endif
         <div class="text-center uppercase font-bold">
             <h6 class="mb-0 font-weight-bold">DOCUMENTO TRIBUTARIO ELECTRÓNICO </h6>
             <p><b style="text-align: right;">Ver. {{$version}}</b></p>
@@ -175,16 +194,19 @@
                     <strong>Código de Generación:</strong> {{ $compra->codigo_generacion }}<br>
                     <strong>Número de Control:</strong> {{ $compra->numero_control }}<br>
                     <strong>Sello de Recepción:</strong> {{ $compra->sello_generacion }}
+                    @php
+                        $url = "https://admin.factura.gob.sv/consultaPublica?ambiente=01&codGen=".$compra->codigo_generacion."&fechaEmi=".$compra->fecha_generacion->format("Y-m-d")
+                    @endphp
                 </td>
                 <td width="20%" class="text-center">
-                    <div style="border: 1px solid #ccc; width: 80px; height: 80px; margin: 0 auto;">
-                        <img src="data:image/png;base64,{{ base64_encode(QrCode::format('png')->size(80)->generate($compra->codigo_generacion)) }}" 
+                    <div style="border: 1px solid #ccc; width: 100px; height: 100px; margin: 0 auto;">
+                        <img src="data:image/png;base64,{{ base64_encode(QrCode::format('png')->size(100)->generate("$url")) }}" 
      alt="QR Code Factura" 
-     style="width: 80px; height: 80px;">
+     style="width: 100px; height: 100px;">
                     </div>
                 </td>
                 <td width="40%" class="text-right">
-                    <strong>Modelo de Facturación:</strong> Previo<br>
+                    <strong>Modelo de Facturación:</strong> Previo <br>
                     <strong>Tipo de Transmisión:</strong> Normal<br>
                     <strong>Fecha y Hora de Generación:</strong> {{ $compra->fecha_procesamiento }}
                 </td>

@@ -14,6 +14,8 @@ use App\Pais;
 use App\ActividadEconomica;
 use Cache;
 use Log;
+use DB;
+use Ramsey\Uuid\Uuid;
 
 class DteService
 {
@@ -608,8 +610,7 @@ class DteService
         return $datosFactura;
     }
 
-    public function invalidarDte($idFactura, $motivo, $responsable, $tipoDte) {
-        $factura = Cotizacion::findOrFail($idFactura);
+    public function jsonInvalidar($factura, $request,$codigoGeneracion) {
         $anioActual = date('Y');
 
             $siguienteCorrelativoAnioActual = DB::table('dtes')
@@ -620,40 +621,55 @@ class DteService
 
             $siguienteCorrelativo = $siguienteCorrelativoAnioActual ?? 1;
         // 1. Validar plazo de 24 horas
-        if ($factura->fecha_generacion->diffInHours(now()) > 24) {
-            return "Error: Han pasado más de 24 horas. Use Nota de Crédito.";
-        }
+        
 
         // 2. Construir el JSON (Evento 22)
         $payload = [
             "identificacion" => [
+                "ambiente" => env('MH_AMBIENTE'),
                 "version" => 2,
-                "tipoDte" => "22",
-                "codigoGeneracion" => Str::uuid()->getHex(),
-                "numeroControl" => $this->generarNumeroControl("22","M001P001",$siguienteCorrelativo), // DTE-22-...
-                "fecEmi" => date('Y-m-d'),
-                "horEmi" => date('H:i:s'),
+                "codigoGeneracion" => $codigoGeneracion,
+                "fecAnula" => date('Y-m-d'),
+                "horAnula" => date('H:i:s'),
             ],
             "documento" => [
-                "tipoDte" => $tipoDte, 
+                "tipoDte" => $factura->tipo_dte, 
+                "codigoGeneracionR" => null,
                 "codigoGeneracion" => $factura->codigo_generacion,
                 "numeroControl" => $factura->numero_control,
-                "fecEmi" => $factura->fecha_generacion,
+                "fecEmi" => $factura->fecha_generacion->format("Y-m-d"),
                 "montoIva" => $factura->iva, 
-                "codigoGeneracionSello" => $factura->sello_generacion,
-                "nombreResponsable" => $responsable['nombre'],
-                "tipoDocResponsable" => $responsable['tipo_doc'], // 13 para DUI
-                "numDocResponsable" => $responsable['num_doc'],
-                "motivoInvalida" => $motivo, // 01, 02 o 03
-                "descInvalida" => $responsable['notas']
-            ]
-            // ... emisor
+                "selloRecibido" => $factura->sello_generacion,
+                "nombre" => $factura->cliente->nombre,
+                "tipoDocumento" => $factura->cliente->tipo_documento,
+                "numDocumento" => $factura->cliente->numero_documento,
+            ],
+            "motivo" => [
+                "tipoAnulacion"      => (int)$request->motivo,
+                "motivoAnulacion"    => $request->notas,
+                "nombreSolicita"     => $factura->cliente->nombre,
+                "nombreResponsable"  => "Hector Mauricio Rivas",
+                "tipDocSolicita"     => $factura->cliente->tipo_documento,
+                "numDocSolicita" => $factura->cliente->numero_documento,
+                "tipDocResponsable" => "36",
+                "numDocResponsable" => env('MH_NIT')
+            ],
+            "emisor" => [
+                "nit" => env('MH_NIT'),
+                "nombre" => "TUNEUP SERVICE",
+                "nomEstablecimiento" => "TUNEUP SERVICE",
+                "tipoEstablecimiento" => "01",
+                "correo" => "tuneup@gmail.com",
+                "telefono" => "77303565",
+                "codEstableMH" => "M001",
+                "codEstable" => "M001",
+                "codPuntoVentaMH" => "P001",
+                "codPuntoVenta" => "P001",
+            ],
         ];
+    //dd($payload);
 
-        // 3. Firmar y Enviar (Aquí usas tu lógica de Guzzle y JWS)
-        $respuesta = $this->clienteHacienda->enviarEvento($payload);
-
-        return $respuesta;
+        return $payload;
     }
 
     public function generarNumeroControl(string $tipoDte, string $codigoSucursal, int $ultimoCorrelativo): string 
@@ -708,5 +724,53 @@ class DteService
         });
 
         return $token;
+    }
+
+    public function invalidarDTE($dteFirmado,$generacion,$version)
+    {
+        $tipoDte = "22";
+        $token = $this->obtenerToken();
+        if (!$token) {
+            Log::error('DTE Envío: No se pudo obtener el token de autenticación.');
+            return ['error' => 'Autenticación fallida o token nulo.'];
+        }
+        $sendUrl = env('MH_API_URL_ANULACION');
+        $ambiente = env('MH_AMBIENTE', '00'); // PRUEBA o PRODUCCION
+        $idEnvio = (int) (microtime(true) * 1000);
+        // 2. Construir el Payload de Envío
+        // La API de recepción espera que el DTE firmado esté anidado dentro de esta estructura
+        $payload = [
+            'ambiente' => $ambiente,
+            'idEnvio' => $idEnvio, // Un ID único generado por tu sistema para esta transacción
+            //'version' => str_pad($version, 2, "0", STR_PAD_LEFT),        // Versión de la API de recepción (usualmente 1)
+            'version' => 2,        // Versión de la API de recepción (usualmente 1)
+            //'tipoDte' => str_pad($tipoDte, 2, "0", STR_PAD_LEFT), // El tipo de DTE (ej: '01')
+            'documento' => $dteFirmado,
+            //'codigoGeneracion' => $generacion
+        ];
+        //dd($payload);
+        try {
+            // 3. Realizar la Petición POST con Guzzle
+            $response = $this->client->post($sendUrl, [
+                // Incluir el token en el encabezado 'Authorization'
+                'headers' => [
+                    'Authorization' => $token, 
+                    'Content-Type' => 'application/json', // El payload de envío es JSON
+                ],
+                // 4. Enviar el Payload como JSON
+                'json' => $payload
+            ]);
+            
+            // 5. Decodificar y devolver la respuesta del MH
+            return json_decode($response->getBody()->getContents(), true);
+
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $responseBody = $e->getResponse()->getBody()->getContents();
+            Log::error("DTE Envío Guzzle (Cliente 4xx): Error en el envío. Respuesta MH: " . $responseBody);
+            return ['error' => 'Error 4xx de la API del MH', 'response_body' => json_decode($responseBody, true)];
+        } catch (\Throwable $e) {
+            Log::error("DTE Envío Guzzle (Conexión/Sistema): " . $e->getMessage());
+            return ['error' => 'Error de conexión o sistema.'];
+        }
     }
 }

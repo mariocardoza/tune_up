@@ -155,7 +155,9 @@
 									
 									<a href="{{url('facturas/reporte/'.$cotizacion->id)}}" target="_blank" class="btn btn-success imprime"><i class="fas fa-print"></i> Imprimir</a>
 									<button class="btn btn-success dte" data-tipo="1" data-id="{{$cotizacion->id}}"><i class="fas fa-print"></i> Generar DTE</button>
-									
+									@if($cotizacion->estado_dte == "PROCESADO")
+										<button class="btn btn-success anular" data-tipo="11" data-id="{{$cotizacion->id}}"><i class="fas fa-times"></i> Anular DTE</button>
+									@endif
 								</div>
 							</div>
 						</div>
@@ -288,6 +290,61 @@
         	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
         	<button type="button" id="btn_agregar_repuesto" class="btn btn-success">Agregar</button>
         	<button type="submit" style="display: none;" class="btn btn-success submitrepuesto">Registrar</button>
+    	</div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_anular" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h5 class="modal-title " id="exampleModalLabel">Anular DTE
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form id="form_anular"  role="form">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="">Motivo anulación</label>
+                      
+                      <select name="motivo" id="motivo" class="form-control">
+												<option value="">Seleccione un motivo</option>
+												<option value="2">Anulación de la operación</option>
+											</select>
+                      <input type="hidden" id="idAnular" name="id" value="{{$cotizacion->id}}">
+                    </div>
+                  </div>
+              
+                </div>
+								<div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="">Breve detalle</label>
+                      
+                      <textarea name="notas" id="" rows="3" class="form-control"></textarea>
+                    </div>
+                  </div>
+              
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="float-none">
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        	<button type="submit" class="btn btn-success anularsubmit">Confirmar</button>
     	</div>
       </div>
       </form>

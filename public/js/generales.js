@@ -150,7 +150,7 @@ $(document).ready(function(e){
         success: function(response){
           if (response.success) {
             toastr.success("DTE Generado con éxito");
-              /*const base64Data = response.pdf_base64;
+              const base64Data = response.pdf_base64;
               const filename = response.filename;
 
               // 1. Decodificar la cadena Base64 a un Blob binario
@@ -170,7 +170,7 @@ $(document).ready(function(e){
               
               // 5. Limpiar
               document.body.removeChild(link);
-              URL.revokeObjectURL(blobUrl);*/
+              URL.revokeObjectURL(blobUrl);
           }
         },
         error:function(error){
@@ -178,6 +178,54 @@ $(document).ready(function(e){
         }
       });
   });
+
+
+  /* ANULAR */
+  $(document).on("click",'.anular',function(e){
+    e.preventDefault();
+    $("#modal_anular").modal("show");
+  });
+
+  /* ANULAR SUBMIT */
+  $(document).on("submit","#form_anular",function(e){
+    e.preventDefault();
+    let formulario=$("#form_anular").serialize();
+    $.ajax({
+      url:'/facturacion/anular',
+      type:'post',
+      dataType:'json',
+      data:formulario,
+      success: function(response){
+        if (response.success) {
+            toastr.success("DTE Generado con éxito");
+              const base64Data = response.pdf_base64;
+              const filename = response.filename;
+
+              // 1. Decodificar la cadena Base64 a un Blob binario
+              const pdfBlob = base64ToBlob(base64Data, 'application/pdf');
+
+              // 2. Crear un objeto URL para el Blob
+              const blobUrl = URL.createObjectURL(pdfBlob);
+
+              // 3. Crear un enlace (<a>) en la memoria
+              const link = document.createElement('a');
+              link.href = blobUrl;
+              link.download = filename;
+
+              // 4. Simular un clic para forzar la descarga
+              document.body.appendChild(link);
+              link.click();
+              
+              // 5. Limpiar
+              document.body.removeChild(link);
+              URL.revokeObjectURL(blobUrl);
+          }
+      },
+      error:function(error){
+          toastr.error(error.responseJSON.message);
+        }
+    });
+  })
 });
 
 function base64ToBlob(base64, mimeType) {

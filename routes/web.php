@@ -89,6 +89,7 @@ Route::Resource('repuestodetalles','RepuestodetallesController');
 Route::get('busqueda','HomeController@buscar');
 
 Route::post('facturacion','FacturacionController@generarFactura');
+Route::post('facturacion/anular','FacturacionController@InvalidarDTE');
 
 Route::get('/phpinfo', function () {
     return phpinfo();

@@ -8,7 +8,7 @@ use DB;
 class Cotizacione extends Model
 {
     protected $guarded = [];
-    protected $dates = ['fecha','created_at'];
+    protected $dates = ['fecha','created_at','fecha_generacion'];
 
     public function cliente()
     {
