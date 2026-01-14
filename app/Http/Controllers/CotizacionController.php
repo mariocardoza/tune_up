@@ -134,6 +134,7 @@ class CotizacionController extends Controller
             'subtotal'=>$request->subtotal,
             'total'=>$request->total,
             'coniva'=>$request->eliva,
+            'estado_dte' => 'PENDIENTE'
             ]);
             
              $trabajos_p=TrabajoPrevia::all();

@@ -14,7 +14,7 @@ class AddDatosInvalidacionToCotizacionesTable extends Migration
     public function up()
     {
         Schema::table('cotizaciones', function (Blueprint $table) {
-            $table->string('estado_dte')->nullable()->default('PROCESADO');
+            $table->string('estado_dte')->nullable()->default('PENDIENTE');
             $table->string('motivo_anulacion')->nullable();
         });
     }
