@@ -83,8 +83,8 @@ class DteService
             ],
             "emisor" => [
                 "nit" => env('MH_NIT'),
-                "nombre" => "TUNEUP SERVICE",
-                "nombreComercial" => "TUNEUP SERVICE",
+                "nombre" => "HECTOR MAURICIO RIVAS ORTIZ",
+                "nombreComercial" => "HECTOR MAURICIO RIVAS ORTIZ",
                 "nrc" => "1314382",
                 "codActividad" => "45201",
                 "descActividad" => "Reparación mecánica de vehículos automotores",

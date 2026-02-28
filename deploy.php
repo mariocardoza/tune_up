@@ -29,7 +29,7 @@ host('52.247.118.244')
     ->set('deploy_path', '/var/www/html/');    
     
 // Tasks
-set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --ignore-platform-reqs');
+set('composer_action', 'install --ignore-platform-reqs');
 
 task('build', function () {
     run('cd {{release_path}} && build');

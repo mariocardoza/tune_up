@@ -1,5 +1,10 @@
 @php
     //dd($datosFactura);
+    $descActividad = "Otros";
+    $desc = \App\ActividadEconomica::where('codigo',$compra->cliente->codActividad)->first();
+    if($desc != null){
+        $descActividad = $desc->nombre;
+    }
 @endphp
 <!DOCTYPE html>
 <html>
@@ -216,7 +221,7 @@
         <div class="box-container">
             <div class="box">
                 <span class="box-title">{{$compra->tipo_documento == 4 ? "(Exportador)":null }}  EMISOR</span>
-                <strong>Nombre o razón social:</strong> {{$taller->nombre}}<br>
+                <strong>Nombre o razón social:</strong> Héctor Mauricio Rivas Ortiz<br>
                 <strong>NIT:</strong> {{$taller->nit}}<br>
                 <strong>NRC:</strong> {{$taller->nrc}}<br>
                 <strong>Actividad económica:</strong> {{$taller->actividad_economica}} <br>
@@ -235,8 +240,9 @@
                 <strong>Tipo de Documento:</strong> {{$compra->cliente->documento->nombre_documento}}<br>
                 <strong>Número de Documento:</strong> {{$compra->cliente->numero_documento}}<br>
                 <strong>NRC:</strong> {{$compra->cliente->reg_iva}}<br>
+                <strong>Actividad económica:</strong> {{$descActividad}}<br>
                 <strong>Dirección:</strong> {{ $compra->cliente->direccion ?? '-' }} , {{$compra->cliente->municipio->nombre.', '.$compra->cliente->municipio->departamento->nombre}}<br>
-                <strong>Correo electrónico:</strong> {{ $compra->cliente->email ?? '-' }}<br>
+                <strong>Correo electrónico:</strong> {{ $compra->cliente->correo ?? '-' }}<br>
                 <strong>Número de teléfono:</strong> {{ $compra->cliente->telefono ?? '00000000' }}<br>
                 @if($compra->tipo_documento == 4)
                     <strong>Pais destino:</strong> {{ $compra->cliente->pais->nombre }}

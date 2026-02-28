@@ -92,7 +92,7 @@ class FacturacionController extends Controller
                 'message' => 'No se pudo obtener el documento firmado.'
             ], 404);
         }
-        //dd($dteFirmado);
+       // dd($dteFirmado);
         $datosFactura['firmaElectronica'] = $dteFirmado['body'];
 
 
@@ -107,7 +107,7 @@ class FacturacionController extends Controller
 
             // 4. Enviar el correo usando la clase Mailable
             if ($compra->cliente->correo != null &&  filter_var($compra->cliente->correo, FILTER_VALIDATE_EMAIL)) {
-            //Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
+              Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
             }
 
             return response()->json([
@@ -161,7 +161,7 @@ class FacturacionController extends Controller
 
         // 3. Obtener el email del destinatario (ejemplo)
         if ($compra->cliente->correo != null &&  filter_var($compra->cliente->correo, FILTER_VALIDATE_EMAIL)) {
-            //Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
+            Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
         }
         
         return response()->json([
@@ -231,7 +231,7 @@ class FacturacionController extends Controller
 
         // 3. Obtener el email del destinatario (ejemplo)
         if ($compra->cliente->correo != null &&  filter_var($compra->cliente->correo, FILTER_VALIDATE_EMAIL)) {
-            //Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
+            Mail::to($compra->cliente->correo)->send(new FacturaAdjunta($pdfData, $json_email));
         }
         
         return response()->json([

@@ -33,6 +33,11 @@ class Cliente extends Model
     	return $this->belongsTo('App\Municipio')->withDefault();
     }
 
+		public function giro()
+    {
+    	return $this->belongsTo('App\ActividadEconomica','codActividad','codigo')->withDefault();
+    }
+
     public static function modal_editar($id)
     {
     	$html='';
